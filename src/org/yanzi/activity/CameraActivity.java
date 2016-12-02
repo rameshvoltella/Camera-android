@@ -7,6 +7,8 @@ import org.yanzi.playcamera.R;
 import org.yanzi.util.DisplayUtil;
 
 import android.app.Activity;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Point;
 import android.os.Bundle;
 import android.util.Log;
@@ -27,6 +29,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;  
 import java.util.ArrayList;  
 import java.util.HashMap;  
@@ -154,11 +158,24 @@ public class CameraActivity extends Activity implements CamOpenOverCallback {
 		shutterBtn.setOnClickListener(new BtnListeners());
 		
 		
-
+		ImageButton image1 = (ImageButton) findViewById(R.id.btn_shutter);
+        Bitmap bitmap = getLoacalBitmap("/storage/sdcard1/123.jpg"); //从本地取图片
+        image1.setImageBitmap(bitmap);	//设置Bitmap
         
     }  
  
-    @Override  
+    private Bitmap getLoacalBitmap(String url) {
+        try {
+            FileInputStream fis = new FileInputStream(url);
+            return BitmapFactory.decodeStream(fis);
+       } catch (FileNotFoundException e) {
+            e.printStackTrace();
+            return null;
+       }
+  }
+
+
+	@Override  
     protected void onPause() {  
         super.onPause();  
         Log.v(TAG, "protected void onPause()");  
