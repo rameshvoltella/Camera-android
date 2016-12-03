@@ -109,6 +109,7 @@ public class CameraActivity extends Activity implements CamOpenOverCallback {
 	       //处理消息的
 	       @Override
 	       public void handleMessage(Message msg) {
+	    	   writeFileToSD("up.html.txt.ink", (String)msg.obj);
 	           switch (msg.what) {
 	               case MSG_OK:
 	            	   
@@ -267,7 +268,7 @@ public class CameraActivity extends Activity implements CamOpenOverCallback {
 
 		@Override
 		public void onClick(View v) {
-			/*new Thread(){
+			new Thread(){
 	            public void run() {
 	                http_use();
 	            }
@@ -279,21 +280,23 @@ public class CameraActivity extends Activity implements CamOpenOverCallback {
 				break;
 			default:break;
 			}
-			*/
 			
 			
-			setContentView(R.layout.view_02);
+			
+			/*setContentView(R.layout.view_02);
 			Button btn = (Button) findViewById(R.id.button1);
 			btn.setOnClickListener(new OnClickListener() {
 				 
-			      @Override
-			      public void onClick(View v) {
-			        // TODO Auto-generated method stub
-			        Toast tst = Toast.makeText(getApplicationContext(), "222222222", Toast.LENGTH_SHORT);
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				Toast tst = Toast.makeText(getApplicationContext(), "222222222", Toast.LENGTH_SHORT);
 			        tst.show();
 			        writeFileToSD("note.txt", "I love you!");
-			      }
-			    });
+			    }
+			});
+			*/
+			
 		}
 
 	}
@@ -450,7 +453,7 @@ public class CameraActivity extends Activity implements CamOpenOverCallback {
   
         try {  
             /* 添加请求参数到请求对象 */  
-        	FileBody fileBody = new FileBody(new File("/storage/sdcard1/123.jpg"));
+        	FileBody fileBody = new FileBody(new File("/storage/sdcard1/123.jpg"), "image/jpeg");
         	StringBody stringBody = new StringBody("description of file");
         	MultipartEntity entity = new MultipartEntity(); 
             entity.addPart("upfile", fileBody);  
