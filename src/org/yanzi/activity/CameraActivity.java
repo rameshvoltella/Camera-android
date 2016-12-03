@@ -29,6 +29,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;  
@@ -46,6 +47,9 @@ import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpGet;  
 import org.apache.http.client.methods.HttpPost;  
 import org.apache.http.client.params.HttpClientParams;  
+import org.apache.http.entity.mime.MultipartEntity;
+import org.apache.http.entity.mime.content.FileBody;
+import org.apache.http.entity.mime.content.StringBody;
 import org.apache.http.impl.client.DefaultHttpClient;  
 import org.apache.http.message.BasicNameValuePair;  
 import org.apache.http.params.BasicHttpParams;  
@@ -65,6 +69,18 @@ import android.util.Log;
 import android.widget.EditText;  
 import android.widget.Toast;
 
+
+import org.apache.http.HttpEntity;  
+import org.apache.http.HttpResponse;  
+import org.apache.http.HttpStatus;  
+import org.apache.http.client.ClientProtocolException;  
+import org.apache.http.client.HttpClient;  
+import org.apache.http.client.methods.HttpPost;  
+import org.apache.http.entity.mime.MultipartEntity;  
+import org.apache.http.entity.mime.content.FileBody;  
+import org.apache.http.entity.mime.content.StringBody;  
+import org.apache.http.impl.client.DefaultHttpClient;  
+import org.apache.http.util.EntityUtils;
 
 public class CameraActivity extends Activity implements CamOpenOverCallback {
 	private static final String TAG = "yanzi";
@@ -90,6 +106,9 @@ public class CameraActivity extends Activity implements CamOpenOverCallback {
 	       public void handleMessage(Message msg) {
 	           switch (msg.what) {
 	               case MSG_OK:
+	            	   
+	            	   Toast.makeText(getApplicationContext(), (String)msg.obj, Toast.LENGTH_SHORT).show();
+	            	   
 	                   //3.处理消息 运行在主线程
 	            	   String txt_data=(String)msg.obj;
 	            	   //editText.setText(txt_data);
@@ -119,7 +138,7 @@ public class CameraActivity extends Activity implements CamOpenOverCallback {
 	                   System.out.println("76799679");
 	                   break;
 	               case EXCEPTION:
-	                   Toast.makeText(getApplicationContext(), "发生异常，请求失败", Toast.LENGTH_SHORT).show();
+	                   Toast.makeText(getApplicationContext(), (String)msg.obj, Toast.LENGTH_SHORT).show();
 	                   break;
 	           }
 
@@ -303,7 +322,8 @@ public class CameraActivity extends Activity implements CamOpenOverCallback {
   
         String url2 = "http://www.google.cn/search";  
   
-        String url = "https://api.megvii.com/facepp/v3/detect"; //"http://www.inksci.com/app/th-week.php";  
+        String url = "http://inksci.com/~tstbox/upload/up-index.php";
+        		//"https://api.megvii.com/facepp/v3/detect"; //"http://www.inksci.com/app/th-week.php";  
   
         getHttpClient();  
     
@@ -384,7 +404,14 @@ public class CameraActivity extends Activity implements CamOpenOverCallback {
   
         try {  
             /* 添加请求参数到请求对象 */  
-            httpRequest.setEntity(new UrlEncodedFormEntity(params, HTTP.UTF_8));  
+        	FileBody fileBody = new FileBody(new File("/storage/sdcard1/123.jpg"));
+        	StringBody stringBody = new StringBody("description of file");
+        	MultipartEntity entity = new MultipartEntity(); 
+            entity.addPart("upfile", fileBody);  
+            //entity.addPart("desc", stringBody); 
+        	
+            httpRequest.setEntity(entity); 
+            //httpRequest.setEntity(new UrlEncodedFormEntity(params, HTTP.UTF_8));  
             /* 发送请求并等待响应 */  
             HttpResponse httpResponse = httpClient.execute(httpRequest);  
             /* 若状态码为200 ok */  
