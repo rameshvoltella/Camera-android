@@ -17,6 +17,7 @@ import android.view.SurfaceHolder;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup.LayoutParams;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
@@ -262,10 +263,7 @@ public class CameraActivity extends Activity implements CamOpenOverCallback {
 
 		@Override
 		public void onClick(View v) {
-			// TODO Auto-generated method stub
-			
-			
-			new Thread(){
+			/*new Thread(){
 	            public void run() {
 	                http_use();
 	            }
@@ -277,6 +275,20 @@ public class CameraActivity extends Activity implements CamOpenOverCallback {
 				break;
 			default:break;
 			}
+			*/
+			
+			
+			setContentView(R.layout.view_02);
+			Button btn = (Button) findViewById(R.id.button1);
+			btn.setOnClickListener(new OnClickListener() {
+				 
+			      @Override
+			      public void onClick(View v) {
+			        // TODO Auto-generated method stub
+			        Toast tst = Toast.makeText(getApplicationContext(), "222222222", Toast.LENGTH_SHORT);
+			        tst.show();
+			      }
+			    });
 		}
 
 	}
