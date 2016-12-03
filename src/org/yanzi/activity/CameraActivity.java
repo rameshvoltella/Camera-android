@@ -91,6 +91,8 @@ public class CameraActivity extends Activity implements CamOpenOverCallback {
 	ImageButton shutterBtn;
 	float previewRate = -1f;
 	
+	String app_path_name="PlayCamera";
+	
 
 	
 	   private HttpParams httpParams;  
@@ -289,22 +291,22 @@ public class CameraActivity extends Activity implements CamOpenOverCallback {
 			        // TODO Auto-generated method stub
 			        Toast tst = Toast.makeText(getApplicationContext(), "222222222", Toast.LENGTH_SHORT);
 			        tst.show();
-			        writeFileToSD();
+			        writeFileToSD("note.txt", "I love you!");
 			      }
 			    });
 		}
 
 	}
 	
-    private void writeFileToSD() {  
+    private void writeFileToSD(String fileName, String s) {  
         String sdStatus = Environment.getExternalStorageState();  
         if(!sdStatus.equals(Environment.MEDIA_MOUNTED)) {  
             Log.d("TestFile", "SD card is not avaiable/writeable right now.");  
             return;  
         }  
         try {  
-            String pathName="/storage/sdcard1/";  
-            String fileName="file.txt";  
+            String pathName="/storage/sdcard1/"+app_path_name+"/";  
+            //String fileName="file.txt";  
             File path = new File(pathName);  
             File file = new File(pathName + fileName);  
             if( !path.exists()) {  
@@ -316,7 +318,7 @@ public class CameraActivity extends Activity implements CamOpenOverCallback {
                 file.createNewFile();  
             }  
             FileOutputStream stream = new FileOutputStream(file);  
-            String s = "this is a test string writing to file.";  
+            //String s = "this is a test string writing to file.";  
             byte[] buf = s.getBytes();  
             stream.write(buf);            
             stream.close();  
