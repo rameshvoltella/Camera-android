@@ -24,6 +24,7 @@ import android.widget.Toast;
 import android.R.string;
 //import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
 import android.view.Menu;
@@ -33,6 +34,7 @@ import android.view.MenuItem;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;  
 import java.util.ArrayList;  
 import java.util.HashMap;  
@@ -287,13 +289,43 @@ public class CameraActivity extends Activity implements CamOpenOverCallback {
 			        // TODO Auto-generated method stub
 			        Toast tst = Toast.makeText(getApplicationContext(), "222222222", Toast.LENGTH_SHORT);
 			        tst.show();
+			        writeFileToSD();
 			      }
 			    });
 		}
 
 	}
 	
-	
+    private void writeFileToSD() {  
+        String sdStatus = Environment.getExternalStorageState();  
+        if(!sdStatus.equals(Environment.MEDIA_MOUNTED)) {  
+            Log.d("TestFile", "SD card is not avaiable/writeable right now.");  
+            return;  
+        }  
+        try {  
+            String pathName="/storage/sdcard1/";  
+            String fileName="file.txt";  
+            File path = new File(pathName);  
+            File file = new File(pathName + fileName);  
+            if( !path.exists()) {  
+                Log.d("TestFile", "Create the path:" + pathName);  
+                path.mkdir();  
+            }  
+            if( !file.exists()) {  
+                Log.d("TestFile", "Create the file:" + fileName);  
+                file.createNewFile();  
+            }  
+            FileOutputStream stream = new FileOutputStream(file);  
+            String s = "this is a test string writing to file.";  
+            byte[] buf = s.getBytes();  
+            stream.write(buf);            
+            stream.close();  
+              
+        } catch(Exception e) {  
+            Log.e("TestFile", "Error on writeFilToSD.");  
+            e.printStackTrace();  
+        }  
+    }  	
 	private void http_use() {
 		/*
 		 * =====================================
