@@ -94,6 +94,7 @@ import org.apache.http.util.EntityUtils;
 
 public class CameraActivity extends Activity implements CamOpenOverCallback {
 	static boolean get_bitmap;
+	Bitmap up_bitmap;
 	
 	ImageButton image1;
 	
@@ -127,6 +128,7 @@ public class CameraActivity extends Activity implements CamOpenOverCallback {
 	        	   ;
 	        	   Bitmap re_bitmap=CameraInterface.getInstance().get_ok_bitmap();
 					image1.setImageBitmap(re_bitmap);	//设置Bitmap
+					
 	        	   break;
 	               case MSG_OK:
 	            	   
@@ -612,7 +614,8 @@ public class CameraActivity extends Activity implements CamOpenOverCallback {
         try {  
             /* 添加请求参数到请求对象 */  
         	ByteArrayOutputStream bos = new ByteArrayOutputStream();
-        	Bitmap bm = BitmapFactory.decodeFile("/storage/sdcard1/PlayCamera/"+up_image_file);
+        	Bitmap bm = CameraInterface.getInstance().get_ok_bitmap();
+        			//BitmapFactory.decodeFile("/storage/sdcard1/PlayCamera/"+up_image_file);
         	bm.compress(CompressFormat.JPEG, 60, bos);
         	
         	ContentBody mimePart = new ByteArrayBody(bos.toByteArray(), "image/jpeg");        	

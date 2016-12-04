@@ -54,7 +54,7 @@ public class FileUtil {
         matrix.postScale(scaleWidth, scaleHeight);
         
         //旋转图片 动作
-        matrix.postRotate(180);
+        matrix.postRotate(0);
         
         // 创建新的图片
         b = Bitmap.createBitmap(b, 0, 0,
