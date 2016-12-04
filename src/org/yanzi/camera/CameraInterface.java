@@ -3,6 +3,7 @@ package org.yanzi.camera;
 import java.io.IOException;
 import java.util.List;
 
+import org.yanzi.activity.CameraActivity;
 import org.yanzi.util.CamParaUtil;
 import org.yanzi.util.FileUtil;
 import org.yanzi.util.ImageUtil;
@@ -183,12 +184,17 @@ public class CameraInterface {
 				//图片竟然不能旋转了，故这里要旋转下
 				rotaBitmap = ImageUtil.getRotateBitmap(b, 90.0f);
 				FileUtil.saveBitmap(rotaBitmap);
+				CameraActivity.get_bitmap_ok();
 			}
 			//再次进入预览
 			mCamera.startPreview();
 			isPreviewing = true;
 		}
 	};
+	public Bitmap get_ok_bitmap() {
+		// TODO Auto-generated method stub
+		return rotaBitmap;
+	}
 
 
 }

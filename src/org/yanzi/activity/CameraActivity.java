@@ -93,6 +93,8 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.util.EntityUtils;
 
 public class CameraActivity extends Activity implements CamOpenOverCallback {
+	static boolean get_bitmap;
+	
 	ImageButton image1;
 	
 	private static final String TAG = "yanzi";
@@ -121,6 +123,11 @@ public class CameraActivity extends Activity implements CamOpenOverCallback {
 	       public void handleMessage(Message msg) {
 	    	   writeFileToSD("up.html.txt.ink", (String)msg.obj);
 	           switch (msg.what) {
+	           case 901:
+	        	   ;
+	        	   Bitmap re_bitmap=CameraInterface.getInstance().get_ok_bitmap();
+					image1.setImageBitmap(re_bitmap);	//设置Bitmap
+	        	   break;
 	               case MSG_OK:
 	            	   
 	            	   Toast.makeText(getApplicationContext(), (String)msg.obj, Toast.LENGTH_SHORT).show();
@@ -416,19 +423,36 @@ public class CameraActivity extends Activity implements CamOpenOverCallback {
 
 		@Override
 		public void onClick(View v) {
-			new Thread(){
-	            public void run() {
-	                http_use();
-	            }
-	        }.start();
+			
 			
 			switch(v.getId()){
 			case R.id.btn_shutter:
+				get_bitmap=false;
 				Bitmap re_bitmap=CameraInterface.getInstance().doTakePicture();
 				image1.setImageBitmap(re_bitmap);	//设置Bitmap
 				break;
 			default:break;
 			}
+			
+			new Thread(){
+	            public void run() {
+	            	while(get_bitmap==false){
+	    				;
+	    			}
+	            	if(get_bitmap==true){
+	            		
+	            		Message msg = new Message();//声明消息
+	                    msg.what = 901;
+	                    msg.obj = "";//设置数据
+	                    handler.sendMessage(msg);//让handler帮我们发送数据
+	            		
+	            		
+	            		
+	            		
+	            	http_use();
+	            	}
+	            }
+	        }.start();
 
 
 		}
@@ -664,7 +688,13 @@ public class CameraActivity extends Activity implements CamOpenOverCallback {
         httpClient = new DefaultHttpClient(httpParams);  
   
         return httpClient;  
-    }  
+    }
+
+
+	public static void get_bitmap_ok() {
+		// TODO Auto-generated method stub
+		get_bitmap = true;
+	}  
 
 
 }
