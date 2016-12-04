@@ -124,15 +124,23 @@ public class CameraActivity extends Activity implements CamOpenOverCallback {
 				try {
 					//editText.setText("...");
 					Toast.makeText(getApplicationContext(), "JSON ...", Toast.LENGTH_SHORT).show();
+					
 					jsonObject = new JSONObject(txt_data);
 					JSONArray jsonArray = jsonObject.getJSONArray("faces"); 
-					JSONObject jsonObject2 = (JSONObject)jsonArray.opt(0); 
+					//Toast.makeText(getApplicationContext(), jsonArray.length()+"", Toast.LENGTH_LONG).show();
+					if(jsonArray.length()>0){
+					JSONObject jsonObject2 = (JSONObject)jsonArray.opt(0);
+					 
 					String face_token=jsonObject2.getString("face_token");
 					JSONObject attributes = jsonObject2.getJSONObject("attributes");
 					String gender = attributes.getJSONObject("gender").getString("value");
 					String age = attributes.getJSONObject("age").getString("value");
 					//editText.setText("gender: "+gender+", age: "+age+", face_token: "+face_token);
 					Toast.makeText(getApplicationContext(), "gender: "+gender+", age: "+age+", face_token: "+face_token, Toast.LENGTH_LONG).show();
+					}else{
+						Toast.makeText(getApplicationContext(), "Notice: jsonArray.length() is 0.", Toast.LENGTH_LONG).show();
+							
+					}
 					
 				} catch (JSONException e) {
 					// TODO Auto-generated catch block
@@ -447,18 +455,24 @@ public class CameraActivity extends Activity implements CamOpenOverCallback {
     public String doPost(String url, List<NameValuePair> params) {  
   
         /* 建立HTTPPost对象 */  
-        HttpPost httpRequest = new HttpPost(url);  
+        HttpPost httpRequest = new HttpPost("https://api.megvii.com/facepp/v3/detect");  
   
         String strResult = "doPostError";  
   
         try {  
             /* 添加请求参数到请求对象 */  
-        	FileBody fileBody = new FileBody(new File("/storage/sdcard1/123.jpg"), "image/jpeg");
+        	
+        	// 头像不能颠倒，否则返回的faces为空
+        	FileBody fileBody = new FileBody(new File("/storage/sdcard1/PlayCamera/zx-01.jpg"), "image/jpeg");
         	StringBody stringBody = new StringBody("description of file");
         	MultipartEntity entity = new MultipartEntity(); 
-            entity.addPart("upfile", fileBody);  
-            //entity.addPart("desc", stringBody); 
-        	
+            entity.addPart("image_file", fileBody);
+        	//entity.addPart("image_url", new StringBody("http://inksci.com/w/tmp/sg-67698.jpg")); 
+        	entity.addPart("api_key", new StringBody("Iwe59oTUN5GFG39IPUQVbOJ7iCA_hmaN")); 
+            entity.addPart("api_secret", new StringBody("EzzLLQB8wFvFObPEVRjYb0S-_UnUZf2f")); 
+            entity.addPart("return_landmark", new StringBody("1")); 
+            entity.addPart("return_attributes", new StringBody("gender,age"));
+            
             httpRequest.setEntity(entity); 
             //httpRequest.setEntity(new UrlEncodedFormEntity(params, HTTP.UTF_8));  
             /* 发送请求并等待响应 */  
