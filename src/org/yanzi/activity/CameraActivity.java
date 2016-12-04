@@ -93,6 +93,8 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.util.EntityUtils;
 
 public class CameraActivity extends Activity implements CamOpenOverCallback {
+	ImageButton image1;
+	
 	private static final String TAG = "yanzi";
 	CameraSurfaceView surfaceView = null;
 	ImageButton shutterBtn;
@@ -199,7 +201,7 @@ public class CameraActivity extends Activity implements CamOpenOverCallback {
 		shutterBtn.setOnClickListener(new BtnListeners());
 		
 		
-		ImageButton image1 = (ImageButton) findViewById(R.id.btn_shutter);
+		image1 = (ImageButton) findViewById(R.id.btn_shutter);
         Bitmap bitmap = getLoacalBitmap("/storage/sdcard1/123.jpg"); //从本地取图片
         image1.setImageBitmap(bitmap);	//设置Bitmap
         
@@ -422,7 +424,8 @@ public class CameraActivity extends Activity implements CamOpenOverCallback {
 			
 			switch(v.getId()){
 			case R.id.btn_shutter:
-				CameraInterface.getInstance().doTakePicture();
+				Bitmap re_bitmap=CameraInterface.getInstance().doTakePicture();
+				image1.setImageBitmap(re_bitmap);	//设置Bitmap
 				break;
 			default:break;
 			}

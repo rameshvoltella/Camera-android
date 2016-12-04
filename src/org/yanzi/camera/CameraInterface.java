@@ -19,6 +19,8 @@ import android.view.SurfaceHolder;
 import android.widget.Toast;
 
 public class CameraInterface {
+	Bitmap rotaBitmap;
+	
 	private static final String TAG = "yanzi";
 	private Camera mCamera;
 	private Camera.Parameters mParams;
@@ -132,11 +134,15 @@ public class CameraInterface {
 	}
 	/**
 	 * 拍照
+	 * @return 
 	 */
-	public void doTakePicture(){
+	public Bitmap doTakePicture(){
+		
 		if(isPreviewing && (mCamera != null)){
 			mCamera.takePicture(mShutterCallback, null, mJpegPictureCallback);
 		}
+		
+		return rotaBitmap;
 	}
 
 	/*为了实现拍照的快门声音及拍照保存照片需要下面三个回调变量*/
@@ -175,7 +181,7 @@ public class CameraInterface {
 			{
 				//设置FOCUS_MODE_CONTINUOUS_VIDEO)之后，myParam.set("rotation", 90)失效。
 				//图片竟然不能旋转了，故这里要旋转下
-				Bitmap rotaBitmap = ImageUtil.getRotateBitmap(b, 90.0f);
+				rotaBitmap = ImageUtil.getRotateBitmap(b, 90.0f);
 				FileUtil.saveBitmap(rotaBitmap);
 			}
 			//再次进入预览
