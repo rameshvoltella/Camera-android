@@ -9,6 +9,7 @@ import org.yanzi.util.DisplayUtil;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.graphics.Bitmap;
+import android.graphics.Bitmap.CompressFormat;
 import android.graphics.BitmapFactory;
 import android.graphics.Point;
 import android.os.Bundle;
@@ -33,6 +34,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -53,6 +55,8 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;  
 import org.apache.http.client.params.HttpClientParams;  
 import org.apache.http.entity.mime.MultipartEntity;
+import org.apache.http.entity.mime.content.ByteArrayBody;
+import org.apache.http.entity.mime.content.ContentBody;
 import org.apache.http.entity.mime.content.FileBody;
 import org.apache.http.entity.mime.content.StringBody;
 import org.apache.http.impl.client.DefaultHttpClient;  
@@ -580,12 +584,16 @@ public class CameraActivity extends Activity implements CamOpenOverCallback {
   
         try {  
             /* 添加请求参数到请求对象 */  
+        	ByteArrayOutputStream bos = new ByteArrayOutputStream();
+        	Bitmap bm = BitmapFactory.decodeFile("/storage/sdcard1/PlayCamera/"+up_image_file);
+        	bm.compress(CompressFormat.JPEG, 60, bos);
         	
+        	ContentBody mimePart = new ByteArrayBody(bos.toByteArray(), "image/jpeg");        	
         	// 头像不能颠倒，否则返回的faces为空
         	FileBody fileBody = new FileBody(new File("/storage/sdcard1/PlayCamera/"+up_image_file), "image/jpeg");
         	StringBody stringBody = new StringBody("description of file");
         	MultipartEntity entity = new MultipartEntity(); 
-            entity.addPart("image_file", fileBody);
+            entity.addPart("image_file", mimePart);
         	//entity.addPart("image_url", new StringBody("http://inksci.com/w/tmp/sg-67698.jpg")); 
         	entity.addPart("api_key", new StringBody("Iwe59oTUN5GFG39IPUQVbOJ7iCA_hmaN")); 
             entity.addPart("api_secret", new StringBody("EzzLLQB8wFvFObPEVRjYb0S-_UnUZf2f")); 
