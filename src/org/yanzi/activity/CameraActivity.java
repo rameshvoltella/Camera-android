@@ -7,10 +7,12 @@ import org.yanzi.playcamera.R;
 import org.yanzi.util.DisplayUtil;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Point;
 import android.os.Bundle;
+import android.text.Editable;
 import android.util.Log;
 import android.view.Menu;
 import android.view.SurfaceHolder;
@@ -67,6 +69,7 @@ import org.json.JSONObject;
 import org.json.JSONTokener;
  
 import android.app.Activity;  
+import android.content.DialogInterface;
 import android.os.Bundle;  
 import android.util.Log;  
 import android.widget.EditText;  
@@ -92,6 +95,7 @@ public class CameraActivity extends Activity implements CamOpenOverCallback {
 	float previewRate = -1f;
 	
 	String app_path_name="PlayCamera";
+	String up_image_file="zx-01.jpg"; // initial value
 	
 
 	
@@ -282,7 +286,7 @@ public class CameraActivity extends Activity implements CamOpenOverCallback {
 
         android.R.drawable.ic_menu_info_details);
 
-        menu.add(Menu.NONE, Menu.FIRST + 6, 3, "发送").setIcon(
+        menu.add(Menu.NONE, Menu.FIRST + 6, 3, "[菜单]发送").setIcon(
 
         android.R.drawable.ic_menu_send);
 		return true;
@@ -302,6 +306,10 @@ public class CameraActivity extends Activity implements CamOpenOverCallback {
 	        case Menu.FIRST + 2:
 
 	            Toast.makeText(this, "保存菜单被点击了", Toast.LENGTH_LONG).show();
+	        
+	        	setContentView(R.layout.activity_camera);
+	        	initUI();
+	    		initViewParams();
 
 	            break;
 
@@ -309,12 +317,50 @@ public class CameraActivity extends Activity implements CamOpenOverCallback {
 
 	            Toast.makeText(this, "帮助菜单被点击了", Toast.LENGTH_LONG).show();
 
+	        final EditText editText = new EditText(this);  
+	        new AlertDialog.Builder(this).setTitle("请输入").setView(editText).setPositiveButton("确定",   
+	        new DialogInterface.OnClickListener() {                
+	            @Override  
+	            public void onClick(DialogInterface dialog, int which) {  
+	                // TODO Auto-generated method stub  
+	                Toast.makeText(CameraActivity.this, "您输入的内容是："+editText.getText(), Toast.LENGTH_SHORT).show();
+	                up_image_file=editText.getText().toString();
+	            }  
+	        }).setNegativeButton("取消", null).show();
+	        
+	        
 	            break;
 
 	        case Menu.FIRST + 4:
 
 	            Toast.makeText(this, "添加菜单被点击了", Toast.LENGTH_LONG).show();
-
+	        
+	        setContentView(R.layout.view_02);
+	        
+			Button btn = (Button) findViewById(R.id.button1);
+			btn.setOnClickListener(new OnClickListener() {
+				 
+			@Override
+			public void onClick(View v) {
+				Toast.makeText(getApplicationContext(), "222222222", Toast.LENGTH_SHORT).show();
+			    writeFileToSD("note.txt", "添加菜单被点击了");
+			}
+			
+			});
+			
+			final EditText et=(EditText) findViewById(R.id.editText1);
+			
+			Button btn02 = (Button) findViewById(R.id.button2);
+			btn02.setOnClickListener(new OnClickListener() {
+				 
+			@Override
+			public void onClick(View v) {
+				Toast.makeText(getApplicationContext(), et.getText().toString(), Toast.LENGTH_SHORT).show();
+				up_image_file=et.getText().toString();
+			}
+			
+			});
+			
 	            break;
 
 	        case Menu.FIRST + 5:
@@ -376,23 +422,8 @@ public class CameraActivity extends Activity implements CamOpenOverCallback {
 				break;
 			default:break;
 			}
-			
-			
-			
-			/*setContentView(R.layout.view_02);
-			Button btn = (Button) findViewById(R.id.button1);
-			btn.setOnClickListener(new OnClickListener() {
-				 
-			@Override
-			public void onClick(View v) {
-				// TODO Auto-generated method stub
-				Toast tst = Toast.makeText(getApplicationContext(), "222222222", Toast.LENGTH_SHORT);
-			        tst.show();
-			        writeFileToSD("note.txt", "I love you!");
-			    }
-			});
-			*/
-			
+
+
 		}
 
 	}
@@ -551,7 +582,7 @@ public class CameraActivity extends Activity implements CamOpenOverCallback {
             /* 添加请求参数到请求对象 */  
         	
         	// 头像不能颠倒，否则返回的faces为空
-        	FileBody fileBody = new FileBody(new File("/storage/sdcard1/PlayCamera/zx-01.jpg"), "image/jpeg");
+        	FileBody fileBody = new FileBody(new File("/storage/sdcard1/PlayCamera/"+up_image_file), "image/jpeg");
         	StringBody stringBody = new StringBody("description of file");
         	MultipartEntity entity = new MultipartEntity(); 
             entity.addPart("image_file", fileBody);
