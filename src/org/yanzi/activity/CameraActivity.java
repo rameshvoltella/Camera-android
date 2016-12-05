@@ -134,7 +134,25 @@ public class CameraActivity extends Activity implements CamOpenOverCallback {
 	        	   setContentView(R.layout.over_05);
 	        	   break;
 	           case 702:
-	        	   writeFileToSD("702.ink", (String)msg.obj);
+	        	   String txt_data_702=(String)msg.obj;
+	        	   writeFileToSD("702.ink", txt_data_702);
+	        	   
+	        	   
+	        	   // decode json
+	        	   JSONObject jsonObject_702;
+					try {
+						Toast.makeText(getApplicationContext(), "JSON ...", Toast.LENGTH_SHORT).show();
+						
+						jsonObject_702 = new JSONObject(txt_data_702);
+						String confidence = jsonObject_702.getString("confidence");
+						if(Float.parseFloat(confidence)>90){
+							Toast.makeText(getApplicationContext(), "Love you, my master!", Toast.LENGTH_SHORT).show();
+						}
+						
+					} catch (JSONException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
 	        	   break;
 	           case 901:
 	        	   ;
