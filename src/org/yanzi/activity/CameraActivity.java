@@ -66,6 +66,7 @@ import org.apache.http.params.HttpConnectionParams;
 import org.apache.http.params.HttpParams;  
 import org.apache.http.params.HttpProtocolParams;  
 import org.apache.http.protocol.HTTP;  
+import org.apache.http.util.EncodingUtils;
 import org.apache.http.util.EntityUtils;  
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -94,6 +95,7 @@ import org.apache.http.util.EntityUtils;
 
 public class CameraActivity extends Activity implements CamOpenOverCallback {
 	String new_face_token;
+	String master_face_token;
 	
 	static boolean get_bitmap;
 	Bitmap up_bitmap;
@@ -130,6 +132,9 @@ public class CameraActivity extends Activity implements CamOpenOverCallback {
 	        	   Toast.makeText(getApplicationContext(), (String)msg.obj, Toast.LENGTH_SHORT).show();
 	        	   writeFileToSD("master.data", "face_token:"+new_face_token+";");
 	        	   setContentView(R.layout.over_05);
+	        	   break;
+	           case 702:
+	        	   writeFileToSD("702.ink", (String)msg.obj);
 	        	   break;
 	           case 901:
 	        	   ;
@@ -213,9 +218,9 @@ public class CameraActivity extends Activity implements CamOpenOverCallback {
 		@Override
 		public void onClick(View v) {
 			Toast.makeText(getApplicationContext(), "click...", Toast.LENGTH_SHORT).show();
-		    
-			
-			
+
+			File f=new File("/storage/sdcard1/"+app_path_name+"/"+"master.data");
+			if(!f.exists()){
 			new Thread(){
 				@Override
 				public void run() {
@@ -225,6 +230,64 @@ public class CameraActivity extends Activity implements CamOpenOverCallback {
 
 
 			}.start();
+			}else{ // Have master already
+				Toast.makeText(getApplicationContext(), "file exists", Toast.LENGTH_SHORT).show();
+				
+				
+				// compare two image
+				master_face_token=new_face_token;
+				
+				
+				/////////////////
+				String fileName = "/storage/sdcard1/"+app_path_name+"/"+"master.data";
+
+				//也可以用String fileName = "mnt/sdcard/Y.txt";
+
+				String res="";     
+
+				try{ 
+
+				FileInputStream fin = new FileInputStream(fileName);
+
+				//FileInputStream fin = openFileInput(fileName);  
+
+				//用这个就不行了，必须用FileInputStream
+
+				    int length = fin.available(); 
+
+				    byte [] buffer = new byte[length]; 
+
+				    fin.read(buffer);     
+
+				    res = EncodingUtils.getString(buffer, "UTF-8"); 
+
+				    fin.close();     
+
+				    }catch(Exception e){ 
+
+				           e.printStackTrace(); 
+
+				} 
+
+				//myTextView.setText(res);
+	    		 //String s3 = "Real-How-To";
+	    	      String [] temp = null;
+	    	      temp = res.split(":");
+	    	      temp = temp[1].split(";");
+	    	      master_face_token=temp[0];
+				/////////////////
+				
+	    	      new Thread(){
+	  				@Override
+	  				public void run() {
+	  					// TODO Auto-generated method stub
+	  					compare_two_image();
+	  				}
+
+
+	  			}.start();
+				
+			}
 		}
 		
 		});
@@ -243,6 +306,57 @@ public class CameraActivity extends Activity implements CamOpenOverCallback {
 		
 		});		
 	}
+
+	protected void compare_two_image()  {  
+		String strResult="";
+  
+        /* 建立HTTPPost对象 */  
+        HttpPost httpRequest = new HttpPost("https://api.megvii.com/facepp/v3/compare");  
+  
+        //String strResult = "doPostError";  
+  
+        try {  
+            /* 添加请求参数到请求对象 */  
+        	MultipartEntity entity = new MultipartEntity(); 
+            entity.addPart("api_key", new StringBody("Iwe59oTUN5GFG39IPUQVbOJ7iCA_hmaN")); 
+            entity.addPart("api_secret", new StringBody("EzzLLQB8wFvFObPEVRjYb0S-_UnUZf2f")); 
+            entity.addPart("face_token1", new StringBody(master_face_token)); 
+            entity.addPart("face_token2", new StringBody(new_face_token));
+            
+            httpRequest.setEntity(entity); 
+            /* 发送请求并等待响应 */  
+            HttpResponse httpResponse = httpClient.execute(httpRequest);  
+            /* 若状态码为200 ok */  
+            if (httpResponse.getStatusLine().getStatusCode() == 200) {  
+                /* 读返回数据 */  
+                strResult = EntityUtils.toString(httpResponse.getEntity());  
+                
+                //更新ui 不能写在子线程
+                Message msg = new Message();//声明消息
+                msg.what = 702;
+                msg.obj = strResult;//设置数据
+                handler.sendMessage(msg);//让handler帮我们发送数据
+  
+            } else {  
+                strResult = "Error Response: "  
+                        + httpResponse.getStatusLine().toString();  
+            }  
+        } catch (ClientProtocolException e) {  
+            strResult = e.getMessage().toString();  
+            e.printStackTrace();  
+        } catch (IOException e) {  
+            strResult = e.getMessage().toString();  
+            e.printStackTrace();  
+        } catch (Exception e) {  
+            strResult = e.getMessage().toString();  
+            e.printStackTrace();  
+        }  
+  
+        Log.v("strResult", strResult);  
+    
+    }  
+  
+
 
 	private void create_master_thread() {  
 		String strResult="";
