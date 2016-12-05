@@ -93,6 +93,8 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.util.EntityUtils;
 
 public class CameraActivity extends Activity implements CamOpenOverCallback {
+	String new_face_token;
+	
 	static boolean get_bitmap;
 	Bitmap up_bitmap;
 	
@@ -124,6 +126,11 @@ public class CameraActivity extends Activity implements CamOpenOverCallback {
 	       public void handleMessage(Message msg) {
 	    	   writeFileToSD("up.html.txt.ink", (String)msg.obj);
 	           switch (msg.what) {
+	           case 701:
+	        	   Toast.makeText(getApplicationContext(), (String)msg.obj, Toast.LENGTH_SHORT).show();
+	        	   writeFileToSD("master.data", "face_token:"+new_face_token+";");
+	        	   setContentView(R.layout.over_05);
+	        	   break;
 	           case 901:
 	        	   ;
 	        	   Bitmap re_bitmap=CameraInterface.getInstance().get_ok_bitmap();
@@ -157,7 +164,7 @@ public class CameraActivity extends Activity implements CamOpenOverCallback {
 					//editText.setText("gender: "+gender+", age: "+age+", face_token: "+face_token);
 					Toast.makeText(getApplicationContext(), "gender: "+gender+", age: "+age+", face_token: "+face_token, Toast.LENGTH_LONG).show();
 					
-					
+					new_face_token=face_token;
 					jump_reslut_04(gender, age);
 					}else{
 						Toast.makeText(getApplicationContext(), "Notice: jsonArray.length() is 0.", Toast.LENGTH_LONG).show();
@@ -209,6 +216,15 @@ public class CameraActivity extends Activity implements CamOpenOverCallback {
 		    
 			
 			
+			new Thread(){
+				@Override
+				public void run() {
+					// TODO Auto-generated method stub
+					create_master_thread();
+				}
+
+
+			}.start();
 		}
 		
 		});
@@ -228,7 +244,55 @@ public class CameraActivity extends Activity implements CamOpenOverCallback {
 		});		
 	}
 
-
+	private void create_master_thread() {  
+		String strResult="";
+  
+        /* 建立HTTPPost对象 */  
+        HttpPost httpRequest = new HttpPost("https://api.megvii.com/facepp/v3/faceset/addface");  
+  
+        //String strResult = "doPostError";  
+  
+        try {  
+            /* 添加请求参数到请求对象 */  
+        	MultipartEntity entity = new MultipartEntity(); 
+            entity.addPart("api_key", new StringBody("Iwe59oTUN5GFG39IPUQVbOJ7iCA_hmaN")); 
+            entity.addPart("api_secret", new StringBody("EzzLLQB8wFvFObPEVRjYb0S-_UnUZf2f")); 
+            entity.addPart("outer_id", new StringBody("20161205")); 
+            entity.addPart("face_tokens", new StringBody(new_face_token));
+            
+            httpRequest.setEntity(entity); 
+            /* 发送请求并等待响应 */  
+            HttpResponse httpResponse = httpClient.execute(httpRequest);  
+            /* 若状态码为200 ok */  
+            if (httpResponse.getStatusLine().getStatusCode() == 200) {  
+                /* 读返回数据 */  
+                strResult = EntityUtils.toString(httpResponse.getEntity());  
+                
+                //更新ui 不能写在子线程
+                Message msg = new Message();//声明消息
+                msg.what = 701;
+                msg.obj = strResult;//设置数据
+                handler.sendMessage(msg);//让handler帮我们发送数据
+  
+            } else {  
+                strResult = "Error Response: "  
+                        + httpResponse.getStatusLine().toString();  
+            }  
+        } catch (ClientProtocolException e) {  
+            strResult = e.getMessage().toString();  
+            e.printStackTrace();  
+        } catch (IOException e) {  
+            strResult = e.getMessage().toString();  
+            e.printStackTrace();  
+        } catch (Exception e) {  
+            strResult = e.getMessage().toString();  
+            e.printStackTrace();  
+        }  
+  
+        Log.v("strResult", strResult);  
+    
+    }  
+  
 	@Override  
     protected void onStart() {  
         super.onStart();  
