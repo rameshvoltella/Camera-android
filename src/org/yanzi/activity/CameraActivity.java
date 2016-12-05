@@ -156,6 +156,9 @@ public class CameraActivity extends Activity implements CamOpenOverCallback {
 					String age = attributes.getJSONObject("age").getString("value");
 					//editText.setText("gender: "+gender+", age: "+age+", face_token: "+face_token);
 					Toast.makeText(getApplicationContext(), "gender: "+gender+", age: "+age+", face_token: "+face_token, Toast.LENGTH_LONG).show();
+					
+					
+					jump_reslut_04(gender, age);
 					}else{
 						Toast.makeText(getApplicationContext(), "Notice: jsonArray.length() is 0.", Toast.LENGTH_LONG).show();
 							
@@ -190,10 +193,77 @@ public class CameraActivity extends Activity implements CamOpenOverCallback {
 	}
 	
 	
-    @Override  
+    protected void jump_reslut_04(String gender, String age) {
+		// TODO Auto-generated method stub
+    	setContentView(R.layout.result_04);
+    	
+    	EditText et=(EditText) findViewById(R.id.editText1);
+    	et.setText("gender: "+gender+", age: "+age);
+    	//////////////////////
+		Button btn = (Button) findViewById(R.id.button1);
+		btn.setOnClickListener(new OnClickListener() {
+			 
+		@Override
+		public void onClick(View v) {
+			Toast.makeText(getApplicationContext(), "click...", Toast.LENGTH_SHORT).show();
+		    
+			
+			
+		}
+		
+		});
+		//////////////////////
+		Button btn2 = (Button) findViewById(R.id.button2);
+		btn2.setOnClickListener(new OnClickListener() {
+			 
+		@Override
+		public void onClick(View v) {
+			Toast.makeText(getApplicationContext(), "click...", Toast.LENGTH_SHORT).show();
+		    
+			
+			//finish();
+			System.exit(0);
+		}
+		
+		});		
+	}
+
+
+	@Override  
     protected void onStart() {  
         super.onStart();  
-        Log.v(TAG, "protected void onStart()");  
+        
+        
+        setContentView(R.layout.logo_01);
+        
+		Button btn = (Button) findViewById(R.id.button1);
+		btn.setOnClickListener(new OnClickListener() {
+			 
+		@Override
+		public void onClick(View v) {
+			Toast.makeText(getApplicationContext(), "click...", Toast.LENGTH_SHORT).show();
+		    
+			
+			setContentView(R.layout.introduce_02);
+			Button btn = (Button) findViewById(R.id.button1);
+			btn.setOnClickListener(new OnClickListener() {
+				 
+			@Override
+			public void onClick(View v) {
+				Toast.makeText(getApplicationContext(), "click...", Toast.LENGTH_SHORT).show();
+			    
+				
+				run_camera();
+			}
+			
+			});
+		}
+		
+		});
+        //run_camera();
+    }  
+    protected void run_camera(){
+    	Log.v(TAG, "protected void onStart()");  
         Thread openThread = new Thread(){
 			@Override
 			public void run() {
@@ -213,8 +283,7 @@ public class CameraActivity extends Activity implements CamOpenOverCallback {
 		image1 = (ImageButton) findViewById(R.id.btn_shutter);
         Bitmap bitmap = getLoacalBitmap("/storage/sdcard1/123.jpg"); //从本地取图片
         image1.setImageBitmap(bitmap);	//设置Bitmap
-        
-    }  
+    }
  
     private Bitmap getLoacalBitmap(String url) {
         try {
@@ -322,9 +391,7 @@ public class CameraActivity extends Activity implements CamOpenOverCallback {
 
 	            Toast.makeText(this, "保存菜单被点击了", Toast.LENGTH_LONG).show();
 	        
-	        	setContentView(R.layout.activity_camera);
-	        	initUI();
-	    		initViewParams();
+	        	
 
 	            break;
 
