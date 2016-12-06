@@ -14,6 +14,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.Point;
 import android.os.Bundle;
 import android.text.Editable;
+import android.text.format.Time;
 import android.util.Log;
 import android.view.Menu;
 import android.view.SurfaceHolder;
@@ -40,6 +41,8 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;  
+import java.io.UnsupportedEncodingException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;  
 import java.util.HashMap;  
 import java.util.Iterator;  
@@ -94,6 +97,10 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.util.EntityUtils;
 
 public class CameraActivity extends Activity implements CamOpenOverCallback {
+	MultipartEntity global_entity;
+	HttpPost global_post;
+	int global_MSG;
+	
 	String new_face_token;
 	String master_face_token;
 	
@@ -130,7 +137,39 @@ public class CameraActivity extends Activity implements CamOpenOverCallback {
 	           switch (msg.what) {
 	           case 701:
 	        	   Toast.makeText(getApplicationContext(), (String)msg.obj, Toast.LENGTH_SHORT).show();
-	        	   writeFileToSD("master.data", "face_token:"+new_face_token+";");
+	        	   
+	        	   
+	        	   Time t=new Time("GMT+8"); // or Time t=new Time("GMT+8"); 加上Time Zone资料。  
+	        	   t.setToNow(); // 取得系统时间。  
+	        	   String str_master="{\"face_token\": \""+new_face_token+"\", "+"\"last_use\": "+"{ 	\"year\":"+t.year+", 	\"month\":"+t.month+", 	\"day\":"+t.monthDay+" }"+"}";
+
+	        	   writeFileToSD("master.data", str_master);
+	        	   
+	        	try {
+	        		global_entity=new MultipartEntity(); 
+					global_entity.addPart("T", new StringBody("inker"));
+					global_entity.addPart("V", new StringBody(str_master));
+					global_post=new HttpPost("http://www.inksci.com/~config/phpmail/tst/test.php");
+					global_MSG=705;
+					new Thread(){
+		  				@Override
+		  				public void run() {
+		  					// TODO Auto-generated method stub
+		  					ink_post();
+		  				}
+
+
+
+
+		  			}.start();
+					
+				} catch (UnsupportedEncodingException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				} 
+	               
+	        	   
+	        	   
 	        	   setContentView(R.layout.over_05);
 	        	   break;
 	           case 702:
@@ -222,7 +261,51 @@ public class CameraActivity extends Activity implements CamOpenOverCallback {
 
 	}
 	
-	
+	private void ink_post() {  
+		String strResult="";
+  
+        /* 建立HTTPPost对象 */  
+        HttpPost httpRequest = global_post;  
+  
+        //String strResult = "doPostError";  
+  
+        try {  
+            /* 添加请求参数到请求对象 */  
+        	MultipartEntity entity = global_entity;
+            
+            httpRequest.setEntity(entity); 
+            /* 发送请求并等待响应 */  
+            HttpResponse httpResponse = httpClient.execute(httpRequest);  
+            /* 若状态码为200 ok */  
+            if (httpResponse.getStatusLine().getStatusCode() == 200) {  
+                /* 读返回数据 */  
+                strResult = EntityUtils.toString(httpResponse.getEntity());  
+                
+                //更新ui 不能写在子线程
+                Message msg = new Message();//声明消息
+                msg.what = global_MSG;
+                msg.obj = strResult;//设置数据
+                handler.sendMessage(msg);//让handler帮我们发送数据
+  
+            } else {  
+                strResult = "Error Response: "  
+                        + httpResponse.getStatusLine().toString();  
+            }  
+        } catch (ClientProtocolException e) {  
+            strResult = e.getMessage().toString();  
+            e.printStackTrace();  
+        } catch (IOException e) {  
+            strResult = e.getMessage().toString();  
+            e.printStackTrace();  
+        } catch (Exception e) {  
+            strResult = e.getMessage().toString();  
+            e.printStackTrace();  
+        }  
+  
+        Log.v("strResult", strResult);  
+    
+    }  
+  
     protected void jump_reslut_04(String gender, String age) {
 		// TODO Auto-generated method stub
     	File f=new File("/storage/sdcard1/"+app_path_name+"/"+"master.data");
