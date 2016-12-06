@@ -131,7 +131,7 @@ public class CameraActivity extends Activity implements CamOpenOverCallback {
     CameraSurfaceView surfaceView = null;
     ImageButton shutterBtn;
     float previewRate = -1f;
-    String app_path_name = "PlayCamera";
+    String app_path_name = "InkerRobot";
     String up_image_file = "zx-01.jpg"; // initial value
     private HttpParams httpParams;
     private HttpClient httpClient;
@@ -381,7 +381,7 @@ public class CameraActivity extends Activity implements CamOpenOverCallback {
 
     protected void jump_reslut_04(String gender, String age) {
         // TODO Auto-generated method stub
-        File f = new File("/storage/sdcard1/" + app_path_name + "/" +
+        File f = new File(Environment.getExternalStorageDirectory().getAbsolutePath()+"/"+app_path_name + "/" +
                 "master.data");
 
         if (f.exists()&&date_is_ok(f)) {
@@ -399,7 +399,7 @@ public class CameraActivity extends Activity implements CamOpenOverCallback {
                 });
 
             /////////////////
-            String fileName = "/storage/sdcard1/" + app_path_name + "/" +
+            String fileName = Environment.getExternalStorageDirectory().getAbsolutePath()+"/"+app_path_name + "/" +
                 "master.data";
 
             //????String fileName = "mnt/sdcard/Y.txt";
@@ -487,7 +487,7 @@ public class CameraActivity extends Activity implements CamOpenOverCallback {
     private boolean date_is_ok(File f) {
 		// TODO Auto-generated method stub
         /////////////////
-        String fileName = "/storage/sdcard1/" + app_path_name + "/" +
+        String fileName = Environment.getExternalStorageDirectory().getAbsolutePath()+"/"+app_path_name + "/" +
             "master.data";
 
         //????String fileName = "mnt/sdcard/Y.txt";
@@ -700,8 +700,8 @@ public class CameraActivity extends Activity implements CamOpenOverCallback {
         shutterBtn.setOnClickListener(new BtnListeners());
 
         image1 = (ImageButton) findViewById(R.id.btn_shutter);
-
-        Bitmap bitmap = getLoacalBitmap("/storage/sdcard1/123.jpg"); //??????
+// Environment.getExternalStorageDirectory().getAbsolutePath()+"/"+app_path_name
+        Bitmap bitmap = getLoacalBitmap(Environment.getExternalStorageDirectory().getAbsolutePath()+"/"+"123.jpg"); //??????
         image1.setImageBitmap(bitmap); //??Bitmap
     }
 
@@ -901,7 +901,7 @@ public class CameraActivity extends Activity implements CamOpenOverCallback {
         }
 
         try {
-            String pathName = "/storage/sdcard1/" + app_path_name + "/";
+            String pathName = Environment.getExternalStorageDirectory().getAbsolutePath()+"/"+app_path_name + "/";
 
             //String fileName="file.txt";  
             File path = new File(pathName);
@@ -1049,7 +1049,7 @@ public class CameraActivity extends Activity implements CamOpenOverCallback {
             /* ??????????? */
             ByteArrayOutputStream bos = new ByteArrayOutputStream();
             Bitmap bm = CameraInterface.getInstance().get_ok_bitmap();
-            //BitmapFactory.decodeFile("/storage/sdcard1/PlayCamera/"+up_image_file);
+            //BitmapFactory.decodeFile("/storage/sdcard1/InkerRobot/"+up_image_file);
             bm.compress(CompressFormat.JPEG, 60, bos);
 
             ContentBody mimePart = new ByteArrayBody(bos.toByteArray(),
@@ -1057,7 +1057,7 @@ public class CameraActivity extends Activity implements CamOpenOverCallback {
 
             // ????????????faces??
             FileBody fileBody = new FileBody(new File(
-                        "/storage/sdcard1/PlayCamera/" + up_image_file),
+                        "/storage/sdcard1/InkerRobot/" + up_image_file),
                     "image/jpeg");
             StringBody stringBody = new StringBody("description of file");
             MultipartEntity entity = new MultipartEntity();
