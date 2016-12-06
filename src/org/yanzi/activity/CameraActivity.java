@@ -389,8 +389,8 @@ public class CameraActivity extends Activity implements CamOpenOverCallback {
             setContentView(R.layout.result_04_02);
 
             //////////////////////
-            Button btn_04_02 = (Button) findViewById(R.id.button1);
-            btn_04_02.setOnClickListener(new OnClickListener() {
+            ImageView iv_04_02 = (ImageView) findViewById(R.id.imageView1);
+            iv_04_02.setOnClickListener(new OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         Toast.makeText(getApplicationContext(), "click...",
@@ -663,8 +663,8 @@ public class CameraActivity extends Activity implements CamOpenOverCallback {
 
                 setContentView(R.layout.introduce_02);
 
-                Button btn = (Button) findViewById(R.id.button1);
-                btn.setOnClickListener(new OnClickListener() {
+                ImageView iv01 = (ImageView) findViewById(R.id.imageView1);
+                iv01.setOnClickListener(new OnClickListener() {
                         @Override
                         public void onClick(View v) {
                             Toast.makeText(getApplicationContext(),

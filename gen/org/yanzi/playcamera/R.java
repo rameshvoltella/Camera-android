@@ -26,17 +26,20 @@ public final class R {
         public static final int btn_camera_all_click=0x7f020002;
         public static final int btn_shutter_background=0x7f020003;
         public static final int ic_launcher_icon=0x7f020004;
-        public static final int inker6=0x7f020005;
-        public static final int welcom=0x7f020006;
+        public static final int inker1=0x7f020005;
+        public static final int inker11=0x7f020006;
+        public static final int inker6=0x7f020007;
+        public static final int inker7=0x7f020008;
+        public static final int welcom=0x7f020009;
     }
     public static final class id {
         public static final int action_settings=0x7f080006;
         public static final int btn_shutter=0x7f080001;
-        public static final int button1=0x7f080003;
+        public static final int button1=0x7f080004;
         public static final int button2=0x7f080005;
         public static final int camera_surfaceview=0x7f080000;
-        public static final int editText1=0x7f080002;
-        public static final int imageView1=0x7f080004;
+        public static final int editText1=0x7f080003;
+        public static final int imageView1=0x7f080002;
     }
     public static final class layout {
         public static final int activity_camera=0x7f030000;
