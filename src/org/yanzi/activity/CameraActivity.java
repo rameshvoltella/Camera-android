@@ -225,6 +225,74 @@ public class CameraActivity extends Activity implements CamOpenOverCallback {
 	
     protected void jump_reslut_04(String gender, String age) {
 		// TODO Auto-generated method stub
+    	File f=new File("/storage/sdcard1/"+app_path_name+"/"+"master.data");
+		if(f.exists()){
+			setContentView(R.layout.result_04_02);
+			//////////////////////
+			Button btn_04_02 = (Button) findViewById(R.id.button1);
+			btn_04_02.setOnClickListener(new OnClickListener() {
+				 
+			@Override
+			public void onClick(View v) {
+				Toast.makeText(getApplicationContext(), "click...", Toast.LENGTH_SHORT).show();
+				System.exit(0);
+			}
+			
+			});	
+			
+			
+			/////////////////
+			String fileName = "/storage/sdcard1/"+app_path_name+"/"+"master.data";
+
+			//也可以用String fileName = "mnt/sdcard/Y.txt";
+
+			String res="";     
+
+			try{ 
+
+			FileInputStream fin = new FileInputStream(fileName);
+
+			//FileInputStream fin = openFileInput(fileName);  
+
+			//用这个就不行了，必须用FileInputStream
+
+			    int length = fin.available(); 
+
+			    byte [] buffer = new byte[length]; 
+
+			    fin.read(buffer);     
+
+			    res = EncodingUtils.getString(buffer, "UTF-8"); 
+
+			    fin.close();     
+
+			    }catch(Exception e){ 
+
+			           e.printStackTrace(); 
+
+			} 
+    	      String [] temp = null;
+    	      temp = res.split(":");
+    	      temp = temp[1].split(";");
+    	      master_face_token=temp[0];
+			/////////////////
+			
+    	      new Thread(){
+  				@Override
+  				public void run() {
+  					// TODO Auto-generated method stub
+  					compare_two_image();
+  				}
+
+
+  			}.start();
+			return;
+		}
+		
+		
+		
+		
+		// have not set master
     	setContentView(R.layout.result_04);
     	
     	EditText et=(EditText) findViewById(R.id.editText1);
@@ -237,8 +305,6 @@ public class CameraActivity extends Activity implements CamOpenOverCallback {
 		public void onClick(View v) {
 			Toast.makeText(getApplicationContext(), "click...", Toast.LENGTH_SHORT).show();
 
-			File f=new File("/storage/sdcard1/"+app_path_name+"/"+"master.data");
-			if(!f.exists()){
 			new Thread(){
 				@Override
 				public void run() {
@@ -248,64 +314,6 @@ public class CameraActivity extends Activity implements CamOpenOverCallback {
 
 
 			}.start();
-			}else{ // Have master already
-				Toast.makeText(getApplicationContext(), "file exists", Toast.LENGTH_SHORT).show();
-				
-				
-				// compare two image
-				master_face_token=new_face_token;
-				
-				
-				/////////////////
-				String fileName = "/storage/sdcard1/"+app_path_name+"/"+"master.data";
-
-				//也可以用String fileName = "mnt/sdcard/Y.txt";
-
-				String res="";     
-
-				try{ 
-
-				FileInputStream fin = new FileInputStream(fileName);
-
-				//FileInputStream fin = openFileInput(fileName);  
-
-				//用这个就不行了，必须用FileInputStream
-
-				    int length = fin.available(); 
-
-				    byte [] buffer = new byte[length]; 
-
-				    fin.read(buffer);     
-
-				    res = EncodingUtils.getString(buffer, "UTF-8"); 
-
-				    fin.close();     
-
-				    }catch(Exception e){ 
-
-				           e.printStackTrace(); 
-
-				} 
-
-				//myTextView.setText(res);
-	    		 //String s3 = "Real-How-To";
-	    	      String [] temp = null;
-	    	      temp = res.split(":");
-	    	      temp = temp[1].split(";");
-	    	      master_face_token=temp[0];
-				/////////////////
-				
-	    	      new Thread(){
-	  				@Override
-	  				public void run() {
-	  					// TODO Auto-generated method stub
-	  					compare_two_image();
-	  				}
-
-
-	  			}.start();
-				
-			}
 		}
 		
 		});
