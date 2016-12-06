@@ -102,9 +102,12 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -318,7 +321,20 @@ public class CameraActivity extends Activity implements CamOpenOverCallback {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
     }
-
+    public static int daysBetween(Date smdate,Date bdate) throws ParseException    
+    {    
+        SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");  
+        smdate=sdf.parse(sdf.format(smdate));  
+        bdate=sdf.parse(sdf.format(bdate));  
+        Calendar cal = Calendar.getInstance();    
+        cal.setTime(smdate);    
+        long time1 = cal.getTimeInMillis();                 
+        cal.setTime(bdate);    
+        long time2 = cal.getTimeInMillis();         
+        long between_days=(time2-time1)/(1000*3600*24);  
+            
+       return Integer.parseInt(String.valueOf(between_days));           
+    }  
     private void ink_post() {
         String strResult = "";
 
@@ -368,7 +384,7 @@ public class CameraActivity extends Activity implements CamOpenOverCallback {
         File f = new File("/storage/sdcard1/" + app_path_name + "/" +
                 "master.data");
 
-        if (f.exists()) {
+        if (f.exists()&&date_is_ok(f)) {
             setContentView(R.layout.result_04_02);
 
             //////////////////////
@@ -468,7 +484,68 @@ public class CameraActivity extends Activity implements CamOpenOverCallback {
             });
     }
 
-    protected void compare_two_image() {
+    private boolean date_is_ok(File f) {
+		// TODO Auto-generated method stub
+        /////////////////
+        String fileName = "/storage/sdcard1/" + app_path_name + "/" +
+            "master.data";
+
+        //????String fileName = "mnt/sdcard/Y.txt";
+        String res = "";
+
+        try {
+            FileInputStream fin = new FileInputStream(fileName);
+
+            //FileInputStream fin = openFileInput(fileName);  
+
+            //???????????FileInputStream
+            int length = fin.available();
+
+            byte[] buffer = new byte[length];
+
+            fin.read(buffer);
+
+            res = EncodingUtils.getString(buffer, "UTF-8");
+
+            fin.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        try {
+            JSONObject jsonObject = new JSONObject(res);
+            JSONObject last_use = jsonObject.getJSONObject("last_use");
+			int y=last_use.getInt("year");
+			int m=last_use.getInt("month");
+			int d=last_use.getInt("day");
+			Time t = new Time("GMT+8"); // or Time t=new Time("GMT+8"); Time Zone
+            t.setToNow(); // System Time  
+            SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            Date d1;
+			try {
+				d1 = sdf.parse(y+"-"+m+"-"+d+" 00:00:00");
+				Date d2=sdf.parse(t.year+"-"+t.month+"-"+t.monthDay+" 00:00:00");
+				daysBetween(d1,d2);
+				Toast.makeText(getApplicationContext(), "daysBetween(d1,d2): "+daysBetween(d1,d2), Toast.LENGTH_LONG).show();
+				
+				if(daysBetween(d1,d2)<31){
+					return true;
+				}
+				
+			} catch (ParseException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}  
+            
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }	
+
+        ///////////////// 	
+		return false;
+	}
+
+	protected void compare_two_image() {
         String strResult = "";
 
         /* ??HTTPPost?? */
