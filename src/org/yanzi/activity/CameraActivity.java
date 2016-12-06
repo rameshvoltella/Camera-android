@@ -44,6 +44,7 @@ import android.view.ViewGroup.LayoutParams;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.Toast;
 import android.widget.Toast;
 
@@ -652,30 +653,28 @@ public class CameraActivity extends Activity implements CamOpenOverCallback {
         super.onStart();
 
         setContentView(R.layout.logo_01);
+        
+        ImageView iv01=(ImageView)findViewById(R.id.imageView1);
+        iv01.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getApplicationContext(), "click...",
+                    Toast.LENGTH_SHORT).show();
 
-        Button btn = (Button) findViewById(R.id.button1);
-        btn.setOnClickListener(new OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Toast.makeText(getApplicationContext(), "click...",
-                        Toast.LENGTH_SHORT).show();
+                setContentView(R.layout.introduce_02);
 
-                    setContentView(R.layout.introduce_02);
+                Button btn = (Button) findViewById(R.id.button1);
+                btn.setOnClickListener(new OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            Toast.makeText(getApplicationContext(),
+                                "click...", Toast.LENGTH_SHORT).show();
 
-                    Button btn = (Button) findViewById(R.id.button1);
-                    btn.setOnClickListener(new OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                Toast.makeText(getApplicationContext(),
-                                    "click...", Toast.LENGTH_SHORT).show();
-
-                                run_camera();
-                            }
-                        });
-                }
-            });
-
-        //run_camera();
+                            run_camera();
+                        }
+                    });
+            }
+        });
     }
 
     protected void run_camera() {
