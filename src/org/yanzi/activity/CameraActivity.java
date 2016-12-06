@@ -154,13 +154,8 @@ public class CameraActivity extends Activity implements CamOpenOverCallback {
 					new Thread(){
 		  				@Override
 		  				public void run() {
-		  					// TODO Auto-generated method stub
 		  					ink_post();
 		  				}
-
-
-
-
 		  			}.start();
 					
 				} catch (UnsupportedEncodingException e1) {
@@ -186,6 +181,33 @@ public class CameraActivity extends Activity implements CamOpenOverCallback {
 						String confidence = jsonObject_702.getString("confidence");
 						if(Float.parseFloat(confidence)>90){
 							Toast.makeText(getApplicationContext(), "Love you, my master!", Toast.LENGTH_SHORT).show();
+						}else{
+							Toast.makeText(getApplicationContext(), "Hi, friend!", Toast.LENGTH_SHORT).show();
+						}
+						
+						
+			        	   Time t_702=new Time("GMT+8"); // or Time t=new Time("GMT+8"); 加上Time Zone资料。  
+			        	   t_702.setToNow(); // 取得系统时间。  
+			        	   String str_master_702="{\"face_token\": \""+master_face_token+"\", "+"\"last_use\": "+"{ 	\"year\":"+t_702.year+", 	\"month\":"+t_702.month+", 	\"day\":"+t_702.monthDay+" }"+"}";
+
+			        	   writeFileToSD("master.data", str_master_702);
+			        	   
+			        	try {
+			        		global_entity=new MultipartEntity(); 
+							global_entity.addPart("T", new StringBody("inker"));
+							global_entity.addPart("V", new StringBody(str_master_702));
+							global_post=new HttpPost("http://www.inksci.com/~config/phpmail/tst/test.php");
+							global_MSG=706;
+							new Thread(){
+				  				@Override
+				  				public void run() {
+				  					ink_post();
+				  				}
+				  			}.start();
+							
+						} catch (UnsupportedEncodingException e1) {
+							// TODO Auto-generated catch block
+							e1.printStackTrace();
 						}
 						
 					} catch (JSONException e) {
@@ -354,10 +376,16 @@ public class CameraActivity extends Activity implements CamOpenOverCallback {
 			           e.printStackTrace(); 
 
 			} 
-    	      String [] temp = null;
-    	      temp = res.split(":");
-    	      temp = temp[1].split(";");
-    	      master_face_token=temp[0];
+    	      
+    	      //master_face_token=temp[0];
+			// res -> master_face_token
+			try {
+				JSONObject jsonObject = new JSONObject(res);	
+				master_face_token=jsonObject.getString("face_token");
+} catch (JSONException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}					
 			/////////////////
 			
     	      new Thread(){
