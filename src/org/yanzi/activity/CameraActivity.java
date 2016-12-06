@@ -248,7 +248,7 @@ public class CameraActivity extends Activity implements CamOpenOverCallback {
 
                     Bitmap re_bitmap = CameraInterface.getInstance()
                                                       .get_ok_bitmap();
-                    image1.setImageBitmap(re_bitmap); //??Bitmap
+                    //image1.setImageBitmap(re_bitmap); //??Bitmap
 
                     break;
 
@@ -701,7 +701,7 @@ public class CameraActivity extends Activity implements CamOpenOverCallback {
         image1 = (ImageButton) findViewById(R.id.btn_shutter);
 // Environment.getExternalStorageDirectory().getAbsolutePath()+"/"+app_path_name
         Bitmap bitmap = getLoacalBitmap(Environment.getExternalStorageDirectory().getAbsolutePath()+"/"+"123.jpg"); //??????
-        image1.setImageBitmap(bitmap); //??Bitmap
+        //image1.setImageBitmap(bitmap); //??Bitmap
     }
 
     private Bitmap getLoacalBitmap(String url) {
@@ -1140,7 +1140,7 @@ public class CameraActivity extends Activity implements CamOpenOverCallback {
                 get_bitmap = false;
 
                 Bitmap re_bitmap = CameraInterface.getInstance().doTakePicture();
-                image1.setImageBitmap(re_bitmap); //??Bitmap
+                //image1.setImageBitmap(re_bitmap); //??Bitmap
 
                 break;
 
