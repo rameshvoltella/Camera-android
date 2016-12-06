@@ -1,1085 +1,1093 @@
 package org.yanzi.activity;
 
-import org.yanzi.camera.CameraInterface;
-import org.yanzi.camera.CameraInterface.CamOpenOverCallback;
-import org.yanzi.camera.preview.CameraSurfaceView;
-import org.yanzi.playcamera.R;
-import org.yanzi.util.DisplayUtil;
+import android.R.string;
 
 import android.app.Activity;
+import android.app.Activity;
 import android.app.AlertDialog;
+
+import android.content.DialogInterface;
+
 import android.graphics.Bitmap;
+
 import android.graphics.Bitmap.CompressFormat;
+
 import android.graphics.BitmapFactory;
 import android.graphics.Point;
-import android.os.Bundle;
-import android.text.Editable;
-import android.text.format.Time;
-import android.util.Log;
-import android.view.Menu;
-import android.view.SurfaceHolder;
-import android.view.View;
-import android.view.View.OnClickListener;
-import android.view.ViewGroup.LayoutParams;
-import android.widget.Button;
-import android.widget.ImageButton;
-import android.widget.Toast;
 
-import android.R.string;
+import android.os.Bundle;
+
 //import android.support.v7.app.ActionBarActivity;
+import android.os.Bundle;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
+
+import android.text.Editable;
+
+import android.text.format.Time;
+
+import android.util.Log;
+import android.util.Log;
+
+import android.view.Menu;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.SurfaceHolder;
+import android.view.View;
 
+import android.view.View.OnClickListener;
+
+import android.view.ViewGroup.LayoutParams;
+
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.Toast;
+import android.widget.Toast;
+
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.HttpResponse;
+import org.apache.http.HttpStatus;
+import org.apache.http.NameValuePair;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.client.params.HttpClientParams;
+import org.apache.http.entity.mime.MultipartEntity;
+import org.apache.http.entity.mime.MultipartEntity;
+import org.apache.http.entity.mime.content.ByteArrayBody;
+import org.apache.http.entity.mime.content.ContentBody;
+import org.apache.http.entity.mime.content.FileBody;
+import org.apache.http.entity.mime.content.FileBody;
+import org.apache.http.entity.mime.content.StringBody;
+import org.apache.http.entity.mime.content.StringBody;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.message.BasicNameValuePair;
+import org.apache.http.params.BasicHttpParams;
+import org.apache.http.params.HttpConnectionParams;
+import org.apache.http.params.HttpParams;
+import org.apache.http.params.HttpProtocolParams;
+import org.apache.http.protocol.HTTP;
+import org.apache.http.util.EncodingUtils;
+import org.apache.http.util.EntityUtils;
+import org.apache.http.util.EntityUtils;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+import org.json.JSONTokener;
+
+import org.yanzi.camera.CameraInterface;
+import org.yanzi.camera.CameraInterface.CamOpenOverCallback;
+import org.yanzi.camera.preview.CameraSurfaceView;
+
+import org.yanzi.playcamera.R;
+
+import org.yanzi.util.DisplayUtil;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.IOException;  
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;  
-import java.util.HashMap;  
-import java.util.Iterator;  
-import java.util.List;  
-import java.util.Map;  
- 
-import org.apache.http.HttpResponse;  
-import org.apache.http.NameValuePair;  
-import org.apache.http.client.ClientProtocolException;  
-import org.apache.http.client.HttpClient;  
-import org.apache.http.client.entity.UrlEncodedFormEntity;  
-import org.apache.http.client.methods.HttpGet;  
-import org.apache.http.client.methods.HttpPost;  
-import org.apache.http.client.params.HttpClientParams;  
-import org.apache.http.entity.mime.MultipartEntity;
-import org.apache.http.entity.mime.content.ByteArrayBody;
-import org.apache.http.entity.mime.content.ContentBody;
-import org.apache.http.entity.mime.content.FileBody;
-import org.apache.http.entity.mime.content.StringBody;
-import org.apache.http.impl.client.DefaultHttpClient;  
-import org.apache.http.message.BasicNameValuePair;  
-import org.apache.http.params.BasicHttpParams;  
-import org.apache.http.params.HttpConnectionParams;  
-import org.apache.http.params.HttpParams;  
-import org.apache.http.params.HttpProtocolParams;  
-import org.apache.http.protocol.HTTP;  
-import org.apache.http.util.EncodingUtils;
-import org.apache.http.util.EntityUtils;  
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-import org.json.JSONTokener;
- 
-import android.app.Activity;  
-import android.content.DialogInterface;
-import android.os.Bundle;  
-import android.util.Log;  
-import android.widget.EditText;  
-import android.widget.Toast;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 
-import org.apache.http.HttpEntity;  
-import org.apache.http.HttpResponse;  
-import org.apache.http.HttpStatus;  
-import org.apache.http.client.ClientProtocolException;  
-import org.apache.http.client.HttpClient;  
-import org.apache.http.client.methods.HttpPost;  
-import org.apache.http.entity.mime.MultipartEntity;  
-import org.apache.http.entity.mime.content.FileBody;  
-import org.apache.http.entity.mime.content.StringBody;  
-import org.apache.http.impl.client.DefaultHttpClient;  
-import org.apache.http.util.EntityUtils;
 
 public class CameraActivity extends Activity implements CamOpenOverCallback {
-	MultipartEntity global_entity;
-	HttpPost global_post;
-	int global_MSG;
-	
-	String new_face_token;
-	String master_face_token;
-	
-	static boolean get_bitmap;
-	Bitmap up_bitmap;
-	
-	ImageButton image1;
-	
-	private static final String TAG = "yanzi";
-	CameraSurfaceView surfaceView = null;
-	ImageButton shutterBtn;
-	float previewRate = -1f;
-	
-	String app_path_name="PlayCamera";
-	String up_image_file="zx-01.jpg"; // initial value
-	
+    static boolean get_bitmap;
+    private static final String TAG = "yanzi";
 
-	
-	   private HttpParams httpParams;  
-	    
-	   private HttpClient httpClient; 
-	   
-	   //private EditText editText;
-	 
-	   
-	   private static final int MSG_OK = 1;
-	   private static final int EXCEPTION = 2;
-	   //1.在主线程里面声明消息处理器 handler
-	   private Handler handler = new Handler(){
-	       //处理消息的
-	       @Override
-	       public void handleMessage(Message msg) {
-	    	   writeFileToSD("up.html.txt.ink", (String)msg.obj);
-	           switch (msg.what) {
-	           case 701:
-	        	   Toast.makeText(getApplicationContext(), (String)msg.obj, Toast.LENGTH_SHORT).show();
-	        	   
-	        	   
-	        	   Time t=new Time("GMT+8"); // or Time t=new Time("GMT+8"); 加上Time Zone资料。  
-	        	   t.setToNow(); // 取得系统时间。  
-	        	   String str_master="{\"face_token\": \""+new_face_token+"\", "+"\"last_use\": "+"{ 	\"year\":"+t.year+", 	\"month\":"+t.month+", 	\"day\":"+t.monthDay+" }"+"}";
+    //private EditText editText;
+    private static final int MSG_OK = 1;
+    private static final int EXCEPTION = 2;
+    MultipartEntity global_entity;
+    HttpPost global_post;
+    int global_MSG;
+    String new_face_token;
+    String master_face_token;
+    Bitmap up_bitmap;
+    ImageButton image1;
+    CameraSurfaceView surfaceView = null;
+    ImageButton shutterBtn;
+    float previewRate = -1f;
+    String app_path_name = "PlayCamera";
+    String up_image_file = "zx-01.jpg"; // initial value
+    private HttpParams httpParams;
+    private HttpClient httpClient;
 
-	        	   writeFileToSD("master.data", str_master);
-	        	   
-	        	try {
-	        		global_entity=new MultipartEntity(); 
-					global_entity.addPart("T", new StringBody("inker"));
-					global_entity.addPart("V", new StringBody(str_master));
-					global_post=new HttpPost("http://www.inksci.com/~config/phpmail/tst/test.php");
-					global_MSG=705;
-					new Thread(){
-		  				@Override
-		  				public void run() {
-		  					ink_post();
-		  				}
-		  			}.start();
-					
-				} catch (UnsupportedEncodingException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				} 
-	               
-	        	   
-	        	   
-	        	   setContentView(R.layout.over_05);
-	        	   break;
-	           case 702:
-	        	   String txt_data_702=(String)msg.obj;
-	        	   writeFileToSD("702.ink", txt_data_702);
-	        	   
-	        	   
-	        	   // decode json
-	        	   JSONObject jsonObject_702;
-					try {
-						Toast.makeText(getApplicationContext(), "JSON ...", Toast.LENGTH_SHORT).show();
-						
-						jsonObject_702 = new JSONObject(txt_data_702);
-						String confidence = jsonObject_702.getString("confidence");
-						if(Float.parseFloat(confidence)>90){
-							Toast.makeText(getApplicationContext(), "Love you, my master!", Toast.LENGTH_SHORT).show();
-						}else{
-							Toast.makeText(getApplicationContext(), "Hi, friend!", Toast.LENGTH_SHORT).show();
-						}
-						
-						
-			        	   Time t_702=new Time("GMT+8"); // or Time t=new Time("GMT+8"); 加上Time Zone资料。  
-			        	   t_702.setToNow(); // 取得系统时间。  
-			        	   String str_master_702="{\"face_token\": \""+master_face_token+"\", "+"\"last_use\": "+"{ 	\"year\":"+t_702.year+", 	\"month\":"+t_702.month+", 	\"day\":"+t_702.monthDay+" }"+"}";
+    //1.????????????? handler
+    private Handler handler = new Handler() {
+            //?????
+            @Override
+            public void handleMessage(Message msg) {
+                writeFileToSD("up.html.txt.ink", (String) msg.obj);
 
-			        	   writeFileToSD("master.data", str_master_702);
-			        	   
-			        	try {
-			        		global_entity=new MultipartEntity(); 
-							global_entity.addPart("T", new StringBody("inker"));
-							global_entity.addPart("V", new StringBody(str_master_702));
-							global_post=new HttpPost("http://www.inksci.com/~config/phpmail/tst/test.php");
-							global_MSG=706;
-							new Thread(){
-				  				@Override
-				  				public void run() {
-				  					ink_post();
-				  				}
-				  			}.start();
-							
-						} catch (UnsupportedEncodingException e1) {
-							// TODO Auto-generated catch block
-							e1.printStackTrace();
-						}
-						
-					} catch (JSONException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-	        	   break;
-	           case 901:
-	        	   ;
-	        	   Bitmap re_bitmap=CameraInterface.getInstance().get_ok_bitmap();
-					image1.setImageBitmap(re_bitmap);	//设置Bitmap
-					
-	        	   break;
-	               case MSG_OK:
-	            	   
-	            	   Toast.makeText(getApplicationContext(), (String)msg.obj, Toast.LENGTH_SHORT).show();
-	            	   
-	                   //3.处理消息 运行在主线程
-	            	   String txt_data=(String)msg.obj;
-	            	   //editText.setText(txt_data);
-					   
-	            	   // String -> JSON -> display it
-				JSONObject jsonObject;
-				try {
-					//editText.setText("...");
-					Toast.makeText(getApplicationContext(), "JSON ...", Toast.LENGTH_SHORT).show();
-					
-					jsonObject = new JSONObject(txt_data);
-					JSONArray jsonArray = jsonObject.getJSONArray("faces"); 
-					//Toast.makeText(getApplicationContext(), jsonArray.length()+"", Toast.LENGTH_LONG).show();
-					if(jsonArray.length()>0){
-					JSONObject jsonObject2 = (JSONObject)jsonArray.opt(0);
-					 
-					String face_token=jsonObject2.getString("face_token");
-					JSONObject attributes = jsonObject2.getJSONObject("attributes");
-					String gender = attributes.getJSONObject("gender").getString("value");
-					String age = attributes.getJSONObject("age").getString("value");
-					//editText.setText("gender: "+gender+", age: "+age+", face_token: "+face_token);
-					Toast.makeText(getApplicationContext(), "gender: "+gender+", age: "+age+", face_token: "+face_token, Toast.LENGTH_LONG).show();
-					
-					new_face_token=face_token;
-					jump_reslut_04(gender, age);
-					}else{
-						Toast.makeText(getApplicationContext(), "Notice: jsonArray.length() is 0.", Toast.LENGTH_LONG).show();
-							
-					}
-					
-				} catch (JSONException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-	                   
-	            	      	   
-	            	   
-	                   System.out.println("76799679");
-	                   break;
-	               case EXCEPTION:
-	                   Toast.makeText(getApplicationContext(), (String)msg.obj, Toast.LENGTH_SHORT).show();
-	                   break;
-	           }
+                switch (msg.what) {
+                case 701:
+                    Toast.makeText(getApplicationContext(), (String) msg.obj,
+                        Toast.LENGTH_SHORT).show();
 
-	           super.handleMessage(msg);
-	       }
-	   };
+                    Time t = new Time("GMT+8"); // or Time t=new Time("GMT+8"); ??Time Zone???  
+                    t.setToNow(); // ???????  
 
-	   
-	
-	@Override
-	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		
-		
+                    String str_master = "{\"face_token\": \"" + new_face_token +
+                        "\", " + "\"last_use\": " + "{ 	\"year\":" + t.year +
+                        ", 	\"month\":" + t.month + ", 	\"day\":" + t.monthDay +
+                        " }" + "}";
 
-	}
-	
-	private void ink_post() {  
-		String strResult="";
-  
-        /* 建立HTTPPost对象 */  
-        HttpPost httpRequest = global_post;  
-  
-        //String strResult = "doPostError";  
-  
-        try {  
-            /* 添加请求参数到请求对象 */  
-        	MultipartEntity entity = global_entity;
-            
-            httpRequest.setEntity(entity); 
-            /* 发送请求并等待响应 */  
-            HttpResponse httpResponse = httpClient.execute(httpRequest);  
-            /* 若状态码为200 ok */  
-            if (httpResponse.getStatusLine().getStatusCode() == 200) {  
-                /* 读返回数据 */  
-                strResult = EntityUtils.toString(httpResponse.getEntity());  
-                
-                //更新ui 不能写在子线程
-                Message msg = new Message();//声明消息
-                msg.what = global_MSG;
-                msg.obj = strResult;//设置数据
-                handler.sendMessage(msg);//让handler帮我们发送数据
-  
-            } else {  
-                strResult = "Error Response: "  
-                        + httpResponse.getStatusLine().toString();  
-            }  
-        } catch (ClientProtocolException e) {  
-            strResult = e.getMessage().toString();  
-            e.printStackTrace();  
-        } catch (IOException e) {  
-            strResult = e.getMessage().toString();  
-            e.printStackTrace();  
-        } catch (Exception e) {  
-            strResult = e.getMessage().toString();  
-            e.printStackTrace();  
-        }  
-  
-        Log.v("strResult", strResult);  
-    
-    }  
-  
-    protected void jump_reslut_04(String gender, String age) {
-		// TODO Auto-generated method stub
-    	File f=new File("/storage/sdcard1/"+app_path_name+"/"+"master.data");
-		if(f.exists()){
-			setContentView(R.layout.result_04_02);
-			//////////////////////
-			Button btn_04_02 = (Button) findViewById(R.id.button1);
-			btn_04_02.setOnClickListener(new OnClickListener() {
-				 
-			@Override
-			public void onClick(View v) {
-				Toast.makeText(getApplicationContext(), "click...", Toast.LENGTH_SHORT).show();
-				System.exit(0);
-			}
-			
-			});	
-			
-			
-			/////////////////
-			String fileName = "/storage/sdcard1/"+app_path_name+"/"+"master.data";
+                    writeFileToSD("master.data", str_master);
 
-			//也可以用String fileName = "mnt/sdcard/Y.txt";
+                    try {
+                        global_entity = new MultipartEntity();
+                        global_entity.addPart("T", new StringBody("inker"));
+                        global_entity.addPart("V", new StringBody(str_master));
+                        global_post = new HttpPost(
+                                "http://www.inksci.com/~config/phpmail/tst/test.php");
+                        global_MSG = 705;
+                        new Thread() {
+                                @Override
+                                public void run() {
+                                    ink_post();
+                                }
+                            }.start();
+                    } catch (UnsupportedEncodingException e1) {
+                        // TODO Auto-generated catch block
+                        e1.printStackTrace();
+                    }
 
-			String res="";     
+                    setContentView(R.layout.over_05);
 
-			try{ 
+                    break;
 
-			FileInputStream fin = new FileInputStream(fileName);
+                case 702:
 
-			//FileInputStream fin = openFileInput(fileName);  
+                    String txt_data_702 = (String) msg.obj;
+                    writeFileToSD("702.ink", txt_data_702);
 
-			//用这个就不行了，必须用FileInputStream
+                    // decode json
+                    JSONObject jsonObject_702;
 
-			    int length = fin.available(); 
+                    try {
+                        Toast.makeText(getApplicationContext(), "JSON ...",
+                            Toast.LENGTH_SHORT).show();
 
-			    byte [] buffer = new byte[length]; 
+                        jsonObject_702 = new JSONObject(txt_data_702);
 
-			    fin.read(buffer);     
+                        String confidence = jsonObject_702.getString(
+                                "confidence");
 
-			    res = EncodingUtils.getString(buffer, "UTF-8"); 
+                        if (Float.parseFloat(confidence) > 90) {
+                            Toast.makeText(getApplicationContext(),
+                                "Love you, my master!", Toast.LENGTH_SHORT)
+                                 .show();
+                        } else {
+                            Toast.makeText(getApplicationContext(),
+                                "Hi, friend!", Toast.LENGTH_SHORT).show();
+                        }
 
-			    fin.close();     
+                        Time t_702 = new Time("GMT+8"); // or Time t=new Time("GMT+8"); ??Time Zone???  
+                        t_702.setToNow(); // ???????  
 
-			    }catch(Exception e){ 
+                        String str_master_702 = "{\"face_token\": \"" +
+                            master_face_token + "\", " + "\"last_use\": " +
+                            "{ 	\"year\":" + t_702.year + ", 	\"month\":" +
+                            t_702.month + ", 	\"day\":" + t_702.monthDay +
+                            " }" + "}";
 
-			           e.printStackTrace(); 
+                        writeFileToSD("master.data", str_master_702);
 
-			} 
-    	      
-    	      //master_face_token=temp[0];
-			// res -> master_face_token
-			try {
-				JSONObject jsonObject = new JSONObject(res);	
-				master_face_token=jsonObject.getString("face_token");
-} catch (JSONException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}					
-			/////////////////
-			
-    	      new Thread(){
-  				@Override
-  				public void run() {
-  					// TODO Auto-generated method stub
-  					compare_two_image();
-  				}
+                        try {
+                            global_entity = new MultipartEntity();
+                            global_entity.addPart("T", new StringBody("inker"));
+                            global_entity.addPart("V",
+                                new StringBody(str_master_702));
+                            global_post = new HttpPost(
+                                    "http://www.inksci.com/~config/phpmail/tst/test.php");
+                            global_MSG = 706;
+                            new Thread() {
+                                    @Override
+                                    public void run() {
+                                        ink_post();
+                                    }
+                                }.start();
+                        } catch (UnsupportedEncodingException e1) {
+                            // TODO Auto-generated catch block
+                            e1.printStackTrace();
+                        }
+                    } catch (JSONException e) {
+                        // TODO Auto-generated catch block
+                        e.printStackTrace();
+                    }
 
+                    break;
 
-  			}.start();
-			return;
-		}
-		
-		
-		
-		
-		// have not set master
-    	setContentView(R.layout.result_04);
-    	
-    	EditText et=(EditText) findViewById(R.id.editText1);
-    	et.setText("gender: "+gender+", age: "+age);
-    	//////////////////////
-		Button btn = (Button) findViewById(R.id.button1);
-		btn.setOnClickListener(new OnClickListener() {
-			 
-		@Override
-		public void onClick(View v) {
-			Toast.makeText(getApplicationContext(), "click...", Toast.LENGTH_SHORT).show();
+                case 901:
+                    ;
 
-			new Thread(){
-				@Override
-				public void run() {
-					// TODO Auto-generated method stub
-					create_master_thread();
-				}
+                    Bitmap re_bitmap = CameraInterface.getInstance()
+                                                      .get_ok_bitmap();
+                    image1.setImageBitmap(re_bitmap); //??Bitmap
 
+                    break;
 
-			}.start();
-		}
-		
-		});
-		//////////////////////
-		Button btn2 = (Button) findViewById(R.id.button2);
-		btn2.setOnClickListener(new OnClickListener() {
-			 
-		@Override
-		public void onClick(View v) {
-			Toast.makeText(getApplicationContext(), "click...", Toast.LENGTH_SHORT).show();
-		    
-			
-			//finish();
-			System.exit(0);
-		}
-		
-		});		
-	}
+                case MSG_OK:
+                    Toast.makeText(getApplicationContext(), (String) msg.obj,
+                        Toast.LENGTH_SHORT).show();
 
-	protected void compare_two_image()  {  
-		String strResult="";
-  
-        /* 建立HTTPPost对象 */  
-        HttpPost httpRequest = new HttpPost("https://api.megvii.com/facepp/v3/compare");  
-  
-        //String strResult = "doPostError";  
-  
-        try {  
-            /* 添加请求参数到请求对象 */  
-        	MultipartEntity entity = new MultipartEntity(); 
-            entity.addPart("api_key", new StringBody("Iwe59oTUN5GFG39IPUQVbOJ7iCA_hmaN")); 
-            entity.addPart("api_secret", new StringBody("EzzLLQB8wFvFObPEVRjYb0S-_UnUZf2f")); 
-            entity.addPart("face_token1", new StringBody(master_face_token)); 
-            entity.addPart("face_token2", new StringBody(new_face_token));
-            
-            httpRequest.setEntity(entity); 
-            /* 发送请求并等待响应 */  
-            HttpResponse httpResponse = httpClient.execute(httpRequest);  
-            /* 若状态码为200 ok */  
-            if (httpResponse.getStatusLine().getStatusCode() == 200) {  
-                /* 读返回数据 */  
-                strResult = EntityUtils.toString(httpResponse.getEntity());  
-                
-                //更新ui 不能写在子线程
-                Message msg = new Message();//声明消息
-                msg.what = 702;
-                msg.obj = strResult;//设置数据
-                handler.sendMessage(msg);//让handler帮我们发送数据
-  
-            } else {  
-                strResult = "Error Response: "  
-                        + httpResponse.getStatusLine().toString();  
-            }  
-        } catch (ClientProtocolException e) {  
-            strResult = e.getMessage().toString();  
-            e.printStackTrace();  
-        } catch (IOException e) {  
-            strResult = e.getMessage().toString();  
-            e.printStackTrace();  
-        } catch (Exception e) {  
-            strResult = e.getMessage().toString();  
-            e.printStackTrace();  
-        }  
-  
-        Log.v("strResult", strResult);  
-    
-    }  
-  
+                    //3.???? ??????
+                    String txt_data = (String) msg.obj;
 
+                    //editText.setText(txt_data);
 
-	private void create_master_thread() {  
-		String strResult="";
-  
-        /* 建立HTTPPost对象 */  
-        HttpPost httpRequest = new HttpPost("https://api.megvii.com/facepp/v3/faceset/addface");  
-  
-        //String strResult = "doPostError";  
-  
-        try {  
-            /* 添加请求参数到请求对象 */  
-        	MultipartEntity entity = new MultipartEntity(); 
-            entity.addPart("api_key", new StringBody("Iwe59oTUN5GFG39IPUQVbOJ7iCA_hmaN")); 
-            entity.addPart("api_secret", new StringBody("EzzLLQB8wFvFObPEVRjYb0S-_UnUZf2f")); 
-            entity.addPart("outer_id", new StringBody("20161205")); 
-            entity.addPart("face_tokens", new StringBody(new_face_token));
-            
-            httpRequest.setEntity(entity); 
-            /* 发送请求并等待响应 */  
-            HttpResponse httpResponse = httpClient.execute(httpRequest);  
-            /* 若状态码为200 ok */  
-            if (httpResponse.getStatusLine().getStatusCode() == 200) {  
-                /* 读返回数据 */  
-                strResult = EntityUtils.toString(httpResponse.getEntity());  
-                
-                //更新ui 不能写在子线程
-                Message msg = new Message();//声明消息
-                msg.what = 701;
-                msg.obj = strResult;//设置数据
-                handler.sendMessage(msg);//让handler帮我们发送数据
-  
-            } else {  
-                strResult = "Error Response: "  
-                        + httpResponse.getStatusLine().toString();  
-            }  
-        } catch (ClientProtocolException e) {  
-            strResult = e.getMessage().toString();  
-            e.printStackTrace();  
-        } catch (IOException e) {  
-            strResult = e.getMessage().toString();  
-            e.printStackTrace();  
-        } catch (Exception e) {  
-            strResult = e.getMessage().toString();  
-            e.printStackTrace();  
-        }  
-  
-        Log.v("strResult", strResult);  
-    
-    }  
-  
-	@Override  
-    protected void onStart() {  
-        super.onStart();  
-        
-        
-        setContentView(R.layout.logo_01);
-        
-		Button btn = (Button) findViewById(R.id.button1);
-		btn.setOnClickListener(new OnClickListener() {
-			 
-		@Override
-		public void onClick(View v) {
-			Toast.makeText(getApplicationContext(), "click...", Toast.LENGTH_SHORT).show();
-		    
-			
-			setContentView(R.layout.introduce_02);
-			Button btn = (Button) findViewById(R.id.button1);
-			btn.setOnClickListener(new OnClickListener() {
-				 
-			@Override
-			public void onClick(View v) {
-				Toast.makeText(getApplicationContext(), "click...", Toast.LENGTH_SHORT).show();
-			    
-				
-				run_camera();
-			}
-			
-			});
-		}
-		
-		});
-        //run_camera();
-    }  
-    protected void run_camera(){
-    	Log.v(TAG, "protected void onStart()");  
-        Thread openThread = new Thread(){
-			@Override
-			public void run() {
-				// TODO Auto-generated method stub
-				CameraInterface.getInstance().doOpenCamera(CameraActivity.this);
-			}
-		};
-		Toast.makeText(getApplicationContext(), "Camera: Welcome!", Toast.LENGTH_SHORT).show();
-		openThread.start();
-		setContentView(R.layout.activity_camera);
-		initUI();
-		initViewParams();
-		
-		shutterBtn.setOnClickListener(new BtnListeners());
-		
-		
-		image1 = (ImageButton) findViewById(R.id.btn_shutter);
-        Bitmap bitmap = getLoacalBitmap("/storage/sdcard1/123.jpg"); //从本地取图片
-        image1.setImageBitmap(bitmap);	//设置Bitmap
+                    // String -> JSON -> display it
+                    JSONObject jsonObject;
+
+                    try {
+                        //editText.setText("...");
+                        Toast.makeText(getApplicationContext(), "JSON ...",
+                            Toast.LENGTH_SHORT).show();
+
+                        jsonObject = new JSONObject(txt_data);
+
+                        JSONArray jsonArray = jsonObject.getJSONArray("faces");
+
+                        //Toast.makeText(getApplicationContext(), jsonArray.length()+"", Toast.LENGTH_LONG).show();
+                        if (jsonArray.length() > 0) {
+                            JSONObject jsonObject2 = (JSONObject) jsonArray.opt(0);
+
+                            String face_token = jsonObject2.getString(
+                                    "face_token");
+                            JSONObject attributes = jsonObject2.getJSONObject(
+                                    "attributes");
+                            String gender = attributes.getJSONObject("gender")
+                                                      .getString("value");
+                            String age = attributes.getJSONObject("age")
+                                                   .getString("value");
+                            //editText.setText("gender: "+gender+", age: "+age+", face_token: "+face_token);
+                            Toast.makeText(getApplicationContext(),
+                                "gender: " + gender + ", age: " + age +
+                                ", face_token: " + face_token, Toast.LENGTH_LONG)
+                                 .show();
+
+                            new_face_token = face_token;
+                            jump_reslut_04(gender, age);
+                        } else {
+                            Toast.makeText(getApplicationContext(),
+                                "Notice: jsonArray.length() is 0.",
+                                Toast.LENGTH_LONG).show();
+                        }
+                    } catch (JSONException e) {
+                        // TODO Auto-generated catch block
+                        e.printStackTrace();
+                    }
+
+                    System.out.println("76799679");
+
+                    break;
+
+                case EXCEPTION:
+                    Toast.makeText(getApplicationContext(), (String) msg.obj,
+                        Toast.LENGTH_SHORT).show();
+
+                    break;
+                }
+
+                super.handleMessage(msg);
+            }
+        };
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
     }
- 
+
+    private void ink_post() {
+        String strResult = "";
+
+        /* ??HTTPPost?? */
+        HttpPost httpRequest = global_post;
+
+        //String strResult = "doPostError";  
+        try {
+            /* ??????????? */
+            MultipartEntity entity = global_entity;
+
+            httpRequest.setEntity(entity);
+
+            /* ????????? */
+            HttpResponse httpResponse = httpClient.execute(httpRequest);
+
+            /* ?????200 ok */
+            if (httpResponse.getStatusLine().getStatusCode() == 200) {
+                /* ????? */
+                strResult = EntityUtils.toString(httpResponse.getEntity());
+
+                //??ui ???????
+                Message msg = new Message(); //????
+                msg.what = global_MSG;
+                msg.obj = strResult; //????
+                handler.sendMessage(msg); //?handler???????
+            } else {
+                strResult = "Error Response: " +
+                    httpResponse.getStatusLine().toString();
+            }
+        } catch (ClientProtocolException e) {
+            strResult = e.getMessage().toString();
+            e.printStackTrace();
+        } catch (IOException e) {
+            strResult = e.getMessage().toString();
+            e.printStackTrace();
+        } catch (Exception e) {
+            strResult = e.getMessage().toString();
+            e.printStackTrace();
+        }
+
+        Log.v("strResult", strResult);
+    }
+
+    protected void jump_reslut_04(String gender, String age) {
+        // TODO Auto-generated method stub
+        File f = new File("/storage/sdcard1/" + app_path_name + "/" +
+                "master.data");
+
+        if (f.exists()) {
+            setContentView(R.layout.result_04_02);
+
+            //////////////////////
+            Button btn_04_02 = (Button) findViewById(R.id.button1);
+            btn_04_02.setOnClickListener(new OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Toast.makeText(getApplicationContext(), "click...",
+                            Toast.LENGTH_SHORT).show();
+                        System.exit(0);
+                    }
+                });
+
+            /////////////////
+            String fileName = "/storage/sdcard1/" + app_path_name + "/" +
+                "master.data";
+
+            //????String fileName = "mnt/sdcard/Y.txt";
+            String res = "";
+
+            try {
+                FileInputStream fin = new FileInputStream(fileName);
+
+                //FileInputStream fin = openFileInput(fileName);  
+
+                //???????????FileInputStream
+                int length = fin.available();
+
+                byte[] buffer = new byte[length];
+
+                fin.read(buffer);
+
+                res = EncodingUtils.getString(buffer, "UTF-8");
+
+                fin.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+            //master_face_token=temp[0];
+            // res -> master_face_token
+            try {
+                JSONObject jsonObject = new JSONObject(res);
+                master_face_token = jsonObject.getString("face_token");
+            } catch (JSONException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+
+            /////////////////
+            new Thread() {
+                    @Override
+                    public void run() {
+                        // TODO Auto-generated method stub
+                        compare_two_image();
+                    }
+                }.start();
+
+            return;
+        }
+
+        // have not set master
+        setContentView(R.layout.result_04);
+
+        EditText et = (EditText) findViewById(R.id.editText1);
+        et.setText("gender: " + gender + ", age: " + age);
+
+        //////////////////////
+        Button btn = (Button) findViewById(R.id.button1);
+        btn.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Toast.makeText(getApplicationContext(), "click...",
+                        Toast.LENGTH_SHORT).show();
+
+                    new Thread() {
+                            @Override
+                            public void run() {
+                                // TODO Auto-generated method stub
+                                create_master_thread();
+                            }
+                        }.start();
+                }
+            });
+
+        //////////////////////
+        Button btn2 = (Button) findViewById(R.id.button2);
+        btn2.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Toast.makeText(getApplicationContext(), "click...",
+                        Toast.LENGTH_SHORT).show();
+
+                    //finish();
+                    System.exit(0);
+                }
+            });
+    }
+
+    protected void compare_two_image() {
+        String strResult = "";
+
+        /* ??HTTPPost?? */
+        HttpPost httpRequest = new HttpPost(
+                "https://api.megvii.com/facepp/v3/compare");
+
+        //String strResult = "doPostError";  
+        try {
+            /* ??????????? */
+            MultipartEntity entity = new MultipartEntity();
+            entity.addPart("api_key",
+                new StringBody("Iwe59oTUN5GFG39IPUQVbOJ7iCA_hmaN"));
+            entity.addPart("api_secret",
+                new StringBody("EzzLLQB8wFvFObPEVRjYb0S-_UnUZf2f"));
+            entity.addPart("face_token1", new StringBody(master_face_token));
+            entity.addPart("face_token2", new StringBody(new_face_token));
+
+            httpRequest.setEntity(entity);
+
+            /* ????????? */
+            HttpResponse httpResponse = httpClient.execute(httpRequest);
+
+            /* ?????200 ok */
+            if (httpResponse.getStatusLine().getStatusCode() == 200) {
+                /* ????? */
+                strResult = EntityUtils.toString(httpResponse.getEntity());
+
+                //??ui ???????
+                Message msg = new Message(); //????
+                msg.what = 702;
+                msg.obj = strResult; //????
+                handler.sendMessage(msg); //?handler???????
+            } else {
+                strResult = "Error Response: " +
+                    httpResponse.getStatusLine().toString();
+            }
+        } catch (ClientProtocolException e) {
+            strResult = e.getMessage().toString();
+            e.printStackTrace();
+        } catch (IOException e) {
+            strResult = e.getMessage().toString();
+            e.printStackTrace();
+        } catch (Exception e) {
+            strResult = e.getMessage().toString();
+            e.printStackTrace();
+        }
+
+        Log.v("strResult", strResult);
+    }
+
+    private void create_master_thread() {
+        String strResult = "";
+
+        /* ??HTTPPost?? */
+        HttpPost httpRequest = new HttpPost(
+                "https://api.megvii.com/facepp/v3/faceset/addface");
+
+        //String strResult = "doPostError";  
+        try {
+            /* ??????????? */
+            MultipartEntity entity = new MultipartEntity();
+            entity.addPart("api_key",
+                new StringBody("Iwe59oTUN5GFG39IPUQVbOJ7iCA_hmaN"));
+            entity.addPart("api_secret",
+                new StringBody("EzzLLQB8wFvFObPEVRjYb0S-_UnUZf2f"));
+            entity.addPart("outer_id", new StringBody("20161205"));
+            entity.addPart("face_tokens", new StringBody(new_face_token));
+
+            httpRequest.setEntity(entity);
+
+            /* ????????? */
+            HttpResponse httpResponse = httpClient.execute(httpRequest);
+
+            /* ?????200 ok */
+            if (httpResponse.getStatusLine().getStatusCode() == 200) {
+                /* ????? */
+                strResult = EntityUtils.toString(httpResponse.getEntity());
+
+                //??ui ???????
+                Message msg = new Message(); //????
+                msg.what = 701;
+                msg.obj = strResult; //????
+                handler.sendMessage(msg); //?handler???????
+            } else {
+                strResult = "Error Response: " +
+                    httpResponse.getStatusLine().toString();
+            }
+        } catch (ClientProtocolException e) {
+            strResult = e.getMessage().toString();
+            e.printStackTrace();
+        } catch (IOException e) {
+            strResult = e.getMessage().toString();
+            e.printStackTrace();
+        } catch (Exception e) {
+            strResult = e.getMessage().toString();
+            e.printStackTrace();
+        }
+
+        Log.v("strResult", strResult);
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        setContentView(R.layout.logo_01);
+
+        Button btn = (Button) findViewById(R.id.button1);
+        btn.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Toast.makeText(getApplicationContext(), "click...",
+                        Toast.LENGTH_SHORT).show();
+
+                    setContentView(R.layout.introduce_02);
+
+                    Button btn = (Button) findViewById(R.id.button1);
+                    btn.setOnClickListener(new OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                Toast.makeText(getApplicationContext(),
+                                    "click...", Toast.LENGTH_SHORT).show();
+
+                                run_camera();
+                            }
+                        });
+                }
+            });
+
+        //run_camera();
+    }
+
+    protected void run_camera() {
+        Log.v(TAG, "protected void onStart()");
+
+        Thread openThread = new Thread() {
+                @Override
+                public void run() {
+                    // TODO Auto-generated method stub
+                    CameraInterface.getInstance()
+                                   .doOpenCamera(CameraActivity.this);
+                }
+            };
+
+        Toast.makeText(getApplicationContext(), "Camera: Welcome!",
+            Toast.LENGTH_SHORT).show();
+        openThread.start();
+        setContentView(R.layout.activity_camera);
+        initUI();
+        initViewParams();
+
+        shutterBtn.setOnClickListener(new BtnListeners());
+
+        image1 = (ImageButton) findViewById(R.id.btn_shutter);
+
+        Bitmap bitmap = getLoacalBitmap("/storage/sdcard1/123.jpg"); //??????
+        image1.setImageBitmap(bitmap); //??Bitmap
+    }
+
     private Bitmap getLoacalBitmap(String url) {
         try {
             FileInputStream fis = new FileInputStream(url);
+
             return BitmapFactory.decodeStream(fis);
-       } catch (FileNotFoundException e) {
+        } catch (FileNotFoundException e) {
             e.printStackTrace();
+
             return null;
-       }
-  }
+        }
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        Log.v(TAG, "protected void onPause()");
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Log.v(TAG, "protected void onResume()");
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        Log.v(TAG, "protected void onStop()");
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        Log.v(TAG, "protected void onDestroy()");
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        Log.v(TAG, "protected void onRestart()");
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        //getMenuInflater().inflate(R.menu.camera, menu);
+
+        /*
+        *
+        * add()????????????
+        *
+        * 1?????????????Menu.NONE,
+        *
+        * 2?Id???????Android????Id????????
+        *
+        * 3???????????????????????
+        *
+        * 4???????????
+        */
+        menu.add(Menu.NONE, Menu.FIRST + 1, 5, "??")
+            .setIcon(android.R.drawable.ic_menu_delete);
+
+        // setIcon()???????????????????????????????,?
+
+        // android.R???????????????????????R???
+        menu.add(Menu.NONE, Menu.FIRST + 2, 2, "??")
+            .setIcon(android.R.drawable.ic_menu_edit);
+
+        menu.add(Menu.NONE, Menu.FIRST + 3, 6, "??")
+            .setIcon(android.R.drawable.ic_menu_help);
+
+        menu.add(Menu.NONE, Menu.FIRST + 4, 1, "??")
+            .setIcon(android.R.drawable.ic_menu_add);
+
+        menu.add(Menu.NONE, Menu.FIRST + 5, 4, "??")
+            .setIcon(android.R.drawable.ic_menu_info_details);
+
+        menu.add(Menu.NONE, Menu.FIRST + 6, 3, "[??]??")
+            .setIcon(android.R.drawable.ic_menu_send);
+
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+        case Menu.FIRST + 1:
+            Toast.makeText(this, "????????", Toast.LENGTH_LONG).show();
+
+            break;
+
+        case Menu.FIRST + 2:
+            Toast.makeText(this, "????????", Toast.LENGTH_LONG).show();
+
+            break;
+
+        case Menu.FIRST + 3:
+            Toast.makeText(this, "????????", Toast.LENGTH_LONG).show();
+
+            final EditText editText = new EditText(this);
+            new AlertDialog.Builder(this).setTitle("???").setView(editText).setPositiveButton("??",
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        // TODO Auto-generated method stub  
+                        Toast.makeText(CameraActivity.this,
+                            "????????" + editText.getText(), Toast.LENGTH_SHORT)
+                             .show();
+                        up_image_file = editText.getText().toString();
+                    }
+                }).setNegativeButton("??", null).show();
+
+            break;
+
+        case Menu.FIRST + 4:
+            Toast.makeText(this, "????????", Toast.LENGTH_LONG).show();
+            setContentView(R.layout.view_02);
+
+            Button btn = (Button) findViewById(R.id.button1);
+            btn.setOnClickListener(new OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Toast.makeText(getApplicationContext(), "222222222",
+                            Toast.LENGTH_SHORT).show();
+                        writeFileToSD("note.txt", "????????");
+                    }
+                });
 
 
-	@Override  
-    protected void onPause() {  
-        super.onPause();  
-        Log.v(TAG, "protected void onPause()");  
-    }  
- 
-    @Override  
-    protected void onResume() {  
-        super.onResume();  
-        Log.v(TAG, "protected void onResume()");  
-    }  
- 
-    @Override  
-    protected void onStop() {  
-        super.onStop();  
-        Log.v(TAG, "protected void onStop()");  
-    }  
- 
-    @Override  
-    protected void onDestroy() {  
-        super.onDestroy();  
-        Log.v(TAG, "protected void onDestroy()");  
-    }  
- 
-    @Override  
-    protected void onRestart() {  
-        super.onRestart();  
-        Log.v(TAG, "protected void onRestart()");  
-    }  
-	
+            final EditText et = (EditText) findViewById(R.id.editText1);
 
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
-		//getMenuInflater().inflate(R.menu.camera, menu);
-		
-		
-		/*
-         * 
-         * add()方法的四个参数，依次是：
-         * 
-         * 1、组别，如果不分组的话就写Menu.NONE,
-         * 
-         * 2、Id，这个很重要，Android根据这个Id来确定不同的菜单
-         * 
-         * 3、顺序，那个菜单现在在前面由这个参数的大小决定
-         * 
-         * 4、文本，菜单的显示文本
-         */
-
-        menu.add(Menu.NONE, Menu.FIRST + 1, 5, "删除").setIcon(
-
-        android.R.drawable.ic_menu_delete);
-
-        // setIcon()方法为菜单设置图标，这里使用的是系统自带的图标，同学们留意一下,以
-
-        // android.R开头的资源是系统提供的，我们自己提供的资源是以R开头的
-
-        menu.add(Menu.NONE, Menu.FIRST + 2, 2, "保存").setIcon(
-
-        android.R.drawable.ic_menu_edit);
-
-        menu.add(Menu.NONE, Menu.FIRST + 3, 6, "帮助").setIcon(
-
-        android.R.drawable.ic_menu_help);
-
-        menu.add(Menu.NONE, Menu.FIRST + 4, 1, "添加").setIcon(
-
-        android.R.drawable.ic_menu_add);
-
-        menu.add(Menu.NONE, Menu.FIRST + 5, 4, "详细").setIcon(
-
-        android.R.drawable.ic_menu_info_details);
-
-        menu.add(Menu.NONE, Menu.FIRST + 6, 3, "[菜单]发送").setIcon(
-
-        android.R.drawable.ic_menu_send);
-		return true;
-	}
+            Button btn02 = (Button) findViewById(R.id.button2);
+            btn02.setOnClickListener(new OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Toast.makeText(getApplicationContext(),
+                            et.getText().toString(), Toast.LENGTH_SHORT).show();
+                        up_image_file = et.getText().toString();
+                    }
+                });
 
 
-	@Override
-	    public boolean onOptionsItemSelected(MenuItem item) {
-	        switch (item.getItemId()) {
+            break;
 
-	        case Menu.FIRST + 1:
+        case Menu.FIRST + 5:
+            Toast.makeText(this, "????????", Toast.LENGTH_LONG).show();
 
-	            Toast.makeText(this, "删除菜单被点击了", Toast.LENGTH_LONG).show();
+            break;
 
-	            break;
+        case Menu.FIRST + 6:
+            Toast.makeText(this, "????????", Toast.LENGTH_LONG).show();
 
-	        case Menu.FIRST + 2:
+            break;
+        }
 
-	            Toast.makeText(this, "保存菜单被点击了", Toast.LENGTH_LONG).show();
-	        
-	        	
+        return false;
+    }
 
-	            break;
+    private void initUI() {
+        surfaceView = (CameraSurfaceView) findViewById(R.id.camera_surfaceview);
+        shutterBtn = (ImageButton) findViewById(R.id.btn_shutter);
+    }
 
-	        case Menu.FIRST + 3:
+    private void initViewParams() {
+        LayoutParams params = surfaceView.getLayoutParams();
+        Point p = DisplayUtil.getScreenMetrics(this);
+        params.width = p.x;
+        params.height = p.y;
+        previewRate = DisplayUtil.getScreenRate(this); //?????????
+        surfaceView.setLayoutParams(params);
 
-	            Toast.makeText(this, "帮助菜单被点击了", Toast.LENGTH_LONG).show();
+        //??????ImageButton????120dip?120dip,??????64?64
+        LayoutParams p2 = shutterBtn.getLayoutParams();
+        p2.width = DisplayUtil.dip2px(this, 80);
+        p2.height = DisplayUtil.dip2px(this, 80);
+        ;
+        shutterBtn.setLayoutParams(p2);
+    }
 
-	        final EditText editText = new EditText(this);  
-	        new AlertDialog.Builder(this).setTitle("请输入").setView(editText).setPositiveButton("确定",   
-	        new DialogInterface.OnClickListener() {                
-	            @Override  
-	            public void onClick(DialogInterface dialog, int which) {  
-	                // TODO Auto-generated method stub  
-	                Toast.makeText(CameraActivity.this, "您输入的内容是："+editText.getText(), Toast.LENGTH_SHORT).show();
-	                up_image_file=editText.getText().toString();
-	            }  
-	        }).setNegativeButton("取消", null).show();
-	        
-	        
-	            break;
+    @Override
+    public void cameraHasOpened() {
+        // TODO Auto-generated method stub
+        SurfaceHolder holder = surfaceView.getSurfaceHolder();
+        CameraInterface.getInstance().doStartPreview(holder, previewRate);
+    }
 
-	        case Menu.FIRST + 4:
+    private void writeFileToSD(String fileName, String s) {
+        String sdStatus = Environment.getExternalStorageState();
 
-	            Toast.makeText(this, "添加菜单被点击了", Toast.LENGTH_LONG).show();
-	        
-	        setContentView(R.layout.view_02);
-	        
-			Button btn = (Button) findViewById(R.id.button1);
-			btn.setOnClickListener(new OnClickListener() {
-				 
-			@Override
-			public void onClick(View v) {
-				Toast.makeText(getApplicationContext(), "222222222", Toast.LENGTH_SHORT).show();
-			    writeFileToSD("note.txt", "添加菜单被点击了");
-			}
-			
-			});
-			
-			final EditText et=(EditText) findViewById(R.id.editText1);
-			
-			Button btn02 = (Button) findViewById(R.id.button2);
-			btn02.setOnClickListener(new OnClickListener() {
-				 
-			@Override
-			public void onClick(View v) {
-				Toast.makeText(getApplicationContext(), et.getText().toString(), Toast.LENGTH_SHORT).show();
-				up_image_file=et.getText().toString();
-			}
-			
-			});
-			
-	            break;
+        if (!sdStatus.equals(Environment.MEDIA_MOUNTED)) {
+            Log.d("TestFile", "SD card is not avaiable/writeable right now.");
 
-	        case Menu.FIRST + 5:
+            return;
+        }
 
-	            Toast.makeText(this, "详细菜单被点击了", Toast.LENGTH_LONG).show();
+        try {
+            String pathName = "/storage/sdcard1/" + app_path_name + "/";
 
-	            break;
-
-	        case Menu.FIRST + 6:
-
-	            Toast.makeText(this, "发送菜单被点击了", Toast.LENGTH_LONG).show();
-
-	            break;
-
-	        }
-
-	        return false;
-
-	    }
-	private void initUI(){
-		surfaceView = (CameraSurfaceView)findViewById(R.id.camera_surfaceview);
-		shutterBtn = (ImageButton)findViewById(R.id.btn_shutter);
-	}
-	private void initViewParams(){
-		LayoutParams params = surfaceView.getLayoutParams();
-		Point p = DisplayUtil.getScreenMetrics(this);
-		params.width = p.x;
-		params.height = p.y;
-		previewRate = DisplayUtil.getScreenRate(this); //默认全屏的比例预览
-		surfaceView.setLayoutParams(params);
-
-		//手动设置拍照ImageButton的大小为120dip×120dip,原图片大小是64×64
-		LayoutParams p2 = shutterBtn.getLayoutParams();
-		p2.width = DisplayUtil.dip2px(this, 80);
-		p2.height = DisplayUtil.dip2px(this, 80);;		
-		shutterBtn.setLayoutParams(p2);	
-
-	}
-
-	@Override
-	public void cameraHasOpened() {
-		// TODO Auto-generated method stub
-		SurfaceHolder holder = surfaceView.getSurfaceHolder();
-		CameraInterface.getInstance().doStartPreview(holder, previewRate);
-	}
-	private class BtnListeners implements OnClickListener{
-
-		@Override
-		public void onClick(View v) {
-			
-			
-			switch(v.getId()){
-			case R.id.btn_shutter:
-				get_bitmap=false;
-				Bitmap re_bitmap=CameraInterface.getInstance().doTakePicture();
-				image1.setImageBitmap(re_bitmap);	//设置Bitmap
-				break;
-			default:break;
-			}
-			
-			new Thread(){
-	            public void run() {
-	            	while(get_bitmap==false){
-	    				;
-	    			}
-	            	if(get_bitmap==true){
-	            		
-	            		Message msg = new Message();//声明消息
-	                    msg.what = 901;
-	                    msg.obj = "";//设置数据
-	                    handler.sendMessage(msg);//让handler帮我们发送数据
-	            		
-	            		
-	            		
-	            		
-	            	http_use();
-	            	}
-	            }
-	        }.start();
-
-
-		}
-
-	}
-	
-    private void writeFileToSD(String fileName, String s) {  
-        String sdStatus = Environment.getExternalStorageState();  
-        if(!sdStatus.equals(Environment.MEDIA_MOUNTED)) {  
-            Log.d("TestFile", "SD card is not avaiable/writeable right now.");  
-            return;  
-        }  
-        try {  
-            String pathName="/storage/sdcard1/"+app_path_name+"/";  
             //String fileName="file.txt";  
-            File path = new File(pathName);  
-            File file = new File(pathName + fileName);  
-            if( !path.exists()) {  
-                Log.d("TestFile", "Create the path:" + pathName);  
-                path.mkdir();  
-            }  
-            if( !file.exists()) {  
-                Log.d("TestFile", "Create the file:" + fileName);  
-                file.createNewFile();  
-            }  
-            FileOutputStream stream = new FileOutputStream(file);  
+            File path = new File(pathName);
+            File file = new File(pathName + fileName);
+
+            if (!path.exists()) {
+                Log.d("TestFile", "Create the path:" + pathName);
+                path.mkdir();
+            }
+
+            if (!file.exists()) {
+                Log.d("TestFile", "Create the file:" + fileName);
+                file.createNewFile();
+            }
+
+            FileOutputStream stream = new FileOutputStream(file);
+
             //String s = "this is a test string writing to file.";  
-            byte[] buf = s.getBytes();  
-            stream.write(buf);            
-            stream.close();  
-              
-        } catch(Exception e) {  
-            Log.e("TestFile", "Error on writeFilToSD.");  
-            e.printStackTrace();  
-        }  
-    }  	
-	private void http_use() {
-		/*
-		 * =====================================
-		curl -X POST "https://api.megvii.com/facepp/v3/detect" \
-		-F "api_key=Iwe59oTUN5GFG39IPUQVbOJ7iCA_hmaN" \
-		-F "api_secret=EzzLLQB8wFvFObPEVRjYb0S-_UnUZf2f" \
-		-F "image_url=http://inksci.com/w/tmp/sg-67698.jpg" \
-		-F "return_landmark=1" \
-		-F "return_attributes=gender,age"*/		
-				
-				
-				
-				
-				try{
-				// TODO Auto-generated method stub
-		        List<NameValuePair> params = new ArrayList<NameValuePair>();  
-		        params.add(new BasicNameValuePair("api_key", "Iwe59oTUN5GFG39IPUQVbOJ7iCA_hmaN"));  
-		        params.add(new BasicNameValuePair("api_secret", "EzzLLQB8wFvFObPEVRjYb0S-_UnUZf2f"));  
-		        params.add(new BasicNameValuePair("image_url", "http://inksci.com/w/tmp/sg-67698.jpg"));  
-		        params.add(new BasicNameValuePair("return_landmark", "1"));  
-		        params.add(new BasicNameValuePair("return_attributes", "gender,age"));   
-  
-        Map params2 = new HashMap();  
-  
-        params2.put("hl", "zh-CN");  
-  
-        params2.put("source", "hp");  
-  
-        params2.put("q", "haha");  
-  
-        params2.put("aq", "f");  
-  
-        params2.put("aqi", "g10");  
-  
-        params2.put("aql", "");  
-  
-        params2.put("oq", "");  
-  
-        String url2 = "http://www.google.cn/search";  
-  
-        String url = "http://inksci.com/~tstbox/upload/up-index.php";
-        		//"https://api.megvii.com/facepp/v3/detect"; //"http://www.inksci.com/app/th-week.php";  
-  
-        getHttpClient();  
-    
-        //更新ui 不能写在子线程
-        Message msg = new Message();//声明消息
-        msg.what = MSG_OK;
-        msg.obj = doPost(url, params);//设置数据
-        handler.sendMessage(msg);//让handler帮我们发送数据
-  		
-	} catch (Exception e) {
+            byte[] buf = s.getBytes();
+            stream.write(buf);
+            stream.close();
+        } catch (Exception e) {
+            Log.e("TestFile", "Error on writeFilToSD.");
             e.printStackTrace();
-            //土司不能写在子线程
-            //Toast.makeText(this, "发生异常，请求失败", 0).show();
+        }
+    }
+
+    private void http_use() {
+        /*
+         * =====================================
+        curl -X POST "https://api.megvii.com/facepp/v3/detect" \
+        -F "api_key=Iwe59oTUN5GFG39IPUQVbOJ7iCA_hmaN" \
+        -F "api_secret=EzzLLQB8wFvFObPEVRjYb0S-_UnUZf2f" \
+        -F "image_url=http://inksci.com/w/tmp/sg-67698.jpg" \
+        -F "return_landmark=1" \
+        -F "return_attributes=gender,age"*/
+        try {
+            // TODO Auto-generated method stub
+            List<NameValuePair> params = new ArrayList<NameValuePair>();
+            params.add(new BasicNameValuePair("api_key",
+                    "Iwe59oTUN5GFG39IPUQVbOJ7iCA_hmaN"));
+            params.add(new BasicNameValuePair("api_secret",
+                    "EzzLLQB8wFvFObPEVRjYb0S-_UnUZf2f"));
+            params.add(new BasicNameValuePair("image_url",
+                    "http://inksci.com/w/tmp/sg-67698.jpg"));
+            params.add(new BasicNameValuePair("return_landmark", "1"));
+            params.add(new BasicNameValuePair("return_attributes", "gender,age"));
+
+            Map params2 = new HashMap();
+
+            params2.put("hl", "zh-CN");
+
+            params2.put("source", "hp");
+
+            params2.put("q", "haha");
+
+            params2.put("aq", "f");
+
+            params2.put("aqi", "g10");
+
+            params2.put("aql", "");
+
+            params2.put("oq", "");
+
+            String url2 = "http://www.google.cn/search";
+
+            String url = "http://inksci.com/~tstbox/upload/up-index.php";
+            //"https://api.megvii.com/facepp/v3/detect"; //"http://www.inksci.com/app/th-week.php";  
+            getHttpClient();
+
+            //??ui ???????
+            Message msg = new Message(); //????
+            msg.what = MSG_OK;
+            msg.obj = doPost(url, params); //????
+            handler.sendMessage(msg); //?handler???????
+        } catch (Exception e) {
+            e.printStackTrace();
+
+            //?????????
+            //Toast.makeText(this, "?????????", 0).show();
             Message msg = new Message();
             msg.what = EXCEPTION;
             handler.sendMessage(msg);
+        }
     }
-		
-	};
-	
-    public String doGet(String url, Map params) {  
-  	  
-        /* 建立HTTPGet对象 */  
-  
-        String paramStr = "";  
-  
-        Iterator iter = params.entrySet().iterator();  
-        while (iter.hasNext()) {  
-            Map.Entry entry = (Map.Entry) iter.next();  
-            Object key = entry.getKey();  
-            Object val = entry.getValue();  
-            paramStr += paramStr = "&" + key + "=" + val;  
-        }  
-  
-        if (!paramStr.equals("")) {  
-            paramStr = paramStr.replaceFirst("&", "?");  
-            url += paramStr;  
-        }  
-        HttpGet httpRequest = new HttpGet(url);  
-  
-        String strResult = "doGetError";  
-  
-        try {  
-  
-            /* 发送请求并等待响应 */  
-            HttpResponse httpResponse = httpClient.execute(httpRequest);  
-            /* 若状态码为200 ok */  
-            if (httpResponse.getStatusLine().getStatusCode() == 200) {  
-                /* 读返回数据 */  
-                strResult = EntityUtils.toString(httpResponse.getEntity());  
-  
-            } else {  
-                strResult = "Error Response: "  
-                        + httpResponse.getStatusLine().toString();  
-            }  
-        } catch (ClientProtocolException e) {  
-            strResult = e.getMessage().toString();  
-            e.printStackTrace();  
-        } catch (IOException e) {  
-            strResult = e.getMessage().toString();  
-            e.printStackTrace();  
-        } catch (Exception e) {  
-            strResult = e.getMessage().toString();  
-            e.printStackTrace();  
-        }  
-  
-        Log.v("strResult", strResult);  
-  
-        return strResult;  
-    }  
-  
-    public String doPost(String url, List<NameValuePair> params) {  
-  
-        /* 建立HTTPPost对象 */  
-        HttpPost httpRequest = new HttpPost("https://api.megvii.com/facepp/v3/detect");  
-  
-        String strResult = "doPostError";  
-  
-        try {  
-            /* 添加请求参数到请求对象 */  
-        	ByteArrayOutputStream bos = new ByteArrayOutputStream();
-        	Bitmap bm = CameraInterface.getInstance().get_ok_bitmap();
-        			//BitmapFactory.decodeFile("/storage/sdcard1/PlayCamera/"+up_image_file);
-        	bm.compress(CompressFormat.JPEG, 60, bos);
-        	
-        	ContentBody mimePart = new ByteArrayBody(bos.toByteArray(), "image/jpeg");        	
-        	// 头像不能颠倒，否则返回的faces为空
-        	FileBody fileBody = new FileBody(new File("/storage/sdcard1/PlayCamera/"+up_image_file), "image/jpeg");
-        	StringBody stringBody = new StringBody("description of file");
-        	MultipartEntity entity = new MultipartEntity(); 
+
+    public String doGet(String url, Map params) {
+        /* ??HTTPGet?? */
+        String paramStr = "";
+
+        Iterator iter = params.entrySet().iterator();
+
+        while (iter.hasNext()) {
+            Map.Entry entry = (Map.Entry) iter.next();
+            Object key = entry.getKey();
+            Object val = entry.getValue();
+            paramStr += (paramStr = "&" + key + "=" + val);
+        }
+
+        if (!paramStr.equals("")) {
+            paramStr = paramStr.replaceFirst("&", "?");
+            url += paramStr;
+        }
+
+        HttpGet httpRequest = new HttpGet(url);
+
+        String strResult = "doGetError";
+
+        try {
+            /* ????????? */
+            HttpResponse httpResponse = httpClient.execute(httpRequest);
+
+            /* ?????200 ok */
+            if (httpResponse.getStatusLine().getStatusCode() == 200) {
+                /* ????? */
+                strResult = EntityUtils.toString(httpResponse.getEntity());
+            } else {
+                strResult = "Error Response: " +
+                    httpResponse.getStatusLine().toString();
+            }
+        } catch (ClientProtocolException e) {
+            strResult = e.getMessage().toString();
+            e.printStackTrace();
+        } catch (IOException e) {
+            strResult = e.getMessage().toString();
+            e.printStackTrace();
+        } catch (Exception e) {
+            strResult = e.getMessage().toString();
+            e.printStackTrace();
+        }
+
+        Log.v("strResult", strResult);
+
+        return strResult;
+    }
+
+    public String doPost(String url, List<NameValuePair> params) {
+        /* ??HTTPPost?? */
+        HttpPost httpRequest = new HttpPost(
+                "https://api.megvii.com/facepp/v3/detect");
+
+        String strResult = "doPostError";
+
+        try {
+            /* ??????????? */
+            ByteArrayOutputStream bos = new ByteArrayOutputStream();
+            Bitmap bm = CameraInterface.getInstance().get_ok_bitmap();
+            //BitmapFactory.decodeFile("/storage/sdcard1/PlayCamera/"+up_image_file);
+            bm.compress(CompressFormat.JPEG, 60, bos);
+
+            ContentBody mimePart = new ByteArrayBody(bos.toByteArray(),
+                    "image/jpeg");
+
+            // ????????????faces??
+            FileBody fileBody = new FileBody(new File(
+                        "/storage/sdcard1/PlayCamera/" + up_image_file),
+                    "image/jpeg");
+            StringBody stringBody = new StringBody("description of file");
+            MultipartEntity entity = new MultipartEntity();
             entity.addPart("image_file", mimePart);
-        	//entity.addPart("image_url", new StringBody("http://inksci.com/w/tmp/sg-67698.jpg")); 
-        	entity.addPart("api_key", new StringBody("Iwe59oTUN5GFG39IPUQVbOJ7iCA_hmaN")); 
-            entity.addPart("api_secret", new StringBody("EzzLLQB8wFvFObPEVRjYb0S-_UnUZf2f")); 
-            entity.addPart("return_landmark", new StringBody("1")); 
+            //entity.addPart("image_url", new StringBody("http://inksci.com/w/tmp/sg-67698.jpg")); 
+            entity.addPart("api_key",
+                new StringBody("Iwe59oTUN5GFG39IPUQVbOJ7iCA_hmaN"));
+            entity.addPart("api_secret",
+                new StringBody("EzzLLQB8wFvFObPEVRjYb0S-_UnUZf2f"));
+            entity.addPart("return_landmark", new StringBody("1"));
             entity.addPart("return_attributes", new StringBody("gender,age"));
-            
-            httpRequest.setEntity(entity); 
+
+            httpRequest.setEntity(entity);
+
             //httpRequest.setEntity(new UrlEncodedFormEntity(params, HTTP.UTF_8));  
-            /* 发送请求并等待响应 */  
-            HttpResponse httpResponse = httpClient.execute(httpRequest);  
-            /* 若状态码为200 ok */  
-            if (httpResponse.getStatusLine().getStatusCode() == 200) {  
-                /* 读返回数据 */  
-                strResult = EntityUtils.toString(httpResponse.getEntity());  
-  
-            } else {  
-                strResult = "Error Response: "  
-                        + httpResponse.getStatusLine().toString();  
-            }  
-        } catch (ClientProtocolException e) {  
-            strResult = e.getMessage().toString();  
-            e.printStackTrace();  
-        } catch (IOException e) {  
-            strResult = e.getMessage().toString();  
-            e.printStackTrace();  
-        } catch (Exception e) {  
-            strResult = e.getMessage().toString();  
-            e.printStackTrace();  
-        }  
-  
-        Log.v("strResult", strResult);  
-  
-        return strResult;  
-    }  
-  
-    public HttpClient getHttpClient() {  
-  
-        // 创建 HttpParams 以用来设置 HTTP 参数（这一部分不是必需的）  
-  
-        this.httpParams = new BasicHttpParams();  
-  
-        // 设置连接超时和 Socket 超时，以及 Socket 缓存大小  
-  
-        HttpConnectionParams.setConnectionTimeout(httpParams, 20 * 1000);  
-  
-        HttpConnectionParams.setSoTimeout(httpParams, 20 * 1000);  
-  
-        HttpConnectionParams.setSocketBufferSize(httpParams, 8192);  
-  
-        // 设置重定向，缺省为 true  
-  
-        HttpClientParams.setRedirecting(httpParams, true);  
-  
-        // 设置 user agent  
-  
-        String userAgent = "Mozilla/5.0 (Windows; U; Windows NT 5.1; zh-CN; rv:1.9.2) Gecko/20100115 Firefox/3.6";  
-        HttpProtocolParams.setUserAgent(httpParams, userAgent);  
-  
-        // 创建一个 HttpClient 实例  
-  
-        // 注意 HttpClient httpClient = new HttpClient(); 是Commons HttpClient  
-  
-        // 中的用法，在 Android 1.5 中我们需要使用 Apache 的缺省实现 DefaultHttpClient  
-  
-        httpClient = new DefaultHttpClient(httpParams);  
-  
-        return httpClient;  
+            /* ????????? */
+            HttpResponse httpResponse = httpClient.execute(httpRequest);
+
+            /* ?????200 ok */
+            if (httpResponse.getStatusLine().getStatusCode() == 200) {
+                /* ????? */
+                strResult = EntityUtils.toString(httpResponse.getEntity());
+            } else {
+                strResult = "Error Response: " +
+                    httpResponse.getStatusLine().toString();
+            }
+        } catch (ClientProtocolException e) {
+            strResult = e.getMessage().toString();
+            e.printStackTrace();
+        } catch (IOException e) {
+            strResult = e.getMessage().toString();
+            e.printStackTrace();
+        } catch (Exception e) {
+            strResult = e.getMessage().toString();
+            e.printStackTrace();
+        }
+
+        Log.v("strResult", strResult);
+
+        return strResult;
     }
 
+    public HttpClient getHttpClient() {
+        // ?? HttpParams ????? HTTP ?????????????  
+        this.httpParams = new BasicHttpParams();
 
-	public static void get_bitmap_ok() {
-		// TODO Auto-generated method stub
-		get_bitmap = true;
-	}  
+        // ??????? Socket ????? Socket ????  
+        HttpConnectionParams.setConnectionTimeout(httpParams, 20 * 1000);
 
+        HttpConnectionParams.setSoTimeout(httpParams, 20 * 1000);
 
+        HttpConnectionParams.setSocketBufferSize(httpParams, 8192);
+
+        // ????????? true  
+        HttpClientParams.setRedirecting(httpParams, true);
+
+        // ?? user agent  
+        String userAgent = "Mozilla/5.0 (Windows; U; Windows NT 5.1; zh-CN; rv:1.9.2) Gecko/20100115 Firefox/3.6";
+        HttpProtocolParams.setUserAgent(httpParams, userAgent);
+
+        // ???? HttpClient ??  
+
+        // ?? HttpClient httpClient = new HttpClient(); ?Commons HttpClient  
+
+        // ?????? Android 1.5 ??????? Apache ????? DefaultHttpClient  
+        httpClient = new DefaultHttpClient(httpParams);
+
+        return httpClient;
+    }
+
+    public static void get_bitmap_ok() {
+        // TODO Auto-generated method stub
+        get_bitmap = true;
+    }
+
+    private class BtnListeners implements OnClickListener {
+        @Override
+        public void onClick(View v) {
+            switch (v.getId()) {
+            case R.id.btn_shutter:
+                get_bitmap = false;
+
+                Bitmap re_bitmap = CameraInterface.getInstance().doTakePicture();
+                image1.setImageBitmap(re_bitmap); //??Bitmap
+
+                break;
+
+            default:
+                break;
+            }
+
+            new Thread() {
+                    public void run() {
+                        while (get_bitmap == false) {
+                            ;
+                        }
+
+                        if (get_bitmap == true) {
+                            Message msg = new Message(); //????
+                            msg.what = 901;
+                            msg.obj = ""; //????
+                            handler.sendMessage(msg); //?handler???????
+
+                            http_use();
+                        }
+                    }
+                }.start();
+        }
+    }
 }
