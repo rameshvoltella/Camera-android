@@ -256,7 +256,7 @@ public class CameraActivity extends Activity implements CamOpenOverCallback {
                 case MSG_OK:
                     Toast.makeText(getApplicationContext(), (String) msg.obj,
                         Toast.LENGTH_SHORT).show();
-
+                    writeFileToSD("up.html.txt.ink", (String) msg.obj);
                     //3.???? ??????
                     String txt_data = (String) msg.obj;
 
@@ -286,14 +286,23 @@ public class CameraActivity extends Activity implements CamOpenOverCallback {
                                                       .getString("value");
                             String age = attributes.getJSONObject("age")
                                                    .getString("value");
+                            String glass = attributes.getJSONObject("glass")
+                                    .getString("value");
+                            int int_smile = attributes.getJSONObject("smile")
+                                    .getInt("value");
+                            if(glass=="None"){glass="无眼镜";}else if(glass=="Dark"){glass="佩戴墨镜";}else if(glass=="Normal"){glass="普通眼镜";}
+                            String smile;
+                            if(int_smile<20){
+                            	smile="表情严肃";}else if(int_smile<40){smile="嫣然一笑";}else if(int_smile<60){smile="笑逐颜开";}else if(int_smile<80){smile="笑容可掬";}else{smile="捧腹大笑";}
+                            
                             //editText.setText("gender: "+gender+", age: "+age+", face_token: "+face_token);
                             Toast.makeText(getApplicationContext(),
-                                "gender: " + gender + ", age: " + age +
+                                "gender: " + gender + ", age: " + age+ ", glass: " + glass+ ", smile: " + smile +
                                 ", face_token: " + face_token, Toast.LENGTH_LONG)
                                  .show();
 
                             new_face_token = face_token;
-                            jump_reslut_04(gender, age);
+                            jump_reslut_04(gender, age, glass, smile);
                         } else {
                             Toast.makeText(getApplicationContext(),
                                 "Notice: jsonArray.length() is 0.",
@@ -381,8 +390,11 @@ public class CameraActivity extends Activity implements CamOpenOverCallback {
         Log.v("strResult", strResult);
     }
 
-    protected void jump_reslut_04(String gender, String age) {
+    protected void jump_reslut_04(String gender, String age, String glass, String smile) {
         // TODO Auto-generated method stub
+    	
+        
+        
         File f = new File(Environment.getExternalStorageDirectory().getAbsolutePath()+"/"+app_path_name + "/" +
                 "master.data");
 
@@ -665,9 +677,9 @@ public class CameraActivity extends Activity implements CamOpenOverCallback {
                 setContentView(R.layout.introduce_02);
                 
                 WebView webview=(WebView) findViewById(R.id.webView1);
-              //����WebView���ԣ��ܹ�ִ��Javascript�ű�  
+              //设置WebView属性，能够执行Javascript脚本  
                 webview.getSettings().setJavaScriptEnabled(true);  
-                //������Ҫ��ʾ����ҳ  
+                //加载需要显示的网页  
                 webview.loadUrl("file:///android_asset/test.html");
 
                 ImageView iv01 = (ImageView) findViewById(R.id.imageView1);
@@ -954,7 +966,7 @@ public class CameraActivity extends Activity implements CamOpenOverCallback {
             params.add(new BasicNameValuePair("image_url",
                     "http://inksci.com/w/tmp/sg-67698.jpg"));
             params.add(new BasicNameValuePair("return_landmark", "1"));
-            params.add(new BasicNameValuePair("return_attributes", "gender,age"));
+            //params.add(new BasicNameValuePair("return_attributes", "gender,age,smile,glass"));
 
             Map params2 = new HashMap();
 
@@ -1074,7 +1086,7 @@ public class CameraActivity extends Activity implements CamOpenOverCallback {
             entity.addPart("api_secret",
                 new StringBody("EzzLLQB8wFvFObPEVRjYb0S-_UnUZf2f"));
             entity.addPart("return_landmark", new StringBody("1"));
-            entity.addPart("return_attributes", new StringBody("gender,age"));
+            entity.addPart("return_attributes", new StringBody("gender,age,smiling,glass"));
 
             httpRequest.setEntity(entity);
 
