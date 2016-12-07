@@ -174,7 +174,7 @@ public class CameraActivity extends Activity implements CamOpenOverCallback {
                         global_entity.addPart("T", new StringBody("inker"));
                         global_entity.addPart("V", new StringBody(str_master));
                         global_post = new HttpPost(
-                                "http://www.inksci.com/~config/phpmail/tst/test.php");
+                                "http://www.inksci.com/inker/post.php");
                         global_MSG = 705;
                         new Thread() {
                                 @Override
@@ -191,10 +191,7 @@ public class CameraActivity extends Activity implements CamOpenOverCallback {
 
                     
                     // have not master
-                    if(new_visit){
-                    	( (TextView) findViewById(R.id.textView2) ).setText("小墨还没有主人");
-                    	new_visit=false;
-                    }
+                    
                     master_control = (ImageView) findViewById(R.id.imageView2);
                     master_control.setImageBitmap( ((BitmapDrawable)(getResources().getDrawable(R.drawable.make_not))).getBitmap() );
 
@@ -327,7 +324,7 @@ public class CameraActivity extends Activity implements CamOpenOverCallback {
                             global_entity.addPart("V",
                                 new StringBody(str_master_702));
                             global_post = new HttpPost(
-                                    "http://www.inksci.com/~config/phpmail/tst/test.php");
+                                    "http://www.inksci.com/inker/post.php");
                             global_MSG = 706;
                             new Thread() {
                                     @Override
@@ -404,7 +401,7 @@ public class CameraActivity extends Activity implements CamOpenOverCallback {
                             new_face_token = face_token;
                             jump_reslut_04(gender, age, glass, smile);
                         } else {
-                            //Toast.makeText(getApplicationContext(), "Notice: jsonArray.length() is 0.", Toast.LENGTH_LONG).show();
+                            Toast.makeText(getApplicationContext(), "抱歉，没有检测到人脸！", Toast.LENGTH_LONG).show();
                         }
                     } catch (JSONException e) {
                         // TODO Auto-generated catch block
@@ -490,6 +487,10 @@ public class CameraActivity extends Activity implements CamOpenOverCallback {
     protected void jump_reslut_04(String gender, String age, String glass, String smile) {
         setContentView(R.layout.result_04_02);
         new_visit=true;
+        
+        
+        
+        
         TextView tv01=(TextView)findViewById(R.id.textView1);
         if(gender=="Male"){gender="男";}else{gender="女";}
         tv01.setText("         性别：男\n         年龄："+age+"\n         "+glass+"，"+smile);
@@ -549,6 +550,10 @@ public class CameraActivity extends Activity implements CamOpenOverCallback {
         }
         
         if(!date_valid){// file is invalid, or not exist
+        	if(new_visit){
+            	( (TextView) findViewById(R.id.textView2) ).setText("小墨还没有主人");
+            	new_visit=false;
+            }
         	// master control
         	master_control = (ImageView) findViewById(R.id.imageView2);
             Resources res=getResources();  
@@ -771,7 +776,7 @@ public class CameraActivity extends Activity implements CamOpenOverCallback {
                 if (!f.exists()){
                 	
                 	InkFunction.write_file(pathName,"visit.data","{visit_count:1}");
-                	Toast.makeText(getApplicationContext(), "visit.data", Toast.LENGTH_SHORT).show();
+                	//Toast.makeText(getApplicationContext(), "visit.data", Toast.LENGTH_SHORT).show();
                 	setContentView(R.layout.introduce_02);
 	                
                 	/*
