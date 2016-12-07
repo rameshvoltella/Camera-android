@@ -153,8 +153,7 @@ public class CameraActivity extends Activity implements CamOpenOverCallback {
 
                 switch (msg.what) {
                 case 701:
-                    Toast.makeText(getApplicationContext(), (String) msg.obj,
-                        Toast.LENGTH_SHORT).show();
+                    // Toast.makeText(getApplicationContext(), (String) msg.obj, Toast.LENGTH_SHORT).show();
 
                     Time t = new Time("GMT+8"); // or Time t=new Time("GMT+8"); ??Time Zone???  
                     t.setToNow(); // ???????  
@@ -196,8 +195,7 @@ public class CameraActivity extends Activity implements CamOpenOverCallback {
                 	master_control.setOnClickListener(new OnClickListener() {
                             @Override
                             public void onClick(View v) {
-                                Toast.makeText(getApplicationContext(), "click...",
-                                    Toast.LENGTH_SHORT).show();
+                                // Toast.makeText(getApplicationContext(), "click...", Toast.LENGTH_SHORT).show();
                                 File f = new File(Environment.getExternalStorageDirectory().getAbsolutePath()+"/"+app_path_name + "/" +
                                         "master.data");
                                 if (f.exists()){
@@ -233,8 +231,7 @@ public class CameraActivity extends Activity implements CamOpenOverCallback {
                     JSONObject jsonObject_702;
 
                     try {
-                        Toast.makeText(getApplicationContext(), "JSON ...",
-                            Toast.LENGTH_SHORT).show();
+                        // Toast.makeText(getApplicationContext(), "JSON ...", Toast.LENGTH_SHORT).show();
 
                         jsonObject_702 = new JSONObject(txt_data_702);
 
@@ -242,9 +239,7 @@ public class CameraActivity extends Activity implements CamOpenOverCallback {
                                 "confidence");
 
                         if (Float.parseFloat(confidence) > 90) {
-                            Toast.makeText(getApplicationContext(),
-                                "Love you, my master!", Toast.LENGTH_SHORT)
-                                 .show();
+                            // Toast.makeText(getApplicationContext(), "Love you, my master!", Toast.LENGTH_SHORT).show();
                             
                             
                             
@@ -260,8 +255,7 @@ public class CameraActivity extends Activity implements CamOpenOverCallback {
                         	master_control.setOnClickListener(new OnClickListener() {
                                     @Override
                                     public void onClick(View v) {
-                                        Toast.makeText(getApplicationContext(), "click...",
-                                            Toast.LENGTH_SHORT).show();
+                                        //Toast.makeText(getApplicationContext(), "click...", Toast.LENGTH_SHORT).show();
                                         File f = new File(Environment.getExternalStorageDirectory().getAbsolutePath()+"/"+app_path_name + "/" +
                                                 "master.data");
                                         if (f.exists()){
@@ -283,8 +277,7 @@ public class CameraActivity extends Activity implements CamOpenOverCallback {
                             
                             
                         } else {
-                            Toast.makeText(getApplicationContext(),
-                                "Hi, friend!", Toast.LENGTH_SHORT).show();
+                           // Toast.makeText(getApplicationContext(), "Hi, friend!", Toast.LENGTH_SHORT).show();
                             
                             
                             master_control = (ImageView) findViewById(R.id.imageView2);
@@ -299,8 +292,7 @@ public class CameraActivity extends Activity implements CamOpenOverCallback {
                         	master_control.setOnClickListener(new OnClickListener() {
                                     @Override
                                     public void onClick(View v) {
-                                        Toast.makeText(getApplicationContext(), "click...",
-                                            Toast.LENGTH_SHORT).show();
+                                        //Toast.makeText(getApplicationContext(), "click...", Toast.LENGTH_SHORT).show();
                                     }
                             });
                             
@@ -353,8 +345,7 @@ public class CameraActivity extends Activity implements CamOpenOverCallback {
                     break;
 
                 case MSG_OK:
-                    Toast.makeText(getApplicationContext(), (String) msg.obj,
-                        Toast.LENGTH_SHORT).show();
+                   // Toast.makeText(getApplicationContext(), (String) msg.obj, Toast.LENGTH_SHORT).show();
                     writeFileToSD("up.html.txt.ink", (String) msg.obj);
                     //3.???? ??????
                     String txt_data = (String) msg.obj;
@@ -366,8 +357,7 @@ public class CameraActivity extends Activity implements CamOpenOverCallback {
 
                     try {
                         //editText.setText("...");
-                        Toast.makeText(getApplicationContext(), "JSON ...",
-                            Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(getApplicationContext(), "JSON ...", Toast.LENGTH_SHORT).show();
 
                         jsonObject = new JSONObject(txt_data);
 
@@ -395,17 +385,15 @@ public class CameraActivity extends Activity implements CamOpenOverCallback {
                             	smile="表情严肃";}else if(int_smile<40){smile="嫣然一笑";}else if(int_smile<60){smile="笑逐颜开";}else if(int_smile<80){smile="笑容可掬";}else{smile="捧腹大笑";}
                             
                             //editText.setText("gender: "+gender+", age: "+age+", face_token: "+face_token);
-                            Toast.makeText(getApplicationContext(),
-                                "gender: " + gender + ", age: " + age+ ", glass: " + glass+ ", smile: " + smile +
-                                ", face_token: " + face_token, Toast.LENGTH_LONG)
-                                 .show();
+                            //Toast.makeText(getApplicationContext(),
+                                //"gender: " + gender + ", age: " + age+ ", glass: " + glass+ ", smile: " + smile +
+                               // ", face_token: " + face_token, Toast.LENGTH_LONG)
+                                // .show();
 
                             new_face_token = face_token;
                             jump_reslut_04(gender, age, glass, smile);
                         } else {
-                            Toast.makeText(getApplicationContext(),
-                                "Notice: jsonArray.length() is 0.",
-                                Toast.LENGTH_LONG).show();
+                            //Toast.makeText(getApplicationContext(), "Notice: jsonArray.length() is 0.", Toast.LENGTH_LONG).show();
                         }
                     } catch (JSONException e) {
                         // TODO Auto-generated catch block
@@ -417,8 +405,7 @@ public class CameraActivity extends Activity implements CamOpenOverCallback {
                     break;
 
                 case EXCEPTION:
-                    Toast.makeText(getApplicationContext(), (String) msg.obj,
-                        Toast.LENGTH_SHORT).show();
+                   // Toast.makeText(getApplicationContext(), (String) msg.obj, Toast.LENGTH_SHORT).show();
 
                     break;
                 }
@@ -501,8 +488,7 @@ public class CameraActivity extends Activity implements CamOpenOverCallback {
         iv_04_02.setOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Toast.makeText(getApplicationContext(), "click...",
-                        Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(getApplicationContext(), "click...", Toast.LENGTH_SHORT).show();
                     System.exit(0);
                 }
             });
@@ -552,7 +538,7 @@ public class CameraActivity extends Activity implements CamOpenOverCallback {
     				d1 = sdf.parse(y+"-"+m+"-"+d+" 00:00:00");
     				Date d2=sdf.parse(t.year+"-"+t.month+"-"+t.monthDay+" 00:00:00");
     				daysBetween(d1,d2);
-    				Toast.makeText(getApplicationContext(), "daysBetween(d1,d2): "+daysBetween(d1,d2), Toast.LENGTH_LONG).show();
+    				//Toast.makeText(getApplicationContext(), "daysBetween(d1,d2): "+daysBetween(d1,d2), Toast.LENGTH_LONG).show();
     				
     				if(daysBetween(d1,d2)<31){
     					date_valid=true;
@@ -584,8 +570,7 @@ public class CameraActivity extends Activity implements CamOpenOverCallback {
         	master_control.setOnClickListener(new OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Toast.makeText(getApplicationContext(), "click...",
-                            Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(getApplicationContext(), "click...", Toast.LENGTH_SHORT).show();
                         new Thread() {
                             @Override
                             public void run() {
@@ -652,7 +637,7 @@ public class CameraActivity extends Activity implements CamOpenOverCallback {
 				d1 = sdf.parse(y+"-"+m+"-"+d+" 00:00:00");
 				Date d2=sdf.parse(t.year+"-"+t.month+"-"+t.monthDay+" 00:00:00");
 				daysBetween(d1,d2);
-				Toast.makeText(getApplicationContext(), "daysBetween(d1,d2): "+daysBetween(d1,d2), Toast.LENGTH_LONG).show();
+				//Toast.makeText(getApplicationContext(), "daysBetween(d1,d2): "+daysBetween(d1,d2), Toast.LENGTH_LONG).show();
 				
 				if(daysBetween(d1,d2)<31){
 					return true;
@@ -783,9 +768,7 @@ public class CameraActivity extends Activity implements CamOpenOverCallback {
         iv01.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getApplicationContext(), "click...",
-                    Toast.LENGTH_SHORT).show();
-
+                
                 setContentView(R.layout.introduce_02);
                 
                 WebView webview=(WebView) findViewById(R.id.webView1);
@@ -798,9 +781,7 @@ public class CameraActivity extends Activity implements CamOpenOverCallback {
                 iv01.setOnClickListener(new OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            Toast.makeText(getApplicationContext(),
-                                "click...", Toast.LENGTH_SHORT).show();
-
+                           
                             run_camera();
                         }
                     });
@@ -820,8 +801,7 @@ public class CameraActivity extends Activity implements CamOpenOverCallback {
                 }
             };
 
-        Toast.makeText(getApplicationContext(), "Camera: Welcome!",
-            Toast.LENGTH_SHORT).show();
+        // Toast.makeText(getApplicationContext(), "Camera: Welcome!", Toast.LENGTH_SHORT).show();
         openThread.start();
         setContentView(R.layout.activity_camera);
         initUI();
