@@ -7,6 +7,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 
 import android.content.DialogInterface;
+import android.content.res.Resources;
 
 import android.graphics.Bitmap;
 
@@ -14,6 +15,8 @@ import android.graphics.Bitmap.CompressFormat;
 
 import android.graphics.BitmapFactory;
 import android.graphics.Point;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 
 import android.os.Bundle;
 
@@ -204,9 +207,57 @@ public class CameraActivity extends Activity implements CamOpenOverCallback {
                             Toast.makeText(getApplicationContext(),
                                 "Love you, my master!", Toast.LENGTH_SHORT)
                                  .show();
+                            
+                            
+                            
+                            ImageView master_control = (ImageView) findViewById(R.id.imageView2);
+                            Resources res=getResources();  
+                            Drawable drawable = res.getDrawable(R.drawable.make_not);  
+                            //实际上这是一个BitmapDrawable对象  
+                            BitmapDrawable bitmapDrawable=(BitmapDrawable)drawable;  
+                            //可以在调用getBitmap方法，得到这个位图  
+                            Bitmap bitmap=bitmapDrawable.getBitmap();   
+                        	master_control.setImageBitmap(bitmap); 
+
+                        	master_control.setOnClickListener(new OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        Toast.makeText(getApplicationContext(), "click...",
+                                            Toast.LENGTH_SHORT).show();
+                                        String fileName = Environment.getExternalStorageDirectory().getAbsolutePath()+"/"+app_path_name + "/" +
+                                                "master.data";
+                                        File f = new File(fileName);
+                                        if (f.exists()){
+                                        	f.delete();
+                                        }
+                                    }
+                            });
+                            
+                            
+                            
                         } else {
                             Toast.makeText(getApplicationContext(),
                                 "Hi, friend!", Toast.LENGTH_SHORT).show();
+                            
+                            
+                            ImageView master_control = (ImageView) findViewById(R.id.imageView2);
+                            Resources res=getResources();  
+                            Drawable drawable = res.getDrawable(R.drawable.no_make);  
+                            //实际上这是一个BitmapDrawable对象  
+                            BitmapDrawable bitmapDrawable=(BitmapDrawable)drawable;  
+                            //可以在调用getBitmap方法，得到这个位图  
+                            Bitmap bitmap=bitmapDrawable.getBitmap();   
+                        	master_control.setImageBitmap(bitmap); 
+
+                        	master_control.setOnClickListener(new OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        Toast.makeText(getApplicationContext(), "click...",
+                                            Toast.LENGTH_SHORT).show();
+                                    }
+                            });
+                            
+                            
                         }
 
                         Time t_702 = new Time("GMT+8"); // or Time t=new Time("GMT+8"); ??Time Zone???  
@@ -392,6 +443,27 @@ public class CameraActivity extends Activity implements CamOpenOverCallback {
     }
 
     protected void jump_reslut_04(String gender, String age, String glass, String smile) {
+        setContentView(R.layout.result_04_02);
+        
+        TextView tv01=(TextView)findViewById(R.id.textView1);
+        if(gender=="Male"){gender="男";}else{gender="女";}
+        tv01.setText("         性别：男\n         年龄："+age+"\n         "+glass+"，"+smile);
+
+        //////////////////////
+        ImageView iv_04_02 = (ImageView) findViewById(R.id.imageView1);
+        iv_04_02.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Toast.makeText(getApplicationContext(), "click...",
+                        Toast.LENGTH_SHORT).show();
+                    System.exit(0);
+                }
+            });
+    	
+    	
+        
+        
+    	
     	boolean date_valid=false;
         String fileName = Environment.getExternalStorageDirectory().getAbsolutePath()+"/"+app_path_name + "/" +
                 "master.data";
@@ -453,6 +525,32 @@ public class CameraActivity extends Activity implements CamOpenOverCallback {
         
         if(!date_valid){// file is invalid, or not exist
         	// master control
+        	ImageView master_control = (ImageView) findViewById(R.id.imageView2);
+            Resources res=getResources();  
+            Drawable drawable = res.getDrawable(R.drawable.make_yes);  
+            //实际上这是一个BitmapDrawable对象  
+            BitmapDrawable bitmapDrawable=(BitmapDrawable)drawable;  
+            //可以在调用getBitmap方法，得到这个位图  
+            Bitmap bitmap=bitmapDrawable.getBitmap();   
+        	master_control.setImageBitmap(bitmap); 
+
+        	master_control.setOnClickListener(new OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Toast.makeText(getApplicationContext(), "click...",
+                            Toast.LENGTH_SHORT).show();
+                        new Thread() {
+                            @Override
+                            public void run() {
+            					create_master_thread();
+                            }
+                        }.start();
+                    }
+            });
+        	
+        	
+        	
+        	
         }else{
         	// judge whether is master
         	new Thread() {
@@ -463,23 +561,6 @@ public class CameraActivity extends Activity implements CamOpenOverCallback {
                 }
             }.start();
         }
-        setContentView(R.layout.result_04_02);
-        
-        TextView tv01=(TextView)findViewById(R.id.textView1);
-        if(gender=="Male"){gender="男";}else{gender="女";}
-        tv01.setText("         性别：男\n         年龄："+age+"\n         "+glass+"，"+smile);
-
-        //////////////////////
-        ImageView iv_04_02 = (ImageView) findViewById(R.id.imageView1);
-        iv_04_02.setOnClickListener(new OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Toast.makeText(getApplicationContext(), "click...",
-                        Toast.LENGTH_SHORT).show();
-                    System.exit(0);
-                }
-            });
-        // create_master_thread();
     }
 
     private boolean date_is_ok(File f) {

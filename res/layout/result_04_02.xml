@@ -27,10 +27,17 @@ android:background="@drawable/display_inker"	>
     android:orientation="vertical"
     android:layout_weight="8"
 android:background="#FFFFFF"	>
+     <ImageView
+        android:id="@+id/imageView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:gravity="center_vertical"
+        android:src="@drawable/no_make" />
     <ImageView
         android:id="@+id/imageView1"
         android:layout_width="wrap_content"
-        android:layout_height="fill_parent"
+        android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:gravity="center_vertical"
         android:src="@drawable/testit" />
