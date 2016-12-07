@@ -16,7 +16,7 @@ android:background="@drawable/display_inker"	>
         android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:gravity="center_vertical|left"
-        android:text="..."
+        android:text="        ..."
         android:textColor="#000000"
         android:textAppearance="?android:attr/textAppearanceMedium" />
     

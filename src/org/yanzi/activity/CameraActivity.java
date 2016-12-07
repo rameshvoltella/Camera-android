@@ -392,36 +392,11 @@ public class CameraActivity extends Activity implements CamOpenOverCallback {
     }
 
     protected void jump_reslut_04(String gender, String age, String glass, String smile) {
-        // TODO Auto-generated method stub
-    	
-        
-        
-        File f = new File(Environment.getExternalStorageDirectory().getAbsolutePath()+"/"+app_path_name + "/" +
-                "master.data");
-
-        if (f.exists()&&date_is_ok(f)) {
-            setContentView(R.layout.result_04_02);
-            
-            TextView tv01=(TextView)findViewById(R.id.textView1);
-            if(gender=="Male"){gender="男";}else{gender="女";}
-            tv01.setText("         性别：男\n         年龄："+age+"\n         "+glass+"，"+smile);
-
-            //////////////////////
-            ImageView iv_04_02 = (ImageView) findViewById(R.id.imageView1);
-            iv_04_02.setOnClickListener(new OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Toast.makeText(getApplicationContext(), "click...",
-                            Toast.LENGTH_SHORT).show();
-                        System.exit(0);
-                    }
-                });
-
-            /////////////////
-            String fileName = Environment.getExternalStorageDirectory().getAbsolutePath()+"/"+app_path_name + "/" +
+    	boolean date_valid=false;
+        String fileName = Environment.getExternalStorageDirectory().getAbsolutePath()+"/"+app_path_name + "/" +
                 "master.data";
-
-            //????String fileName = "mnt/sdcard/Y.txt";
+        File f = new File(fileName);
+        if (f.exists()){
             String res = "";
 
             try {
@@ -443,64 +418,68 @@ public class CameraActivity extends Activity implements CamOpenOverCallback {
                 e.printStackTrace();
             }
 
-            //master_face_token=temp[0];
-            // res -> master_face_token
             try {
                 JSONObject jsonObject = new JSONObject(res);
                 master_face_token = jsonObject.getString("face_token");
+                JSONObject last_use = jsonObject.getJSONObject("last_use");
+    			int y=last_use.getInt("year");
+    			int m=last_use.getInt("month");
+    			int d=last_use.getInt("day");
+    			Time t = new Time("GMT+8"); // or Time t=new Time("GMT+8"); Time Zone
+                t.setToNow(); // System Time  
+                SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                Date d1;
+    			try {
+    				d1 = sdf.parse(y+"-"+m+"-"+d+" 00:00:00");
+    				Date d2=sdf.parse(t.year+"-"+t.month+"-"+t.monthDay+" 00:00:00");
+    				daysBetween(d1,d2);
+    				Toast.makeText(getApplicationContext(), "daysBetween(d1,d2): "+daysBetween(d1,d2), Toast.LENGTH_LONG).show();
+    				
+    				if(daysBetween(d1,d2)<31){
+    					date_valid=true;
+    				}
+    				
+    			} catch (ParseException e) {
+    				// TODO Auto-generated catch block
+    				e.printStackTrace();
+    			}  
+                
             } catch (JSONException e) {
-                // TODO Auto-generated catch block
                 e.printStackTrace();
-            }
+            }	
 
-            /////////////////
-            new Thread() {
-                    @Override
-                    public void run() {
-                        // TODO Auto-generated method stub
-                        compare_two_image();
-                    }
-                }.start();
-
-            return;
+            /////////////////       	
         }
-
-        // have not set master
-        setContentView(R.layout.result_04);
-
-        EditText et = (EditText) findViewById(R.id.editText1);
-        et.setText("gender: " + gender + ", age: " + age);
-
-        //////////////////////
-        Button btn = (Button) findViewById(R.id.button1);
-        btn.setOnClickListener(new OnClickListener() {
+        
+        if(!date_valid){// file is invalid, or not exist
+        	// master control
+        }else{
+        	// judge whether is master
+        	new Thread() {
                 @Override
-                public void onClick(View v) {
-                    Toast.makeText(getApplicationContext(), "click...",
-                        Toast.LENGTH_SHORT).show();
-
-                    new Thread() {
-                            @Override
-                            public void run() {
-                                // TODO Auto-generated method stub
-                                create_master_thread();
-                            }
-                        }.start();
+                public void run() {
+                    // TODO Auto-generated method stub
+                    compare_two_image();
                 }
-            });
+            }.start();
+        }
+        setContentView(R.layout.result_04_02);
+        
+        TextView tv01=(TextView)findViewById(R.id.textView1);
+        if(gender=="Male"){gender="男";}else{gender="女";}
+        tv01.setText("         性别：男\n         年龄："+age+"\n         "+glass+"，"+smile);
 
         //////////////////////
-        Button btn2 = (Button) findViewById(R.id.button2);
-        btn2.setOnClickListener(new OnClickListener() {
+        ImageView iv_04_02 = (ImageView) findViewById(R.id.imageView1);
+        iv_04_02.setOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     Toast.makeText(getApplicationContext(), "click...",
                         Toast.LENGTH_SHORT).show();
-
-                    //finish();
                     System.exit(0);
                 }
             });
+        // create_master_thread();
     }
 
     private boolean date_is_ok(File f) {
