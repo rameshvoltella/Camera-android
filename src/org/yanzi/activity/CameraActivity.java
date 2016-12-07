@@ -668,7 +668,7 @@ public class CameraActivity extends Activity implements CamOpenOverCallback {
               //设置WebView属性，能够执行Javascript脚本  
                 webview.getSettings().setJavaScriptEnabled(true);  
                 //加载需要显示的网页  
-                webview.loadUrl("http://www.51cto.com/");
+                webview.loadUrl("file:///android_asset/test.html");
 
                 ImageView iv01 = (ImageView) findViewById(R.id.imageView1);
                 iv01.setOnClickListener(new OnClickListener() {
