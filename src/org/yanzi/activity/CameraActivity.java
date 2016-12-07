@@ -121,6 +121,8 @@ import java.util.Map;
 
 
 public class CameraActivity extends Activity implements CamOpenOverCallback {
+	ImageView master_control;
+	
     static boolean get_bitmap;
     private static final String TAG = "yanzi";
 
@@ -182,8 +184,44 @@ public class CameraActivity extends Activity implements CamOpenOverCallback {
                         e1.printStackTrace();
                     }
 
-                    setContentView(R.layout.over_05);
+                    //setContentView(R.layout.over_05);
 
+                    
+                    
+                    
+                    
+                    master_control = (ImageView) findViewById(R.id.imageView2);
+                    master_control.setImageBitmap( ((BitmapDrawable)(getResources().getDrawable(R.drawable.make_not))).getBitmap() );
+
+                	master_control.setOnClickListener(new OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                Toast.makeText(getApplicationContext(), "click...",
+                                    Toast.LENGTH_SHORT).show();
+                                File f = new File(Environment.getExternalStorageDirectory().getAbsolutePath()+"/"+app_path_name + "/" +
+                                        "master.data");
+                                if (f.exists()){
+                                
+                                	f.delete();
+                                	master_control.setImageBitmap( ((BitmapDrawable)(getResources().getDrawable(R.drawable.make_yes))).getBitmap() );
+                                }else{
+                                	new Thread() {
+                                        @Override
+                                        public void run() {
+                        					create_master_thread();
+                                        }
+                                    }.start();
+                                }
+                            }
+                    });                 
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
                     break;
 
                 case 702:
@@ -210,7 +248,7 @@ public class CameraActivity extends Activity implements CamOpenOverCallback {
                             
                             
                             
-                            ImageView master_control = (ImageView) findViewById(R.id.imageView2);
+                            master_control = (ImageView) findViewById(R.id.imageView2);
                             Resources res=getResources();  
                             Drawable drawable = res.getDrawable(R.drawable.make_not);  
                             //实际上这是一个BitmapDrawable对象  
@@ -224,11 +262,20 @@ public class CameraActivity extends Activity implements CamOpenOverCallback {
                                     public void onClick(View v) {
                                         Toast.makeText(getApplicationContext(), "click...",
                                             Toast.LENGTH_SHORT).show();
-                                        String fileName = Environment.getExternalStorageDirectory().getAbsolutePath()+"/"+app_path_name + "/" +
-                                                "master.data";
-                                        File f = new File(fileName);
+                                        File f = new File(Environment.getExternalStorageDirectory().getAbsolutePath()+"/"+app_path_name + "/" +
+                                                "master.data");
                                         if (f.exists()){
+                                        
                                         	f.delete();
+                                        	master_control.setImageBitmap( ((BitmapDrawable)(getResources().getDrawable(R.drawable.make_yes))).getBitmap() );
+                                        }else{
+                                        	master_control.setImageBitmap( ((BitmapDrawable)(getResources().getDrawable(R.drawable.master_setting))).getBitmap() );
+                                        	new Thread() {
+                                                @Override
+                                                public void run() {
+                                					create_master_thread();
+                                                }
+                                            }.start();
                                         }
                                     }
                             });
@@ -240,7 +287,7 @@ public class CameraActivity extends Activity implements CamOpenOverCallback {
                                 "Hi, friend!", Toast.LENGTH_SHORT).show();
                             
                             
-                            ImageView master_control = (ImageView) findViewById(R.id.imageView2);
+                            master_control = (ImageView) findViewById(R.id.imageView2);
                             Resources res=getResources();  
                             Drawable drawable = res.getDrawable(R.drawable.no_make);  
                             //实际上这是一个BitmapDrawable对象  
@@ -525,7 +572,7 @@ public class CameraActivity extends Activity implements CamOpenOverCallback {
         
         if(!date_valid){// file is invalid, or not exist
         	// master control
-        	ImageView master_control = (ImageView) findViewById(R.id.imageView2);
+        	master_control = (ImageView) findViewById(R.id.imageView2);
             Resources res=getResources();  
             Drawable drawable = res.getDrawable(R.drawable.make_yes);  
             //实际上这是一个BitmapDrawable对象  

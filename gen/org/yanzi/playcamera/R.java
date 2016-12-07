@@ -38,9 +38,10 @@ public final class R {
         public static final int logo01=0x7f02000e;
         public static final int make_not=0x7f02000f;
         public static final int make_yes=0x7f020010;
-        public static final int no_make=0x7f020011;
-        public static final int testit=0x7f020012;
-        public static final int welcom=0x7f020013;
+        public static final int master_setting=0x7f020011;
+        public static final int no_make=0x7f020012;
+        public static final int testit=0x7f020013;
+        public static final int welcom=0x7f020014;
     }
     public static final class id {
         public static final int action_settings=0x7f08000a;
