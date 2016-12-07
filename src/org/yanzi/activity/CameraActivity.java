@@ -2,6 +2,7 @@ package org.yanzi.activity;
 
 import android.R.string;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -99,6 +100,8 @@ import org.yanzi.camera.preview.CameraSurfaceView;
 import org.yanzi.playcamera.R;
 
 import org.yanzi.util.DisplayUtil;
+
+import com.inksci.function.InkFunction;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -502,26 +505,7 @@ public class CameraActivity extends Activity implements CamOpenOverCallback {
                 "master.data";
         File f = new File(fileName);
         if (f.exists()){
-            String res = "";
-
-            try {
-                FileInputStream fin = new FileInputStream(fileName);
-
-                //FileInputStream fin = openFileInput(fileName);  
-
-                //???????????FileInputStream
-                int length = fin.available();
-
-                byte[] buffer = new byte[length];
-
-                fin.read(buffer);
-
-                res = EncodingUtils.getString(buffer, "UTF-8");
-
-                fin.close();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+            String res = InkFunction.read_file(fileName);
 
             try {
                 JSONObject jsonObject = new JSONObject(res);
@@ -766,25 +750,77 @@ public class CameraActivity extends Activity implements CamOpenOverCallback {
         
         ImageView iv01=(ImageView)findViewById(R.id.imageView1);
         iv01.setOnClickListener(new OnClickListener() {
-            @Override
+            @SuppressLint("SetJavaScriptEnabled") @Override
             public void onClick(View v) {
-                
-                setContentView(R.layout.introduce_02);
-                
-                WebView webview=(WebView) findViewById(R.id.webView1);
-              //设置WebView属性，能够执行Javascript脚本  
-                webview.getSettings().setJavaScriptEnabled(true);  
-                //加载需要显示的网页  
-                webview.loadUrl("file:///android_asset/test.html");
+            	/*
+            	 * file exist?
+            	 * 	no: nothing
+            	 * 	yes: read and judge, and update*/
+            	String pathName=Environment.getExternalStorageDirectory().getAbsolutePath()+"/"+app_path_name + "/";
+            	String fileName=Environment.getExternalStorageDirectory().getAbsolutePath()+"/"+app_path_name + "/" +
+                        "visit.data";
+            	File f = new File(fileName);
+                if (!f.exists()){
+                	
+                	InkFunction.write_file(pathName,"visit.data","{visit_count:1}");
+                	Toast.makeText(getApplicationContext(), "visit.data", Toast.LENGTH_SHORT).show();
+                	setContentView(R.layout.introduce_02);
+	                
+	                WebView webview=(WebView) findViewById(R.id.webView1);
+	              //设置WebView属性，能够执行Javascript脚本  
+	                webview.getSettings().setJavaScriptEnabled(true);  
+	                //加载需要显示的网页  
+	                webview.loadUrl("file:///android_asset/test.html");
 
-                ImageView iv01 = (ImageView) findViewById(R.id.imageView1);
-                iv01.setOnClickListener(new OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                           
-                            run_camera();
-                        }
-                    });
+	                ImageView iv01 = (ImageView) findViewById(R.id.imageView1);
+	                iv01.setOnClickListener(new OnClickListener() {
+	                        @Override
+	                        public void onClick(View v) {
+	                           
+	                            run_camera();
+	                        }
+	                    });
+                }else{
+                	try {
+						JSONObject jsonObject  = new JSONObject(InkFunction.read_file(fileName));
+						int visit_count=jsonObject.getInt("visit_count");
+						if(visit_count==0||
+								visit_count==2||
+								visit_count==5||
+								visit_count==9||
+								visit_count==13||
+								visit_count==20){
+			                setContentView(R.layout.introduce_02);
+			                
+			                WebView webview=(WebView) findViewById(R.id.webView1);
+			              //设置WebView属性，能够执行Javascript脚本  
+			                webview.getSettings().setJavaScriptEnabled(true);  
+			                //加载需要显示的网页  
+			                webview.loadUrl("file:///android_asset/test.html");
+
+			                ImageView iv01 = (ImageView) findViewById(R.id.imageView1);
+			                iv01.setOnClickListener(new OnClickListener() {
+			                        @Override
+			                        public void onClick(View v) {
+			                           
+			                            run_camera();
+			                        }
+			                    });
+						}else{
+							run_camera();
+						}
+						visit_count++;
+						jsonObject.remove("visit_count");
+						jsonObject.put("visit_count", visit_count);
+						InkFunction.write_file(pathName,"visit.data",jsonObject.toString());
+						
+					} catch (JSONException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+                }
+                
+
             }
         });
     }
@@ -874,25 +910,28 @@ public class CameraActivity extends Activity implements CamOpenOverCallback {
         *
         * 4???????????
         */
-        menu.add(Menu.NONE, Menu.FIRST + 1, 5, "??")
+    	if(true){
+    	return true;
+    	}
+        menu.add(Menu.NONE, Menu.FIRST + 1, 5, "delete")
             .setIcon(android.R.drawable.ic_menu_delete);
 
         // setIcon()???????????????????????????????,?
 
         // android.R???????????????????????R???
-        menu.add(Menu.NONE, Menu.FIRST + 2, 2, "??")
+        menu.add(Menu.NONE, Menu.FIRST + 2, 2, "edit")
             .setIcon(android.R.drawable.ic_menu_edit);
 
-        menu.add(Menu.NONE, Menu.FIRST + 3, 6, "??")
+        menu.add(Menu.NONE, Menu.FIRST + 3, 6, "help")
             .setIcon(android.R.drawable.ic_menu_help);
 
-        menu.add(Menu.NONE, Menu.FIRST + 4, 1, "??")
+        menu.add(Menu.NONE, Menu.FIRST + 4, 1, "add")
             .setIcon(android.R.drawable.ic_menu_add);
 
-        menu.add(Menu.NONE, Menu.FIRST + 5, 4, "??")
+        menu.add(Menu.NONE, Menu.FIRST + 5, 4, "info")
             .setIcon(android.R.drawable.ic_menu_info_details);
 
-        menu.add(Menu.NONE, Menu.FIRST + 6, 3, "[??]??")
+        menu.add(Menu.NONE, Menu.FIRST + 6, 3, "send")
             .setIcon(android.R.drawable.ic_menu_send);
 
         return true;
@@ -902,19 +941,19 @@ public class CameraActivity extends Activity implements CamOpenOverCallback {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
         case Menu.FIRST + 1:
-            Toast.makeText(this, "????????", Toast.LENGTH_LONG).show();
+            //Toast.makeText(this, "????????", Toast.LENGTH_LONG).show();
 
             break;
 
         case Menu.FIRST + 2:
-            Toast.makeText(this, "????????", Toast.LENGTH_LONG).show();
+            //Toast.makeText(this, "????????", Toast.LENGTH_LONG).show();
 
             break;
 
         case Menu.FIRST + 3:
-            Toast.makeText(this, "????????", Toast.LENGTH_LONG).show();
+           // Toast.makeText(this, "????????", Toast.LENGTH_LONG).show();
 
-            final EditText editText = new EditText(this);
+          /*  final EditText editText = new EditText(this);
             new AlertDialog.Builder(this).setTitle("???").setView(editText).setPositiveButton("??",
                 new DialogInterface.OnClickListener() {
                     @Override
@@ -926,46 +965,20 @@ public class CameraActivity extends Activity implements CamOpenOverCallback {
                         up_image_file = editText.getText().toString();
                     }
                 }).setNegativeButton("??", null).show();
-
+*/
             break;
 
         case Menu.FIRST + 4:
-            Toast.makeText(this, "????????", Toast.LENGTH_LONG).show();
-            setContentView(R.layout.view_02);
-
-            Button btn = (Button) findViewById(R.id.button1);
-            btn.setOnClickListener(new OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Toast.makeText(getApplicationContext(), "222222222",
-                            Toast.LENGTH_SHORT).show();
-                        writeFileToSD("note.txt", "????????");
-                    }
-                });
-
-
-            final EditText et = (EditText) findViewById(R.id.editText1);
-
-            Button btn02 = (Button) findViewById(R.id.button2);
-            btn02.setOnClickListener(new OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Toast.makeText(getApplicationContext(),
-                            et.getText().toString(), Toast.LENGTH_SHORT).show();
-                        up_image_file = et.getText().toString();
-                    }
-                });
-
-
+            
             break;
 
         case Menu.FIRST + 5:
-            Toast.makeText(this, "????????", Toast.LENGTH_LONG).show();
+            //Toast.makeText(this, "????????", Toast.LENGTH_LONG).show();
 
             break;
 
         case Menu.FIRST + 6:
-            Toast.makeText(this, "????????", Toast.LENGTH_LONG).show();
+            //Toast.makeText(this, "????????", Toast.LENGTH_LONG).show();
 
             break;
         }
