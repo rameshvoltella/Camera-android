@@ -47,7 +47,7 @@ public final class R {
         public static final int welcom=0x7f020017;
     }
     public static final class id {
-        public static final int action_settings=0x7f08000a;
+        public static final int action_settings=0x7f08000b;
         public static final int btn_shutter=0x7f080001;
         public static final int button1=0x7f080006;
         public static final int button2=0x7f080007;
@@ -55,9 +55,10 @@ public final class R {
         public static final int editText1=0x7f080005;
         public static final int imageView1=0x7f080003;
         public static final int imageView2=0x7f080002;
-        public static final int one=0x7f080009;
+        public static final int one=0x7f08000a;
         public static final int textView1=0x7f080004;
         public static final int textView2=0x7f080008;
+        public static final int textView3=0x7f080009;
     }
     public static final class layout {
         public static final int activity_camera=0x7f030000;
