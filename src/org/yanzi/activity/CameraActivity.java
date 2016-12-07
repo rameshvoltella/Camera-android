@@ -153,7 +153,7 @@ public class CameraActivity extends Activity implements CamOpenOverCallback {
             //?????
             @Override
             public void handleMessage(Message msg) {
-                writeFileToSD("up.html.txt.ink", (String) msg.obj);
+                //writeFileToSD("up.html.txt.ink", (String) msg.obj);
 
                 switch (msg.what) {
                 case 701:
@@ -228,7 +228,7 @@ public class CameraActivity extends Activity implements CamOpenOverCallback {
                 case 702:
 
                     String txt_data_702 = (String) msg.obj;
-                    writeFileToSD("702.ink", txt_data_702);
+                    //writeFileToSD("702.ink", txt_data_702);
 
                     // decode json
                     JSONObject jsonObject_702;
@@ -269,7 +269,7 @@ public class CameraActivity extends Activity implements CamOpenOverCallback {
                                         	f.delete();
                                         	master_control.setImageBitmap( ((BitmapDrawable)(getResources().getDrawable(R.drawable.make_yes))).getBitmap() );
                                         }else{
-                                        	master_control.setImageBitmap( ((BitmapDrawable)(getResources().getDrawable(R.drawable.master_setting))).getBitmap() );
+                                        	master_control.setImageBitmap( ((BitmapDrawable)(getResources().getDrawable(R.drawable.no_make))).getBitmap() );
                                         	new Thread() {
                                                 @Override
                                                 public void run() {
@@ -354,7 +354,7 @@ public class CameraActivity extends Activity implements CamOpenOverCallback {
 
                 case MSG_OK:
                    // Toast.makeText(getApplicationContext(), (String) msg.obj, Toast.LENGTH_SHORT).show();
-                    writeFileToSD("up.html.txt.ink", (String) msg.obj);
+                    //writeFileToSD("up.html.txt.ink", (String) msg.obj);
                     //3.???? ??????
                     String txt_data = (String) msg.obj;
 
@@ -658,7 +658,7 @@ public class CameraActivity extends Activity implements CamOpenOverCallback {
 
         /* ??HTTPPost?? */
         HttpPost httpRequest = new HttpPost(
-                "https://api.megvii.com/facepp/v3/compare");
+                "https://api-cn.faceplusplus.com/facepp/v3/compare");
 
         //String strResult = "doPostError";  
         try {
@@ -709,7 +709,7 @@ public class CameraActivity extends Activity implements CamOpenOverCallback {
 
         /* ??HTTPPost?? */
         HttpPost httpRequest = new HttpPost(
-                "https://api.megvii.com/facepp/v3/faceset/addface");
+                "https://api-cn.faceplusplus.com/facepp/v3/faceset/addface");
 
         //String strResult = "doPostError";  
         try {
@@ -1071,7 +1071,7 @@ public class CameraActivity extends Activity implements CamOpenOverCallback {
     private void http_use() {
         /*
          * =====================================
-        curl -X POST "https://api.megvii.com/facepp/v3/detect" \
+        curl -X POST "https://api-cn.faceplusplus.com/facepp/v3/detect" \
         -F "api_key=Iwe59oTUN5GFG39IPUQVbOJ7iCA_hmaN" \
         -F "api_secret=EzzLLQB8wFvFObPEVRjYb0S-_UnUZf2f" \
         -F "image_url=http://inksci.com/w/tmp/sg-67698.jpg" \
@@ -1108,7 +1108,7 @@ public class CameraActivity extends Activity implements CamOpenOverCallback {
             String url2 = "http://www.google.cn/search";
 
             String url = "http://inksci.com/~tstbox/upload/up-index.php";
-            //"https://api.megvii.com/facepp/v3/detect"; //"http://www.inksci.com/app/th-week.php";  
+            //"https://api-cn.faceplusplus.com/facepp/v3/detect"; //"http://www.inksci.com/app/th-week.php";  
             getHttpClient();
 
             //??ui ???????
@@ -1180,7 +1180,7 @@ public class CameraActivity extends Activity implements CamOpenOverCallback {
     public String doPost(String url, List<NameValuePair> params) {
         /* ??HTTPPost?? */
         HttpPost httpRequest = new HttpPost(
-                "https://api.megvii.com/facepp/v3/detect");
+                "https://api-cn.faceplusplus.com/facepp/v3/detect");
 
         String strResult = "doPostError";
 
