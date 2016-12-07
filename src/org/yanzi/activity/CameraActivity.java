@@ -124,6 +124,7 @@ import java.util.Map;
 
 
 public class CameraActivity extends Activity implements CamOpenOverCallback {
+	boolean new_visit;
 	ImageView master_control;
 	
     static boolean get_bitmap;
@@ -189,9 +190,11 @@ public class CameraActivity extends Activity implements CamOpenOverCallback {
                     //setContentView(R.layout.over_05);
 
                     
-                    
-                    
-                    
+                    // have not master
+                    if(new_visit){
+                    	( (TextView) findViewById(R.id.textView2) ).setText("小墨还没有主人");
+                    	new_visit=false;
+                    }
                     master_control = (ImageView) findViewById(R.id.imageView2);
                     master_control.setImageBitmap( ((BitmapDrawable)(getResources().getDrawable(R.drawable.make_not))).getBitmap() );
 
@@ -244,8 +247,11 @@ public class CameraActivity extends Activity implements CamOpenOverCallback {
                         if (Float.parseFloat(confidence) > 90) {
                             // Toast.makeText(getApplicationContext(), "Love you, my master!", Toast.LENGTH_SHORT).show();
                             
-                            
-                            
+                            // you are master
+                        	if(new_visit){
+                        		( (TextView) findViewById(R.id.textView2) ).setText("主人，小墨好想你！");
+                        		new_visit=false;
+                        	}
                             master_control = (ImageView) findViewById(R.id.imageView2);
                             Resources res=getResources();  
                             Drawable drawable = res.getDrawable(R.drawable.make_not);  
@@ -281,8 +287,10 @@ public class CameraActivity extends Activity implements CamOpenOverCallback {
                             
                         } else {
                            // Toast.makeText(getApplicationContext(), "Hi, friend!", Toast.LENGTH_SHORT).show();
-                            
-                            
+                        	if(new_visit){   
+                        		( (TextView) findViewById(R.id.textView2) ).setText("嗨，很高兴认识你！");
+                        		new_visit=false;
+                        	}
                             master_control = (ImageView) findViewById(R.id.imageView2);
                             Resources res=getResources();  
                             Drawable drawable = res.getDrawable(R.drawable.no_make);  
@@ -481,7 +489,7 @@ public class CameraActivity extends Activity implements CamOpenOverCallback {
 
     protected void jump_reslut_04(String gender, String age, String glass, String smile) {
         setContentView(R.layout.result_04_02);
-        
+        new_visit=true;
         TextView tv01=(TextView)findViewById(R.id.textView1);
         if(gender=="Male"){gender="男";}else{gender="女";}
         tv01.setText("         性别：男\n         年龄："+age+"\n         "+glass+"，"+smile);
