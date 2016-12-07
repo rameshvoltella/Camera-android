@@ -774,11 +774,13 @@ public class CameraActivity extends Activity implements CamOpenOverCallback {
                 	Toast.makeText(getApplicationContext(), "visit.data", Toast.LENGTH_SHORT).show();
                 	setContentView(R.layout.introduce_02);
 	                
+                	/*
 	                WebView webview=(WebView) findViewById(R.id.webView1);
-	              //设置WebView属性，能够执行Javascript脚本  
+	                //设置WebView属性，能够执行Javascript脚本  
 	                webview.getSettings().setJavaScriptEnabled(true);  
 	                //加载需要显示的网页  
 	                webview.loadUrl("file:///android_asset/test.html");
+	                */
 
 	                ImageView iv01 = (ImageView) findViewById(R.id.imageView1);
 	                iv01.setOnClickListener(new OnClickListener() {
@@ -800,11 +802,12 @@ public class CameraActivity extends Activity implements CamOpenOverCallback {
 								visit_count==20){
 			                setContentView(R.layout.introduce_02);
 			                
-			                WebView webview=(WebView) findViewById(R.id.webView1);
-			              //设置WebView属性，能够执行Javascript脚本  
+			                /*WebView webview=(WebView) findViewById(R.id.webView1);
+			                //设置WebView属性，能够执行Javascript脚本  
 			                webview.getSettings().setJavaScriptEnabled(true);  
 			                //加载需要显示的网页  
 			                webview.loadUrl("file:///android_asset/test.html");
+			                */
 
 			                ImageView iv01 = (ImageView) findViewById(R.id.imageView1);
 			                iv01.setOnClickListener(new OnClickListener() {

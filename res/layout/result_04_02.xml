@@ -54,7 +54,7 @@ android:background="#FFFFFF"	>
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:gravity="center_vertical"
-        android:src="@drawable/testit" />
+        android:src="@drawable/exit" />
     </LinearLayout>    
     
 
