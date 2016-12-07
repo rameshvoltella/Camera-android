@@ -46,6 +46,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.Toast;
 
@@ -290,7 +291,7 @@ public class CameraActivity extends Activity implements CamOpenOverCallback {
                                     .getString("value");
                             int int_smile = attributes.getJSONObject("smile")
                                     .getInt("value");
-                            if(glass=="None"){glass="无眼镜";}else if(glass=="Dark"){glass="佩戴墨镜";}else if(glass=="Normal"){glass="普通眼镜";}
+                            if(glass.equals("None")){glass="无眼镜";}else if(glass.equals("Dark")){glass="佩戴墨镜";}else if(glass.equals("Normal")){glass="普通眼镜";}
                             String smile;
                             if(int_smile<20){
                             	smile="表情严肃";}else if(int_smile<40){smile="嫣然一笑";}else if(int_smile<60){smile="笑逐颜开";}else if(int_smile<80){smile="笑容可掬";}else{smile="捧腹大笑";}
@@ -400,6 +401,10 @@ public class CameraActivity extends Activity implements CamOpenOverCallback {
 
         if (f.exists()&&date_is_ok(f)) {
             setContentView(R.layout.result_04_02);
+            
+            TextView tv01=(TextView)findViewById(R.id.textView1);
+            if(gender=="Male"){gender="男";}else{gender="女";}
+            tv01.setText("         性别：男\n         年龄："+age+"\n         "+glass+"，"+smile);
 
             //////////////////////
             ImageView iv_04_02 = (ImageView) findViewById(R.id.imageView1);
