@@ -41,27 +41,29 @@ android:background="@drawable/display_inker"	>
     android:orientation="vertical"
     android:layout_weight="8"
 android:background="#FFFFFF"	>
+
      <ImageView
-        android:id="@+id/imageView2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:gravity="center_vertical"
-        android:src="@drawable/no_make" />
+         android:id="@+id/imageView2"
+         android:layout_width="178dp"
+         android:layout_height="51dp"
+         android:layout_gravity="center_horizontal"
+         android:gravity="center_vertical"
+         android:src="@drawable/no_make" />
 
      <TextView
          android:id="@+id/textView3"
          android:layout_width="fill_parent"
          android:layout_height="wrap_content"
          android:gravity="center_horizontal"
+    android:layout_marginTop="90dp"
          android:text="点击退出"
          android:textColor="#000000"
          android:textAppearance="?android:attr/textAppearanceSmall" />
 
     <ImageView
         android:id="@+id/imageView1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="140dp"
+        android:layout_height="51dp"
         android:layout_gravity="center_horizontal"
         android:gravity="center_vertical"
         android:src="@drawable/exit" />
