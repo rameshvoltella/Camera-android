@@ -493,7 +493,7 @@ public class CameraActivity extends Activity implements CamOpenOverCallback {
         
         TextView tv01=(TextView)findViewById(R.id.textView1);
         if(gender=="Male"){gender="男";}else{gender="女";}
-        tv01.setText("         性别：男\n         年龄："+age+"\n         "+glass+"，"+smile);
+        tv01.setText("         性别："+gender+"\n         年龄："+age+"\n         "+glass+"，"+smile);
 
         //////////////////////
         ImageView iv_04_02 = (ImageView) findViewById(R.id.imageView1);
