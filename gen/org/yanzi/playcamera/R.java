@@ -21,19 +21,16 @@ public final class R {
         public static final int activity_vertical_margin=0x7f040001;
     }
     public static final class drawable {
-        public static final int btn_camera_all=0x7f020000;
-        public static final int btn_camera_all_click=0x7f020001;
-        public static final int camera7=0x7f020002;
-        public static final int display_inker=0x7f020003;
-        public static final int exit=0x7f020004;
-        public static final int ic_launcher_icon=0x7f020005;
-        public static final int inker_play=0x7f020006;
-        public static final int logo01=0x7f020007;
-        public static final int make_not=0x7f020008;
-        public static final int make_yes=0x7f020009;
-        public static final int no_make=0x7f02000a;
-        public static final int try_it=0x7f02000b;
-        public static final int welcom=0x7f02000c;
+        public static final int camera7=0x7f020000;
+        public static final int display_inker=0x7f020001;
+        public static final int exit=0x7f020002;
+        public static final int ic_launcher_icon=0x7f020003;
+        public static final int inker_play=0x7f020004;
+        public static final int logo01=0x7f020005;
+        public static final int make_not=0x7f020006;
+        public static final int make_yes=0x7f020007;
+        public static final int no_make=0x7f020008;
+        public static final int try_it=0x7f020009;
     }
     public static final class id {
         public static final int action_settings=0x7f080007;

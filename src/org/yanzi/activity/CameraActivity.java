@@ -21,7 +21,6 @@ import android.graphics.drawable.Drawable;
 
 import android.os.Bundle;
 
-//import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.os.Bundle;
 import android.os.Environment;
@@ -148,15 +147,13 @@ public class CameraActivity extends Activity implements CamOpenOverCallback {
     private HttpParams httpParams;
     private HttpClient httpClient;
 
-    //1.????????????? handler
+
     private Handler handler = new Handler() {
-            //?????
+
             @Override
             public void handleMessage(Message msg) {
-                //writeFileToSD("up.html.txt.ink", (String) msg.obj);
-
                 switch (msg.what) {
-                case 701:
+                case 701: // 
                     // Toast.makeText(getApplicationContext(), (String) msg.obj, Toast.LENGTH_SHORT).show();
 
                     Time t = new Time("GMT+8"); // or Time t=new Time("GMT+8"); ??Time Zone???  
@@ -485,12 +482,19 @@ public class CameraActivity extends Activity implements CamOpenOverCallback {
     }
 
     protected void jump_reslut_04(String gender, String age, String glass, String smile) {
+    	/*
+    	 * Display the massage received.
+    	 * Whether master has been set?
+    	 * true:
+    	 *     judge whether this face belongs to the master?
+    	 * false:
+    	 *     supply a control menu for being the new master.
+    	 * */
+    	
         setContentView(R.layout.result_04_02);
         new_visit=true;
         
-        
-        
-        
+        // Display the massage
         TextView tv01=(TextView)findViewById(R.id.textView1);
         if(gender.equals("Male")){gender="男";}else{gender="女";}
         tv01.setText("         性别："+gender+"\n         年龄："+age+"\n         "+glass+"，"+smile);
@@ -500,7 +504,6 @@ public class CameraActivity extends Activity implements CamOpenOverCallback {
         iv_04_02.setOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    //Toast.makeText(getApplicationContext(), "click...", Toast.LENGTH_SHORT).show();
                     System.exit(0);
                 }
             });
@@ -763,80 +766,61 @@ public class CameraActivity extends Activity implements CamOpenOverCallback {
         
         ImageView iv01=(ImageView)findViewById(R.id.imageView1);
         iv01.setOnClickListener(new OnClickListener() {
-            @SuppressLint("SetJavaScriptEnabled") @Override
             public void onClick(View v) {
             	/*
-            	 * file exist?
-            	 * 	no: nothing
-            	 * 	yes: read and judge, and update*/
+            	 * Whether need show introduce page?
+            	 * if visit.data is not exist:
+            	 *     create this file and initialize it.
+            	 * Whether the visit number is in the array dictionary?
+            	 * (don`t forget update the visit number)
+            	 * true:
+            	 *     show introduce page
+            	 * false:
+            	 *     go to camera*/
+            	
+            	
             	String pathName=Environment.getExternalStorageDirectory().getAbsolutePath()+"/"+app_path_name + "/";
-            	String fileName=Environment.getExternalStorageDirectory().getAbsolutePath()+"/"+app_path_name + "/" +
-                        "visit.data";
+            	String fileName=Environment.getExternalStorageDirectory().getAbsolutePath()+"/"+app_path_name + "/" + "visit.data";
             	File f = new File(fileName);
+            	
+            	// initialize: if file is not exist create it.
                 if (!f.exists()){
                 	
-                	InkFunction.write_file(pathName,"visit.data","{visit_count:1}");
-                	//Toast.makeText(getApplicationContext(), "visit.data", Toast.LENGTH_SHORT).show();
-                	setContentView(R.layout.introduce_02);
-	                
-                	/*
-	                WebView webview=(WebView) findViewById(R.id.webView1);
-	                //设置WebView属性，能够执行Javascript脚本  
-	                webview.getSettings().setJavaScriptEnabled(true);  
-	                //加载需要显示的网页  
-	                webview.loadUrl("file:///android_asset/test.html");
-	                */
+                	InkFunction.write_file(pathName,"visit.data","{visit_count:0}");
+                }
+                
+                // read visit count and update file
+                int visit_count=-1;
+            	try {
+					JSONObject jsonObject  = new JSONObject(InkFunction.read_file(fileName));
+					visit_count=jsonObject.getInt("visit_count");
+					jsonObject.remove("visit_count");
+					jsonObject.put("visit_count", visit_count+1);
+					InkFunction.write_file(pathName,"visit.data",jsonObject.toString());
+					
+				} catch (JSONException e) {
+					e.printStackTrace();
+				}
+                
+            	
+            	if(visit_count==0||
+						visit_count==2||
+						visit_count==5||
+						visit_count==9||
+						visit_count==13||
+						visit_count==20){
+	                setContentView(R.layout.introduce_02);
 
 	                ImageView iv01 = (ImageView) findViewById(R.id.imageView1);
 	                iv01.setOnClickListener(new OnClickListener() {
 	                        @Override
 	                        public void onClick(View v) {
-	                           
 	                            run_camera();
 	                        }
 	                    });
-                }else{
-                	try {
-						JSONObject jsonObject  = new JSONObject(InkFunction.read_file(fileName));
-						int visit_count=jsonObject.getInt("visit_count");
-						if(visit_count==0||
-								visit_count==2||
-								visit_count==5||
-								visit_count==9||
-								visit_count==13||
-								visit_count==20){
-			                setContentView(R.layout.introduce_02);
-			                
-			                /*WebView webview=(WebView) findViewById(R.id.webView1);
-			                //设置WebView属性，能够执行Javascript脚本  
-			                webview.getSettings().setJavaScriptEnabled(true);  
-			                //加载需要显示的网页  
-			                webview.loadUrl("file:///android_asset/test.html");
-			                */
-
-			                ImageView iv01 = (ImageView) findViewById(R.id.imageView1);
-			                iv01.setOnClickListener(new OnClickListener() {
-			                        @Override
-			                        public void onClick(View v) {
-			                           
-			                            run_camera();
-			                        }
-			                    });
-						}else{
-							run_camera();
-						}
-						visit_count++;
-						jsonObject.remove("visit_count");
-						jsonObject.put("visit_count", visit_count);
-						InkFunction.write_file(pathName,"visit.data",jsonObject.toString());
-						
-					} catch (JSONException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-                }
-                
-
+				}else{
+					run_camera();
+				}
             }
         });
     }
@@ -851,9 +835,7 @@ public class CameraActivity extends Activity implements CamOpenOverCallback {
                     CameraInterface.getInstance()
                                    .doOpenCamera(CameraActivity.this);
                 }
-            };
-
-        // Toast.makeText(getApplicationContext(), "Camera: Welcome!", Toast.LENGTH_SHORT).show();
+        };
         openThread.start();
         setContentView(R.layout.activity_camera);
         initUI();
@@ -862,9 +844,12 @@ public class CameraActivity extends Activity implements CamOpenOverCallback {
         shutterBtn.setOnClickListener(new BtnListeners());
 
         image1 = (ImageButton) findViewById(R.id.btn_shutter);
-// Environment.getExternalStorageDirectory().getAbsolutePath()+"/"+app_path_name
-        Bitmap bitmap = getLoacalBitmap(Environment.getExternalStorageDirectory().getAbsolutePath()+"/"+"123.jpg"); //??????
-        //image1.setImageBitmap(bitmap); //??Bitmap
+        
+        
+        
+        // More Code:
+        // Bitmap bitmap = getLoacalBitmap(Environment.getExternalStorageDirectory().getAbsolutePath()+"/"+"123.jpg");
+        // image1.setImageBitmap(bitmap);
     }
 
     private Bitmap getLoacalBitmap(String url) {
@@ -914,18 +899,6 @@ public class CameraActivity extends Activity implements CamOpenOverCallback {
         // Inflate the menu; this adds items to the action bar if it is present.
         //getMenuInflater().inflate(R.menu.camera, menu);
 
-        /*
-        *
-        * add()????????????
-        *
-        * 1?????????????Menu.NONE,
-        *
-        * 2?Id???????Android????Id????????
-        *
-        * 3???????????????????????
-        *
-        * 4???????????
-        */
     	if(true){
     	return true;
     	}
