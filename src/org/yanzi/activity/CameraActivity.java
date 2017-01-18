@@ -102,14 +102,19 @@ import org.yanzi.util.DisplayUtil;
 
 import com.inksci.function.InkFunction;
 
+import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
+import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
+import java.net.HttpURLConnection;
+import java.net.URL;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -778,66 +783,75 @@ public class CameraActivity extends Activity implements CamOpenOverCallback {
             public void run() {
             	 Message msg = new Message();
                  msg.what = 901;
-                 msg.obj = WavPost();
+                 try {
+					msg.obj = WavPost();
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
                  handler.sendMessage(msg);
             }
         }.start();
             
     }
-    public String WavPost(){
-    	
-    	return "";
-    }
-    public String WavPost_back() {
-        String strResult = "doPostError";
-        getHttpClient(); // it`s important!
-        try {
-        	HttpPost httpRequest = new HttpPost(
-                    "http://vop.baidu.com/server_api");
-        	
-        	String encode_file=android.util.Base64.encodeToString(loadFile(new File(
-                    "/storage/sdcard1/InkerRobot/audiorecordtest-2.wav")),Base64.DEFAULT);
-        	
-            MultipartEntity entity = new MultipartEntity();
-            entity.addPart("format",
-                new StringBody("wav"));
-            entity.addPart("rate",
-                new StringBody("16000"));
-            entity.addPart("channel", new StringBody("1"));
-            entity.addPart("lan", new StringBody("zh"));
-            entity.addPart("token", new StringBody("24.c83edc2d0518a33ed80a931b7d5fcee1.2592000.1487255371.282335-9150869"));
-            entity.addPart("cuid", new StringBody("inksci"));
-            entity.addPart("len", new StringBody("103758"));
-            entity.addPart("speech", new StringBody(encode_file));
-            // 103758 audiorecordtest-2.wav
-            
-            httpRequest.setEntity(entity);
+    public String WavPost() throws Exception {
+        File pcmFile = new File(
+                "/storage/sdcard1/InkerRobot/audiorecordtest-2.wav");
+        HttpURLConnection conn = (HttpURLConnection) new URL("http://vop.baidu.com/server_api").openConnection();
 
-            HttpResponse httpResponse = httpClient.execute(httpRequest);
 
-            /* 200 ok */
-            if (httpResponse.getStatusLine().getStatusCode() == 200) {
-                
-                strResult = EntityUtils.toString(httpResponse.getEntity());
-            } else {
-                strResult = "Error Response: " +
-                    httpResponse.getStatusLine().toString();
-            }
-        } catch (ClientProtocolException e) {
-            strResult = e.getMessage().toString();
-            e.printStackTrace();
-        } catch (IOException e) {
-            strResult = e.getMessage().toString();
-            e.printStackTrace();
-        } catch (Exception e) {
-            strResult = e.getMessage().toString();
-            e.printStackTrace();
+        JSONObject params = new JSONObject();
+        params.put("format", "wav");
+        params.put("rate", 16000);
+        params.put("channel", "1");
+        params.put("token", "24.c83edc2d0518a33ed80a931b7d5fcee1.2592000.1487255371.282335-9150869");
+        params.put("cuid", "inksci");
+        params.put("len", 103758); //pcmFile.length());
+        params.put("speech", android.util.Base64.encodeToString(loadFile(pcmFile),Base64.NO_WRAP));
+
+        String pathName=Environment.getExternalStorageDirectory().getAbsolutePath()+"/"+app_path_name + "/";
+        
+        String tst="";
+        for(int i=0;i<10000;i++){
+        	tst+="abcde1234567890";
         }
+        
+        InkFunction.write_file(pathName,"encode.txt",tst);
+        // add request header
+        conn.setRequestMethod("POST");
+        conn.setRequestProperty("Content-Type", "application/json; charset=utf-8");
 
-        Log.v("strResult", strResult);
+        conn.setDoInput(true);
+        conn.setDoOutput(true);
 
-        return strResult;
+        // send request
+        DataOutputStream wr = new DataOutputStream(conn.getOutputStream());
+        wr.writeBytes(params.toString());
+        wr.flush();
+        wr.close();
+
+        
+        
+        return printResponse(conn);
     }
+    private static String printResponse(HttpURLConnection conn) throws Exception {
+        if (conn.getResponseCode() != 200) {
+            // request error
+            return "";
+        }
+        InputStream is = conn.getInputStream();
+        BufferedReader rd = new BufferedReader(new InputStreamReader(is));
+        String line;
+        StringBuffer response = new StringBuffer();
+        while ((line = rd.readLine()) != null) {
+            response.append(line);
+            response.append('\r');
+        }
+        rd.close();
+        System.out.println(new JSONObject(response.toString()).toString(4));
+        return response.toString();
+    }
+
     private static byte[] loadFile(File file) throws IOException {
         InputStream is = new FileInputStream(file);
 
@@ -858,8 +872,8 @@ public class CameraActivity extends Activity implements CamOpenOverCallback {
 
         is.close();
         return bytes;
-    }    
-    
+    }
+ 
     
     
     protected void logo_page(){
