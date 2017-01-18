@@ -130,7 +130,7 @@ public class CameraActivity extends Activity implements CamOpenOverCallback {
     private static final String TAG = "yanzi";
 
     //private EditText editText;
-    private static final int MSG_OK = 1;
+    private static final int MSG_CameraPost = 1;
     private static final int EXCEPTION = 2;
     MultipartEntity global_entity;
     HttpPost global_post;
@@ -342,7 +342,7 @@ public class CameraActivity extends Activity implements CamOpenOverCallback {
 
                
 
-                case MSG_OK:
+                case MSG_CameraPost:
                    // Toast.makeText(getApplicationContext(), (String) msg.obj, Toast.LENGTH_SHORT).show();
                     //writeFileToSD("up.html.txt.ink", (String) msg.obj);
                     //3.???? ??????
@@ -854,16 +854,70 @@ public class CameraActivity extends Activity implements CamOpenOverCallback {
 
                         if (get_bitmap == true) {
                            
-                        	getHttpClient(); // it`s important!
+                        	
 
                             Message msg = new Message();
-                            msg.what = MSG_OK;
-                            msg.obj = doPost();
+                            msg.what = MSG_CameraPost;
+                            msg.obj = CameraPost();
                             handler.sendMessage(msg);
                         }
                     }
                 }.start();
         }
+    }
+    
+    public String CameraPost() {
+        String strResult = "doPostError";
+        getHttpClient(); // it`s important!
+        try {
+        	HttpPost httpRequest = new HttpPost(
+                    "https://api-cn.faceplusplus.com/facepp/v3/detect");
+            ByteArrayOutputStream bos = new ByteArrayOutputStream();
+            Bitmap bm = CameraInterface.getInstance().get_ok_bitmap();
+            //BitmapFactory.decodeFile("/storage/sdcard1/InkerRobot/"+up_image_file);
+            bm.compress(CompressFormat.JPEG, 60, bos);
+
+            ContentBody mimePart = new ByteArrayBody(bos.toByteArray(),
+                    "image/jpeg");
+
+            FileBody fileBody = new FileBody(new File(
+                        "/storage/sdcard1/InkerRobot/" + up_image_file),
+                    "image/jpeg");
+            MultipartEntity entity = new MultipartEntity();
+            entity.addPart("image_file", mimePart);
+            entity.addPart("api_key",
+                new StringBody("Iwe59oTUN5GFG39IPUQVbOJ7iCA_hmaN"));
+            entity.addPart("api_secret",
+                new StringBody("EzzLLQB8wFvFObPEVRjYb0S-_UnUZf2f"));
+            entity.addPart("return_landmark", new StringBody("1"));
+            entity.addPart("return_attributes", new StringBody("gender,age,smiling,glass"));
+
+            httpRequest.setEntity(entity);
+
+            HttpResponse httpResponse = httpClient.execute(httpRequest);
+
+            /* 200 ok */
+            if (httpResponse.getStatusLine().getStatusCode() == 200) {
+                
+                strResult = EntityUtils.toString(httpResponse.getEntity());
+            } else {
+                strResult = "Error Response: " +
+                    httpResponse.getStatusLine().toString();
+            }
+        } catch (ClientProtocolException e) {
+            strResult = e.getMessage().toString();
+            e.printStackTrace();
+        } catch (IOException e) {
+            strResult = e.getMessage().toString();
+            e.printStackTrace();
+        } catch (Exception e) {
+            strResult = e.getMessage().toString();
+            e.printStackTrace();
+        }
+
+        Log.v("strResult", strResult);
+
+        return strResult;
     }
     private Bitmap getLoacalBitmap(String url) {
         try {
@@ -1053,133 +1107,6 @@ public class CameraActivity extends Activity implements CamOpenOverCallback {
             e.printStackTrace();
         }
     }
-
-    private void http_use() {
-        try {
-            ;
-        } catch (Exception e) {
-            e.printStackTrace();
-
-            //?????????
-            //Toast.makeText(this, "?????????", 0).show();
-            Message msg = new Message();
-            msg.what = EXCEPTION;
-            handler.sendMessage(msg);
-        }
-    }
-
-    public String doGet(String url, Map params) {
-        /* ??HTTPGet?? */
-        String paramStr = "";
-
-        Iterator iter = params.entrySet().iterator();
-
-        while (iter.hasNext()) {
-            Map.Entry entry = (Map.Entry) iter.next();
-            Object key = entry.getKey();
-            Object val = entry.getValue();
-            paramStr += (paramStr = "&" + key + "=" + val);
-        }
-
-        if (!paramStr.equals("")) {
-            paramStr = paramStr.replaceFirst("&", "?");
-            url += paramStr;
-        }
-
-        HttpGet httpRequest = new HttpGet(url);
-
-        String strResult = "doGetError";
-
-        try {
-            /* ????????? */
-            HttpResponse httpResponse = httpClient.execute(httpRequest);
-
-            /* ?????200 ok */
-            if (httpResponse.getStatusLine().getStatusCode() == 200) {
-                /* ????? */
-                strResult = EntityUtils.toString(httpResponse.getEntity());
-            } else {
-                strResult = "Error Response: " +
-                    httpResponse.getStatusLine().toString();
-            }
-        } catch (ClientProtocolException e) {
-            strResult = e.getMessage().toString();
-            e.printStackTrace();
-        } catch (IOException e) {
-            strResult = e.getMessage().toString();
-            e.printStackTrace();
-        } catch (Exception e) {
-            strResult = e.getMessage().toString();
-            e.printStackTrace();
-        }
-
-        Log.v("strResult", strResult);
-
-        return strResult;
-    }
-
-    public String doPost() {
-        /* ??HTTPPost?? */
-        HttpPost httpRequest = new HttpPost(
-                "https://api-cn.faceplusplus.com/facepp/v3/detect");
-
-        String strResult = "doPostError";
-
-        try {
-            /* ??????????? */
-            ByteArrayOutputStream bos = new ByteArrayOutputStream();
-            Bitmap bm = CameraInterface.getInstance().get_ok_bitmap();
-            //BitmapFactory.decodeFile("/storage/sdcard1/InkerRobot/"+up_image_file);
-            bm.compress(CompressFormat.JPEG, 60, bos);
-
-            ContentBody mimePart = new ByteArrayBody(bos.toByteArray(),
-                    "image/jpeg");
-
-            // ????????????faces??
-            FileBody fileBody = new FileBody(new File(
-                        "/storage/sdcard1/InkerRobot/" + up_image_file),
-                    "image/jpeg");
-            StringBody stringBody = new StringBody("description of file");
-            MultipartEntity entity = new MultipartEntity();
-            entity.addPart("image_file", mimePart);
-            //entity.addPart("image_url", new StringBody("http://inksci.com/w/tmp/sg-67698.jpg")); 
-            entity.addPart("api_key",
-                new StringBody("Iwe59oTUN5GFG39IPUQVbOJ7iCA_hmaN"));
-            entity.addPart("api_secret",
-                new StringBody("EzzLLQB8wFvFObPEVRjYb0S-_UnUZf2f"));
-            entity.addPart("return_landmark", new StringBody("1"));
-            entity.addPart("return_attributes", new StringBody("gender,age,smiling,glass"));
-
-            httpRequest.setEntity(entity);
-
-            //httpRequest.setEntity(new UrlEncodedFormEntity(params, HTTP.UTF_8));  
-            /* ????????? */
-            HttpResponse httpResponse = httpClient.execute(httpRequest);
-
-            /* ?????200 ok */
-            if (httpResponse.getStatusLine().getStatusCode() == 200) {
-                /* ????? */
-                strResult = EntityUtils.toString(httpResponse.getEntity());
-            } else {
-                strResult = "Error Response: " +
-                    httpResponse.getStatusLine().toString();
-            }
-        } catch (ClientProtocolException e) {
-            strResult = e.getMessage().toString();
-            e.printStackTrace();
-        } catch (IOException e) {
-            strResult = e.getMessage().toString();
-            e.printStackTrace();
-        } catch (Exception e) {
-            strResult = e.getMessage().toString();
-            e.printStackTrace();
-        }
-
-        Log.v("strResult", strResult);
-
-        return strResult;
-    }
-
     public HttpClient getHttpClient() {
         // ?? HttpParams ????? HTTP ?????????????  
         this.httpParams = new BasicHttpParams();
