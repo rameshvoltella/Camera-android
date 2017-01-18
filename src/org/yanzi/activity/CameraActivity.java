@@ -340,14 +340,7 @@ public class CameraActivity extends Activity implements CamOpenOverCallback {
 
                     break;
 
-                case 901:
-                    ;
-
-                    Bitmap re_bitmap = CameraInterface.getInstance()
-                                                      .get_ok_bitmap();
-                    //image1.setImageBitmap(re_bitmap); //??Bitmap
-
-                    break;
+               
 
                 case MSG_OK:
                    // Toast.makeText(getApplicationContext(), (String) msg.obj, Toast.LENGTH_SHORT).show();
@@ -761,23 +754,15 @@ public class CameraActivity extends Activity implements CamOpenOverCallback {
     @Override
     protected void onStart() {
         super.onStart();
-
+        
+        logo_page();
+    }
+    protected void logo_page(){
         setContentView(R.layout.logo_01);
         
         ImageView iv01=(ImageView)findViewById(R.id.imageView1);
         iv01.setOnClickListener(new OnClickListener() {
             public void onClick(View v) {
-            	/*
-            	 * Whether need show introduce page?
-            	 * if visit.data is not exist:
-            	 *     create this file and initialize it.
-            	 * Whether the visit number is in the array dictionary?
-            	 * (don`t forget update the visit number)
-            	 * true:
-            	 *     show introduce page
-            	 * false:
-            	 *     go to camera*/
-            	
             	
             	String pathName=Environment.getExternalStorageDirectory().getAbsolutePath()+"/"+app_path_name + "/";
             	String fileName=Environment.getExternalStorageDirectory().getAbsolutePath()+"/"+app_path_name + "/" + "visit.data";
@@ -845,13 +830,36 @@ public class CameraActivity extends Activity implements CamOpenOverCallback {
 
         image1 = (ImageButton) findViewById(R.id.btn_shutter);
         
-        
-        
-        // More Code:
-        // Bitmap bitmap = getLoacalBitmap(Environment.getExternalStorageDirectory().getAbsolutePath()+"/"+"123.jpg");
-        // image1.setImageBitmap(bitmap);
     }
+    private class BtnListeners implements OnClickListener {
+        @Override
+        public void onClick(View v) {
+            switch (v.getId()) {
+            case R.id.btn_shutter:
+                get_bitmap = false;
 
+                CameraInterface.getInstance().doTakePicture();
+               
+                break;
+
+            default:
+                break;
+            }
+
+            new Thread() {
+                    public void run() {
+                        while (get_bitmap == false) {
+                            ;
+                        }
+
+                        if (get_bitmap == true) {
+                           
+                            http_use();
+                        }
+                    }
+                }.start();
+        }
+    }
     private Bitmap getLoacalBitmap(String url) {
         try {
             FileInputStream fis = new FileInputStream(url);
@@ -1245,38 +1253,5 @@ public class CameraActivity extends Activity implements CamOpenOverCallback {
         get_bitmap = true;
     }
 
-    private class BtnListeners implements OnClickListener {
-        @Override
-        public void onClick(View v) {
-            switch (v.getId()) {
-            case R.id.btn_shutter:
-                get_bitmap = false;
 
-                Bitmap re_bitmap = CameraInterface.getInstance().doTakePicture();
-                //image1.setImageBitmap(re_bitmap); //??Bitmap
-
-                break;
-
-            default:
-                break;
-            }
-
-            new Thread() {
-                    public void run() {
-                        while (get_bitmap == false) {
-                            ;
-                        }
-
-                        if (get_bitmap == true) {
-                            Message msg = new Message(); //????
-                            msg.what = 901;
-                            msg.obj = ""; //????
-                            handler.sendMessage(msg); //?handler???????
-
-                            http_use();
-                        }
-                    }
-                }.start();
-        }
-    }
 }
