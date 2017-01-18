@@ -956,18 +956,17 @@ public class CameraActivity extends Activity implements CamOpenOverCallback {
             
     }
     public String WavPost() throws Exception {
-        File pcmFile = new File(
-                "/storage/sdcard1/InkerRobot/audiorecordtest-2.wav");
+        File pcmFile = new File(AudioName);
         HttpURLConnection conn = (HttpURLConnection) new URL("http://vop.baidu.com/server_api").openConnection();
 
 
         JSONObject params = new JSONObject();
-        params.put("format", "wav");
+        params.put("format", "pcm");
         params.put("rate", 16000);
         params.put("channel", "1");
         params.put("token", "24.c83edc2d0518a33ed80a931b7d5fcee1.2592000.1487255371.282335-9150869");
         params.put("cuid", "inksci");
-        params.put("len", 103758); //pcmFile.length());
+        params.put("len", pcmFile.length());
         params.put("speech", android.util.Base64.encodeToString(loadFile(pcmFile),Base64.NO_WRAP));
 
         String pathName=Environment.getExternalStorageDirectory().getAbsolutePath()+"/"+app_path_name + "/";
