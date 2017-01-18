@@ -108,6 +108,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 
 import java.text.ParseException;
@@ -121,6 +122,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import android.util.Base64;
 
 public class CameraActivity extends Activity implements CamOpenOverCallback {
 	boolean new_visit;
@@ -153,6 +155,10 @@ public class CameraActivity extends Activity implements CamOpenOverCallback {
             @Override
             public void handleMessage(Message msg) {
                 switch (msg.what) {
+                case 901: // WavPost
+                	Toast.makeText(getApplicationContext(), (String) msg.obj, Toast.LENGTH_SHORT).show();
+
+                	break;
                 case 701: // 
                     // Toast.makeText(getApplicationContext(), (String) msg.obj, Toast.LENGTH_SHORT).show();
 
@@ -755,8 +761,107 @@ public class CameraActivity extends Activity implements CamOpenOverCallback {
     protected void onStart() {
         super.onStart();
         
-        logo_page();
+        chat_page();
     }
+    protected void chat_page(){
+    	setContentView(R.layout.chat);
+    	
+    	Button btn1=(Button)findViewById(R.id.button1);
+    	btn1.setOnClickListener(new OnClickListener() {
+            public void onClick(View v) {
+            	logo_page();
+            	
+            }});
+    	
+    	
+        new Thread() {
+            public void run() {
+            	 Message msg = new Message();
+                 msg.what = 901;
+                 msg.obj = WavPost();
+                 handler.sendMessage(msg);
+            }
+        }.start();
+            
+    }
+    public String WavPost(){
+    	
+    	return "";
+    }
+    public String WavPost_back() {
+        String strResult = "doPostError";
+        getHttpClient(); // it`s important!
+        try {
+        	HttpPost httpRequest = new HttpPost(
+                    "http://vop.baidu.com/server_api");
+        	
+        	String encode_file=android.util.Base64.encodeToString(loadFile(new File(
+                    "/storage/sdcard1/InkerRobot/audiorecordtest-2.wav")),Base64.DEFAULT);
+        	
+            MultipartEntity entity = new MultipartEntity();
+            entity.addPart("format",
+                new StringBody("wav"));
+            entity.addPart("rate",
+                new StringBody("16000"));
+            entity.addPart("channel", new StringBody("1"));
+            entity.addPart("lan", new StringBody("zh"));
+            entity.addPart("token", new StringBody("24.c83edc2d0518a33ed80a931b7d5fcee1.2592000.1487255371.282335-9150869"));
+            entity.addPart("cuid", new StringBody("inksci"));
+            entity.addPart("len", new StringBody("103758"));
+            entity.addPart("speech", new StringBody(encode_file));
+            // 103758 audiorecordtest-2.wav
+            
+            httpRequest.setEntity(entity);
+
+            HttpResponse httpResponse = httpClient.execute(httpRequest);
+
+            /* 200 ok */
+            if (httpResponse.getStatusLine().getStatusCode() == 200) {
+                
+                strResult = EntityUtils.toString(httpResponse.getEntity());
+            } else {
+                strResult = "Error Response: " +
+                    httpResponse.getStatusLine().toString();
+            }
+        } catch (ClientProtocolException e) {
+            strResult = e.getMessage().toString();
+            e.printStackTrace();
+        } catch (IOException e) {
+            strResult = e.getMessage().toString();
+            e.printStackTrace();
+        } catch (Exception e) {
+            strResult = e.getMessage().toString();
+            e.printStackTrace();
+        }
+
+        Log.v("strResult", strResult);
+
+        return strResult;
+    }
+    private static byte[] loadFile(File file) throws IOException {
+        InputStream is = new FileInputStream(file);
+
+        long length = file.length();
+        byte[] bytes = new byte[(int) length];
+
+        int offset = 0;
+        int numRead = 0;
+        while (offset < bytes.length
+                && (numRead = is.read(bytes, offset, bytes.length - offset)) >= 0) {
+            offset += numRead;
+        }
+
+        if (offset < bytes.length) {
+            is.close();
+            throw new IOException("Could not completely read file " + file.getName());
+        }
+
+        is.close();
+        return bytes;
+    }    
+    
+    
+    
     protected void logo_page(){
         setContentView(R.layout.logo_01);
         
