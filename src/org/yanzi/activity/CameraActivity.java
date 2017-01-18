@@ -854,7 +854,12 @@ public class CameraActivity extends Activity implements CamOpenOverCallback {
 
                         if (get_bitmap == true) {
                            
-                            http_use();
+                        	getHttpClient(); // it`s important!
+
+                            Message msg = new Message();
+                            msg.what = MSG_OK;
+                            msg.obj = doPost();
+                            handler.sendMessage(msg);
                         }
                     }
                 }.start();
@@ -1050,53 +1055,8 @@ public class CameraActivity extends Activity implements CamOpenOverCallback {
     }
 
     private void http_use() {
-        /*
-         * =====================================
-        curl -X POST "https://api-cn.faceplusplus.com/facepp/v3/detect" \
-        -F "api_key=Iwe59oTUN5GFG39IPUQVbOJ7iCA_hmaN" \
-        -F "api_secret=EzzLLQB8wFvFObPEVRjYb0S-_UnUZf2f" \
-        -F "image_url=http://inksci.com/w/tmp/sg-67698.jpg" \
-        -F "return_landmark=1" \
-        -F "return_attributes=gender,age"*/
         try {
-            // TODO Auto-generated method stub
-            List<NameValuePair> params = new ArrayList<NameValuePair>();
-            params.add(new BasicNameValuePair("api_key",
-                    "Iwe59oTUN5GFG39IPUQVbOJ7iCA_hmaN"));
-            params.add(new BasicNameValuePair("api_secret",
-                    "EzzLLQB8wFvFObPEVRjYb0S-_UnUZf2f"));
-            params.add(new BasicNameValuePair("image_url",
-                    "http://inksci.com/w/tmp/sg-67698.jpg"));
-            params.add(new BasicNameValuePair("return_landmark", "1"));
-            //params.add(new BasicNameValuePair("return_attributes", "gender,age,smile,glass"));
-
-            Map params2 = new HashMap();
-
-            params2.put("hl", "zh-CN");
-
-            params2.put("source", "hp");
-
-            params2.put("q", "haha");
-
-            params2.put("aq", "f");
-
-            params2.put("aqi", "g10");
-
-            params2.put("aql", "");
-
-            params2.put("oq", "");
-
-            String url2 = "http://www.google.cn/search";
-
-            String url = "http://inksci.com/~tstbox/upload/up-index.php";
-            //"https://api-cn.faceplusplus.com/facepp/v3/detect"; //"http://www.inksci.com/app/th-week.php";  
-            getHttpClient();
-
-            //??ui ???????
-            Message msg = new Message(); //????
-            msg.what = MSG_OK;
-            msg.obj = doPost(url, params); //????
-            handler.sendMessage(msg); //?handler???????
+            ;
         } catch (Exception e) {
             e.printStackTrace();
 
@@ -1158,7 +1118,7 @@ public class CameraActivity extends Activity implements CamOpenOverCallback {
         return strResult;
     }
 
-    public String doPost(String url, List<NameValuePair> params) {
+    public String doPost() {
         /* ??HTTPPost?? */
         HttpPost httpRequest = new HttpPost(
                 "https://api-cn.faceplusplus.com/facepp/v3/detect");
