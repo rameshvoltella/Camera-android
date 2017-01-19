@@ -173,7 +173,7 @@ public class CameraActivity extends Activity implements CamOpenOverCallback, Spe
 		private boolean isRecord = false;// 设置正在录制的状态
 		
 		//AudioName裸音频数据文件
-		private static final String AudioName = Environment.getExternalStorageDirectory().getAbsolutePath()+"/inker-audio.pcm";
+		private static final String AudioName = Environment.getExternalStorageDirectory().getAbsolutePath()+"/"+app_path_name+"/recorder-recognize-audio.pcm";
 		////////////// END
 	boolean new_visit;
 	ImageView master_control;
