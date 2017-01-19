@@ -814,7 +814,7 @@ public class CameraActivity extends Activity implements CamOpenOverCallback {
 		Stop = (Button) this.findViewById(R.id.stop);
 		Start.setOnClickListener(new TestAudioListener());
 		Stop.setOnClickListener(new TestAudioListener());
-		creatAudioRecord();
+		
 		
 		Button btn1=(Button)this.findViewById(R.id.button1);
 		btn1.setOnClickListener(new OnClickListener() {
@@ -850,6 +850,7 @@ public class CameraActivity extends Activity implements CamOpenOverCallback {
 	}
 
 	private void startRecord() {
+		creatAudioRecord();
 		audioRecord.startRecording();
 		// 让录制状态为true
 		isRecord = true;
