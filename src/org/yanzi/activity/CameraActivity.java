@@ -141,10 +141,12 @@ import java.util.Map;
 import android.util.Base64;
 
 public class CameraActivity extends Activity implements CamOpenOverCallback, SpeechSynthesizerListener {
+    static String app_path_name = "InkerRobot";
+    
 	///////////////////
 	private SpeechSynthesizer mSpeechSynthesizer;
     private String mSampleDirPath;
-    private static final String SAMPLE_DIR_NAME = "baiduTTS";
+    private static final String SAMPLE_DIR_NAME = app_path_name+"/baiduTTS";
     private static final String SPEECH_FEMALE_MODEL_NAME = "bd_etts_speech_female.dat";
     private static final String SPEECH_MALE_MODEL_NAME = "bd_etts_speech_male.dat";
     private static final String TEXT_MODEL_NAME = "bd_etts_text.dat";
@@ -192,7 +194,6 @@ public class CameraActivity extends Activity implements CamOpenOverCallback, Spe
     CameraSurfaceView surfaceView = null;
     ImageButton shutterBtn;
     float previewRate = -1f;
-    String app_path_name = "InkerRobot";
     String up_image_file = "zx-01.jpg"; // initial value
     private HttpParams httpParams;
     private HttpClient httpClient;
@@ -1497,7 +1498,7 @@ Secret Key: c9644b9b942a565dbf633d2581cb89f2*/
         //打印引擎信息和model基本信息
         //printEngineInfo();
         
-        int tt = this.mSpeechSynthesizer.speak("你好,我是小墨，您的个人机器人");
+        int tt = this.mSpeechSynthesizer.speak("Hello, 您好,我是小墨，您的个人机器人");
     }    
     private void initialEnv() {
         if (mSampleDirPath == null) {
