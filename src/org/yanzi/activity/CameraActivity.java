@@ -819,7 +819,7 @@ public class CameraActivity extends Activity implements CamOpenOverCallback {
 		Button btn1=(Button)this.findViewById(R.id.button1);
 		btn1.setOnClickListener(new OnClickListener() {
             public void onClick(View v) {
-            	chat_page();
+            	logo_page();
             	
             }});
 		
@@ -843,6 +843,21 @@ public class CameraActivity extends Activity implements CamOpenOverCallback {
 			}
 			if (v == Stop) {
 				stopRecord();
+				
+				
+				 new Thread() {
+			            public void run() {
+			            	 Message msg = new Message();
+			                 msg.what = 901;
+			                 try {
+								msg.obj = WavPost();
+							} catch (Exception e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}
+			                 handler.sendMessage(msg);
+			            }
+			        }.start();
 			}
 
 		}
@@ -930,32 +945,7 @@ public class CameraActivity extends Activity implements CamOpenOverCallback {
     
     
     
-    protected void chat_page(){
-    	setContentView(R.layout.chat);
-    	
-    	Button btn1=(Button)findViewById(R.id.button1);
-    	btn1.setOnClickListener(new OnClickListener() {
-            public void onClick(View v) {
-            	logo_page();
-            	
-            }});
-    	
-    	
-        new Thread() {
-            public void run() {
-            	 Message msg = new Message();
-                 msg.what = 901;
-                 try {
-					msg.obj = WavPost();
-				} catch (Exception e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-                 handler.sendMessage(msg);
-            }
-        }.start();
-            
-    }
+
     public String WavPost() throws Exception {
         File pcmFile = new File(AudioName);
         HttpURLConnection conn = (HttpURLConnection) new URL("http://vop.baidu.com/server_api").openConnection();
