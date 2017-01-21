@@ -102,7 +102,7 @@ import org.yanzi.camera.CameraInterface;
 import org.yanzi.camera.CameraInterface.CamOpenOverCallback;
 import org.yanzi.camera.preview.CameraSurfaceView;
 
-import org.yanzi.playcamera.R;
+import com.inksci.inker.R;
 
 import org.yanzi.util.DisplayUtil;
 
@@ -150,7 +150,7 @@ public class CameraActivity extends Activity implements CamOpenOverCallback, Spe
     private static final String SPEECH_FEMALE_MODEL_NAME = "bd_etts_speech_female.dat";
     private static final String SPEECH_MALE_MODEL_NAME = "bd_etts_speech_male.dat";
     private static final String TEXT_MODEL_NAME = "bd_etts_text.dat";
-    private static final String LICENSE_FILE_NAME = "temp_license_2017-01-00";
+    private static final String LICENSE_FILE_NAME = "temp_license_without";
     private static final String ENGLISH_SPEECH_FEMALE_MODEL_NAME = "bd_etts_speech_female_en.dat";
     private static final String ENGLISH_SPEECH_MALE_MODEL_NAME = "bd_etts_speech_male_en.dat";
     private static final String ENGLISH_TEXT_MODEL_NAME = "bd_etts_text_en.dat";
