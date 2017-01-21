@@ -10,18 +10,20 @@
 
     <Button
         android:id="@+id/start"
-        android:layout_width="wrap_content"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/textView1"
+        android:gravity="center"
+        android:layout_gravity="center"
         android:layout_below="@+id/textView1"
         android:layout_marginTop="34dp"
         android:text="start" />
 
     <Button
         android:id="@+id/stop"
-        android:layout_width="wrap_content"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/start"
+        android:gravity="center"
+        android:layout_gravity="center"
         android:layout_below="@+id/start"
         android:layout_marginTop="52dp"
         android:text="stop" />
@@ -35,14 +37,7 @@
         android:layout_marginTop="26dp"
         android:text="Button" />
 
-    <Button
-        android:id="@+id/doGet"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/button1"
-        android:layout_below="@+id/button1"
-        android:layout_marginTop="17dp"
-        android:text="doGet" />
+    
 
     <TextView
         android:id="@+id/TextView01"

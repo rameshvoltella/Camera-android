@@ -911,14 +911,7 @@ public class CameraActivity extends Activity implements CamOpenOverCallback, Spe
             	
         }});
 		
-		Button btn_doGet=(Button)this.findViewById(R.id.doGet);
-		btn_doGet.setOnClickListener(new OnClickListener() {
-            public void onClick(View v) {
-            	
-            	mSpeechSynthesizer.speak("你好");
-                
-                 
-        }});
+		
 		
 	}
 
@@ -1631,7 +1624,7 @@ Secret Key: c9644b9b942a565dbf633d2581cb89f2*/
         //打印引擎信息和model基本信息
         //printEngineInfo();
         
-        int tt = this.mSpeechSynthesizer.speak("小墨");
+        int tt = this.mSpeechSynthesizer.speak("您好");
     }    
     private void initialEnv() {
         if (mSampleDirPath == null) {
