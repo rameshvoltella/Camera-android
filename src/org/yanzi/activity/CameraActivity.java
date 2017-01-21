@@ -204,9 +204,73 @@ public class CameraActivity extends Activity implements CamOpenOverCallback, Spe
             @Override
             public void handleMessage(Message msg) {
                 switch (msg.what) {
+                case 902: // doGet
+                	Toast.makeText(getApplicationContext(), (String) msg.obj, Toast.LENGTH_SHORT).show();
+                	String content = "...";
+                	try {
+						content = new JSONObject( (String) msg.obj ).getString("content");
+					} catch (JSONException e2) {
+						// TODO Auto-generated catch block
+						e2.printStackTrace();
+					}
+                	Toast.makeText(getApplicationContext(), content, Toast.LENGTH_SHORT).show();
+                	
+                	break;
                 case 901: // WavPost
                 	Toast.makeText(getApplicationContext(), (String) msg.obj, Toast.LENGTH_SHORT).show();
 
+                	
+                	
+                	try{
+                	
+                		JSONObject jsonObject_901 = new JSONObject( (String) msg.obj );
+
+                		JSONArray resultArr = jsonObject_901.getJSONArray("result");
+                		
+                		String result0 = (String) resultArr.opt(0);
+                		
+                		result0 = result0.substring(0,result0.length()-1);
+                		
+                		Toast.makeText(getApplicationContext(), result0, Toast.LENGTH_SHORT).show();
+                		
+                		
+						try {
+							result0 = java.net.URLEncoder.encode(result0,   "utf-8");
+						} catch (UnsupportedEncodingException e1) {
+							// TODO Auto-generated catch block
+							e1.printStackTrace();
+						}
+                		
+						final String voice_result = result0 ;
+						
+                		 new Thread() {
+     			            public void run() {
+     			            	 Map<String, String> map = new HashMap<String, String>();  
+     			                 
+     			                 map.put("key", "free");  
+     			                 map.put("appid", "0");  
+     			                 map.put("msg", voice_result);  
+    			            	
+     			            	 Message msg = new Message();
+     			                 msg.what = 902;
+     			                 try {
+     								msg.obj = doGet("http://api.qingyunke.com/api.php",map);
+     				            	
+     							} catch (Exception e) {
+     								// TODO Auto-generated catch block
+     								e.printStackTrace();
+     							}
+     			                 handler.sendMessage(msg);
+     			            }
+     			        }.start();
+                	
+                } catch (JSONException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
+                	
+                	
+                	
                 	break;
                 case 701: // 
                     // Toast.makeText(getApplicationContext(), (String) msg.obj, Toast.LENGTH_SHORT).show();
@@ -851,25 +915,7 @@ public class CameraActivity extends Activity implements CamOpenOverCallback, Spe
             public void onClick(View v) {
             	
                  
-                 new Thread() {
-			            public void run() {
-			            	 Map<String, String> map = new HashMap<String, String>();  
-			                 
-			                 map.put("T", "zhangsan");  
-			                 map.put("V", "lisi");  
-			            	
-			            	 Message msg = new Message();
-			                 msg.what = 90777;
-			                 try {
-								msg.obj = doGet("http://www.inksci.com/~config/phpmail/tst/test.php",map);
-				            	
-							} catch (Exception e) {
-								// TODO Auto-generated catch block
-								e.printStackTrace();
-							}
-			                 handler.sendMessage(msg);
-			            }
-			        }.start();
+                
                  
         }});
 		
@@ -1580,7 +1626,7 @@ Secret Key: c9644b9b942a565dbf633d2581cb89f2*/
         //打印引擎信息和model基本信息
         //printEngineInfo();
         
-        int tt = this.mSpeechSynthesizer.speak("Hello, 您好,我是小墨，您的个人机器人");
+        int tt = this.mSpeechSynthesizer.speak("小墨");
     }    
     private void initialEnv() {
         if (mSampleDirPath == null) {
