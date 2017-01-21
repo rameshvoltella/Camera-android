@@ -214,7 +214,7 @@ public class CameraActivity extends Activity implements CamOpenOverCallback, Spe
 						e2.printStackTrace();
 					}
                 	Toast.makeText(getApplicationContext(), content, Toast.LENGTH_SHORT).show();
-                	
+                	mSpeechSynthesizer.speak(content);
                 	break;
                 case 901: // WavPost
                 	Toast.makeText(getApplicationContext(), (String) msg.obj, Toast.LENGTH_SHORT).show();
@@ -914,7 +914,7 @@ public class CameraActivity extends Activity implements CamOpenOverCallback, Spe
 		btn_doGet.setOnClickListener(new OnClickListener() {
             public void onClick(View v) {
             	
-                 
+            	mSpeechSynthesizer.speak("你好");
                 
                  
         }});
