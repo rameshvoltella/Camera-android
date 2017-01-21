@@ -201,6 +201,7 @@ public class CameraActivity extends Activity implements CamOpenOverCallback, Spe
                 	String content = "...";
                 	try {
 						content = new JSONObject( (String) msg.obj ).getString("content");
+						content = content.replace("{br}", "\r\n");
 					} catch (JSONException e2) {
 						// TODO Auto-generated catch block
 						e2.printStackTrace();
