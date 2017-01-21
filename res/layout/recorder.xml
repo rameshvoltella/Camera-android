@@ -8,12 +8,6 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.example.audio001.MainActivity" >
 
-    <TextView
-        android:id="@+id/textView1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/hello_world" />
-
     <Button
         android:id="@+id/start"
         android:layout_width="wrap_content"
@@ -49,5 +43,22 @@
         android:layout_below="@+id/button1"
         android:layout_marginTop="17dp"
         android:text="doGet" />
+
+    <TextView
+        android:id="@+id/TextView01"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:text="" />
+
+    <TextView
+        android:id="@+id/textView1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/TextView01"
+        android:layout_below="@+id/TextView01"
+        android:layout_marginTop="24dp"
+        android:text="" />
 
 </RelativeLayout>

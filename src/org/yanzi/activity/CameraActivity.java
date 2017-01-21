@@ -205,7 +205,7 @@ public class CameraActivity extends Activity implements CamOpenOverCallback, Spe
             public void handleMessage(Message msg) {
                 switch (msg.what) {
                 case 902: // doGet
-                	Toast.makeText(getApplicationContext(), (String) msg.obj, Toast.LENGTH_SHORT).show();
+                	//Toast.makeText(getApplicationContext(), (String) msg.obj, Toast.LENGTH_SHORT).show();
                 	String content = "...";
                 	try {
 						content = new JSONObject( (String) msg.obj ).getString("content");
@@ -213,11 +213,15 @@ public class CameraActivity extends Activity implements CamOpenOverCallback, Spe
 						// TODO Auto-generated catch block
 						e2.printStackTrace();
 					}
-                	Toast.makeText(getApplicationContext(), content, Toast.LENGTH_SHORT).show();
+                	//Toast.makeText(getApplicationContext(), content, Toast.LENGTH_SHORT).show();
                 	mSpeechSynthesizer.speak(content);
+                	
+                	TextView tv1=(TextView)findViewById(R.id.textView1);
+                	tv1.setText("小墨： "+content);
+                	
                 	break;
                 case 901: // WavPost
-                	Toast.makeText(getApplicationContext(), (String) msg.obj, Toast.LENGTH_SHORT).show();
+                	//Toast.makeText(getApplicationContext(), (String) msg.obj, Toast.LENGTH_SHORT).show();
 
                 	
                 	
@@ -231,8 +235,10 @@ public class CameraActivity extends Activity implements CamOpenOverCallback, Spe
                 		
                 		result0 = result0.substring(0,result0.length()-1);
                 		
-                		Toast.makeText(getApplicationContext(), result0, Toast.LENGTH_SHORT).show();
+                		//Toast.makeText(getApplicationContext(), result0, Toast.LENGTH_SHORT).show();
                 		
+                		TextView tv01=(TextView)findViewById(R.id.TextView01);
+                    	tv01.setText("我： "+result0);
                 		
 						try {
 							result0 = java.net.URLEncoder.encode(result0,   "utf-8");
