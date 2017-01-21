@@ -145,6 +145,8 @@ import com.inksci.function.*;
 public class CameraActivity extends Activity implements CamOpenOverCallback, SpeechSynthesizerListener {
     static String app_path_name = "InkerRobot";
     
+    String yuyin_token;
+    
 	///////////////////
 	private SpeechSynthesizer mSpeechSynthesizer;
     private String mSampleDirPath;
@@ -193,6 +195,10 @@ public class CameraActivity extends Activity implements CamOpenOverCallback, Spe
             @Override
             public void handleMessage(Message msg) {
                 switch (msg.what) {
+                case 903: // yuyin_token
+                	Toast.makeText(getApplicationContext(), (String) msg.obj, Toast.LENGTH_SHORT).show();
+                	
+                	break;
                 case 902: // doGet
                 	//Toast.makeText(getApplicationContext(), (String) msg.obj, Toast.LENGTH_SHORT).show();
                 	String content = "...";
@@ -874,8 +880,31 @@ public class CameraActivity extends Activity implements CamOpenOverCallback, Spe
         startTTS();
         // TTS Finish
         
-       setContentView(R.layout.recorder);
-		init();
+        try {
+			
+        	 new Thread() {
+		            public void run() {
+		            	 Message msg = new Message();
+		                 msg.what = 903;
+		                 try {
+		                	 yuyin_token = getToken("yzGVe4oXOdflbEICtnYbhe7A", "c9644b9b942a565dbf633d2581cb89f2");
+		             		
+							msg.obj = yuyin_token;
+						} catch (Exception e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+		                 handler.sendMessage(msg);
+		            }
+		        }.start();
+        	
+        	
+        	} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+       
+		initChat();
         
     }
     
@@ -886,7 +915,8 @@ public class CameraActivity extends Activity implements CamOpenOverCallback, Spe
     
     
     
-	private void init() {
+	private void initChat() {
+		setContentView(R.layout.recorder);
 		Button Start;
 		Button Stop;
 
@@ -952,7 +982,13 @@ public class CameraActivity extends Activity implements CamOpenOverCallback, Spe
     
     
     
-    
+    private static String getToken(String apiKey, String secretKey) throws Exception {
+        String getTokenURL = "https://openapi.baidu.com/oauth/2.0/token?grant_type=client_credentials" + 
+            "&client_id=" + apiKey + "&client_secret=" + secretKey;
+        HttpURLConnection conn = (HttpURLConnection) new URL(getTokenURL).openConnection();
+        String token = new JSONObject(printResponse(conn)).getString("access_token");
+        return token;
+    }
 
     public String WavPost() throws Exception {
         File pcmFile = new File(AudioName);
@@ -963,7 +999,7 @@ public class CameraActivity extends Activity implements CamOpenOverCallback, Spe
         params.put("format", "pcm");
         params.put("rate", 16000);
         params.put("channel", "1");
-        params.put("token", "24.c83edc2d0518a33ed80a931b7d5fcee1.2592000.1487255371.282335-9150869");
+        params.put("token", yuyin_token);
         params.put("cuid", "inksci");
         params.put("len", pcmFile.length());
         params.put("speech", android.util.Base64.encodeToString(loadFile(pcmFile),Base64.NO_WRAP));
