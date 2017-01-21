@@ -1,7 +1,5 @@
 package org.yanzi.activity;
 
-import android.R.string;
-
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Activity;
@@ -145,7 +143,6 @@ import com.inksci.function.*;
 public class CameraActivity extends Activity implements CamOpenOverCallback, SpeechSynthesizerListener {
     static String app_path_name = "InkerRobot";
     
-    String yuyin_token="";
     
 	///////////////////
 	private SpeechSynthesizer mSpeechSynthesizer;
@@ -974,13 +971,8 @@ public class CameraActivity extends Activity implements CamOpenOverCallback, Spe
         JSONObject params = new JSONObject();
         params.put("format", "pcm");
         params.put("rate", 16000);
-        params.put("channel", "1");
-        
-        while(yuyin_token.equals("")){
-        	yuyin_token = getToken("yzGVe4oXOdflbEICtnYbhe7A", "c9644b9b942a565dbf633d2581cb89f2");
-        }
-        
-        params.put("token", yuyin_token);
+        params.put("channel", "1");        
+        params.put("token", getToken("yzGVe4oXOdflbEICtnYbhe7A", "c9644b9b942a565dbf633d2581cb89f2"));
         params.put("cuid", "inksci");
         params.put("len", pcmFile.length());
         params.put("speech", android.util.Base64.encodeToString(loadFile(pcmFile),Base64.NO_WRAP));

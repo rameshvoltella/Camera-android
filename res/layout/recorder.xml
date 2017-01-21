@@ -28,16 +28,6 @@
         android:layout_marginTop="52dp"
         android:text="over" />
 
-   
-
-    <TextView
-        android:id="@+id/TextView01"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
-        android:text="" />
-
     <TextView
         android:id="@+id/textView1"
         android:layout_width="wrap_content"
@@ -46,5 +36,14 @@
         android:layout_below="@+id/TextView01"
         android:layout_marginTop="24dp"
         android:text="小墨： 您好！" />
+
+    <TextView
+        android:id="@+id/TextView01"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/start"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="84dp"
+        android:text=" " />
 
 </RelativeLayout>
