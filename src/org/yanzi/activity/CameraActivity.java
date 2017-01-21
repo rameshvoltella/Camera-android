@@ -945,7 +945,11 @@ public class CameraActivity extends Activity implements CamOpenOverCallback, Spe
 			}
 			if (v == Stop) {
 				stopRecord();
-				
+				TextView tv1=(TextView)findViewById(R.id.textView1);
+            	tv1.setText("");
+            	TextView tv01=(TextView)findViewById(R.id.TextView01);
+            	tv01.setText("联网识别中...");
+        		
 				
 				 new Thread() {
 			            public void run() {
