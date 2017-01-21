@@ -885,12 +885,7 @@ public class CameraActivity extends Activity implements CamOpenOverCallback, Spe
         startTTS();
         // TTS Finish
         
-        getWindow().setFormat(PixelFormat.TRANSLUCENT);// 让界面横屏
-		requestWindowFeature(Window.FEATURE_NO_TITLE);// 去掉界面标题
-		getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
-				WindowManager.LayoutParams.FLAG_FULLSCREEN);
-		// 重新设置界面大小
-		setContentView(R.layout.recorder);
+       setContentView(R.layout.recorder);
 		init();
         
     }
