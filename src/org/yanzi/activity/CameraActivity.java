@@ -844,7 +844,34 @@ public class CameraActivity extends Activity implements CamOpenOverCallback, Spe
             public void onClick(View v) {
             	logo_page();
             	
-            }});
+        }});
+		
+		Button btn_doGet=(Button)this.findViewById(R.id.doGet);
+		btn_doGet.setOnClickListener(new OnClickListener() {
+            public void onClick(View v) {
+            	
+                 
+                 new Thread() {
+			            public void run() {
+			            	 Map<String, String> map = new HashMap<String, String>();  
+			                 
+			                 map.put("T", "zhangsan");  
+			                 map.put("V", "lisi");  
+			            	
+			            	 Message msg = new Message();
+			                 msg.what = 90777;
+			                 try {
+								msg.obj = doGet("http://www.inksci.com/~config/phpmail/tst/test.php",map);
+				            	
+							} catch (Exception e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}
+			                 handler.sendMessage(msg);
+			            }
+			        }.start();
+                 
+        }});
 		
 	}
 
@@ -1432,6 +1459,61 @@ public class CameraActivity extends Activity implements CamOpenOverCallback, Spe
         // TODO Auto-generated method stub
         get_bitmap = true;
     }
+    
+    
+    public String doGet(String url, Map params) {
+    	getHttpClient();
+    	
+        /* ??HTTPGet?? */
+        String paramStr = "";
+
+        Iterator iter = params.entrySet().iterator();
+
+        while (iter.hasNext()) {
+            Map.Entry entry = (Map.Entry) iter.next();
+            Object key = entry.getKey();
+            Object val = entry.getValue();
+            paramStr += (paramStr = "&" + key + "=" + val);
+        }
+
+        if (!paramStr.equals("")) {
+            paramStr = paramStr.replaceFirst("&", "?");
+            url += paramStr;
+        }
+
+        HttpGet httpRequest = new HttpGet(url);
+
+        String strResult = "doGetError";
+
+        try {
+            /* ????????? */
+            HttpResponse httpResponse = httpClient.execute(httpRequest);
+
+            /* ?????200 ok */
+            if (httpResponse.getStatusLine().getStatusCode() == 200) {
+                /* ????? */
+                strResult = EntityUtils.toString(httpResponse.getEntity());
+            } else {
+                strResult = "Error Response: " +
+                    httpResponse.getStatusLine().toString();
+            }
+        } catch (ClientProtocolException e) {
+            strResult = e.getMessage().toString();
+            e.printStackTrace();
+        } catch (IOException e) {
+            strResult = e.getMessage().toString();
+            e.printStackTrace();
+        } catch (Exception e) {
+            strResult = e.getMessage().toString();
+            e.printStackTrace();
+        }
+
+        Log.v("strResult", strResult);
+
+        return strResult;
+    }		
+
+    
     /////////////////////////////////////////// TTS START
     // 初始化语音合成客户端并启动
     private void startTTS() {
