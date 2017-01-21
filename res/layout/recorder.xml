@@ -16,7 +16,7 @@
         android:layout_gravity="center"
         android:layout_below="@+id/textView1"
         android:layout_marginTop="34dp"
-        android:text="start" />
+        android:text="speak" />
 
     <Button
         android:id="@+id/stop"
@@ -26,18 +26,9 @@
         android:layout_gravity="center"
         android:layout_below="@+id/start"
         android:layout_marginTop="52dp"
-        android:text="stop" />
+        android:text="over" />
 
-    <Button
-        android:id="@+id/button1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/stop"
-        android:layout_below="@+id/stop"
-        android:layout_marginTop="26dp"
-        android:text="Button" />
-
-    
+   
 
     <TextView
         android:id="@+id/TextView01"
@@ -54,6 +45,6 @@
         android:layout_alignLeft="@+id/TextView01"
         android:layout_below="@+id/TextView01"
         android:layout_marginTop="24dp"
-        android:text="" />
+        android:text="小墨： 您好！" />
 
 </RelativeLayout>

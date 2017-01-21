@@ -904,12 +904,7 @@ public class CameraActivity extends Activity implements CamOpenOverCallback, Spe
 		Stop.setOnClickListener(new TestAudioListener());
 		
 		
-		Button btn1=(Button)this.findViewById(R.id.button1);
-		btn1.setOnClickListener(new OnClickListener() {
-            public void onClick(View v) {
-            	logo_page();
-            	
-        }});
+		
 		
 		
 		
@@ -930,6 +925,10 @@ public class CameraActivity extends Activity implements CamOpenOverCallback, Spe
 		public void onClick(View v) {
 			if (v == Start) {
 				startRecord();
+				TextView tv1=(TextView)findViewById(R.id.textView1);
+            	tv1.setText("");
+            	TextView tv01=(TextView)findViewById(R.id.TextView01);
+            	tv01.setText("聆听中...");
 			}
 			if (v == Stop) {
 				stopRecord();
