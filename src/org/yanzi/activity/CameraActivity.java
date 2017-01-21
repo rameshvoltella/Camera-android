@@ -145,7 +145,7 @@ import com.inksci.function.*;
 public class CameraActivity extends Activity implements CamOpenOverCallback, SpeechSynthesizerListener {
     static String app_path_name = "InkerRobot";
     
-    String yuyin_token;
+    String yuyin_token="";
     
 	///////////////////
 	private SpeechSynthesizer mSpeechSynthesizer;
@@ -195,10 +195,7 @@ public class CameraActivity extends Activity implements CamOpenOverCallback, Spe
             @Override
             public void handleMessage(Message msg) {
                 switch (msg.what) {
-                case 903: // yuyin_token
-                	Toast.makeText(getApplicationContext(), (String) msg.obj, Toast.LENGTH_SHORT).show();
-                	
-                	break;
+               
                 case 902: // doGet
                 	//Toast.makeText(getApplicationContext(), (String) msg.obj, Toast.LENGTH_SHORT).show();
                 	String content = "...";
@@ -880,29 +877,7 @@ public class CameraActivity extends Activity implements CamOpenOverCallback, Spe
         startTTS();
         // TTS Finish
         
-        try {
-			
-        	 new Thread() {
-		            public void run() {
-		            	 Message msg = new Message();
-		                 msg.what = 903;
-		                 try {
-		                	 yuyin_token = getToken("yzGVe4oXOdflbEICtnYbhe7A", "c9644b9b942a565dbf633d2581cb89f2");
-		             		
-							msg.obj = yuyin_token;
-						} catch (Exception e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-						}
-		                 handler.sendMessage(msg);
-		            }
-		        }.start();
-        	
-        	
-        	} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+       
        
 		initChat();
         
@@ -999,6 +974,11 @@ public class CameraActivity extends Activity implements CamOpenOverCallback, Spe
         params.put("format", "pcm");
         params.put("rate", 16000);
         params.put("channel", "1");
+        
+        while(yuyin_token.equals("")){
+        	yuyin_token = getToken("yzGVe4oXOdflbEICtnYbhe7A", "c9644b9b942a565dbf633d2581cb89f2");
+        }
+        
         params.put("token", yuyin_token);
         params.put("cuid", "inksci");
         params.put("len", pcmFile.length());
