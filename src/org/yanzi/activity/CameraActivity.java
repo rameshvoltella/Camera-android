@@ -901,13 +901,7 @@ public class CameraActivity extends Activity implements CamOpenOverCallback, Spe
 		Start = (Button) this.findViewById(R.id.start);
 		Stop = (Button) this.findViewById(R.id.stop);
 		Start.setOnClickListener(new TestAudioListener());
-		Stop.setOnClickListener(new TestAudioListener());
-		
-		
-		
-		
-		
-		
+		Stop.setOnClickListener(new TestAudioListener());		
 	}
 
 	private void creatAudioRecord() {
