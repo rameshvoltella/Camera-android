@@ -199,6 +199,11 @@ public class CameraActivity extends Activity implements CamOpenOverCallback, Spe
                 	try {
 						content = new JSONObject( (String) msg.obj ).getString("content");
 						content = content.replace("{br}", "\r\n");
+						content = content.replace("菲菲", "小墨");
+						if(content.indexOf("404 Not Found")!=-1){
+							content ="抱歉，找不到相关内容";
+						}
+						
 					} catch (JSONException e2) {
 						// TODO Auto-generated catch block
 						e2.printStackTrace();
@@ -229,6 +234,11 @@ public class CameraActivity extends Activity implements CamOpenOverCallback, Spe
                 		
                 		TextView tv01=(TextView)findViewById(R.id.TextView01);
                     	tv01.setText("我： "+result0);
+                    	
+                    	if(result0.equals("人脸识别")){
+							logo_page();
+							break;
+						}
                 		
 						try {
 							result0 = java.net.URLEncoder.encode(result0,   "utf-8");
