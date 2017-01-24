@@ -885,16 +885,18 @@ public class CameraActivity extends Activity implements CamOpenOverCallback, Spe
         startTTS();
         // TTS Finish
         
+       speech_page();
        
-       
-		initChat();
+	//	initChat();
         
     }
     
     
     
     
-    
+    private void speech_page(){
+    	
+    }
     
     
     
