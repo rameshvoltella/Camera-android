@@ -926,10 +926,10 @@ public class CameraActivity extends Activity implements CamOpenOverCallback, Spe
         initialEnv();
         startTTS();
         // TTS Finish
-        
+        initChat();
        speech_page();
        
-	//	initChat();
+	
         
     }
     
@@ -937,13 +937,15 @@ public class CameraActivity extends Activity implements CamOpenOverCallback, Spe
     
     
     private void speech_page(){
-		setContentView(R.layout.activity_main);
 		mContext = this;
 		//创建语音识别对象
 		mIat = SpeechRecognizer.createRecognizer(this, mInitListener);
 		// 初始化听写Dialog,如果只使用有UI听写功能,无需创建SpeechRecognizer
 		mInstaller = new  ApkInstaller(CameraActivity.this);
 		initView();
+		
+		
+		
 
     }
 	private void initView() {
