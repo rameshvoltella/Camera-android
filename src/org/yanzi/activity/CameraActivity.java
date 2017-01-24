@@ -140,9 +140,51 @@ import android.util.Base64;
 
 import com.inksci.function.*;
 
+import android.app.Activity;
+import android.content.Context;
+import android.content.SharedPreferences;
+import android.os.Bundle;
+import android.os.Environment;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.util.Log;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.view.Window;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.Toast;
+import com.iflytek.cloud.ErrorCode;
+import com.iflytek.cloud.InitListener;
+import com.iflytek.cloud.RecognizerResult;
+import com.iflytek.cloud.SpeechConstant;
+import com.iflytek.cloud.SpeechRecognizer;
+import com.iflytek.cloud.SpeechUtility;
+import com.iflytek.cloud.ui.RecognizerDialog;
+import com.iflytek.cloud.ui.RecognizerDialogListener;
+import com.inksci.inker.*;
+import com.inksci.speech.ApkInstaller;
+import com.inksci.speech.ClearEditText;
+import com.inksci.speech.JsonParser;
 public class CameraActivity extends Activity implements CamOpenOverCallback, SpeechSynthesizerListener {
     static String app_path_name = "InkerRobot";
     
+    /////////// speech
+	private com.inksci.speech.ClearEditText edit;
+	private Button start;
+	private ImageView start2;
+	private Context mContext;
+	
+	//初始化识别对象
+	private SpeechRecognizer mIat;
+	// 语音听写UI
+	private RecognizerDialog iatDialog;
+	// 引擎类型
+	private String mEngineType = SpeechConstant.TYPE_CLOUD;
+	// 语音+安装助手类
+	ApkInstaller mInstaller ;
+    /// speech end
     
 	///////////////////
 	private SpeechSynthesizer mSpeechSynthesizer;
@@ -895,9 +937,161 @@ public class CameraActivity extends Activity implements CamOpenOverCallback, Spe
     
     
     private void speech_page(){
-    	
+		setContentView(R.layout.activity_main);
+		mContext = this;
+		//创建语音识别对象
+		mIat = SpeechRecognizer.createRecognizer(this, mInitListener);
+		// 初始化听写Dialog,如果只使用有UI听写功能,无需创建SpeechRecognizer
+		mInstaller = new  ApkInstaller(CameraActivity.this);
+		initView();
+
     }
-    
+	private void initView() {
+		start2 = (ImageView) findViewById(R.id.im2);
+		edit = (ClearEditText) findViewById(R.id.editText);
+		start = (Button) findViewById(R.id.button1);
+		start.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View arg0) {
+				//				setParam();
+				//				edit.setText("");
+				//				//				ShowListen();
+				//				showIatDialog();
+				//				showTip(getString(R.string.text_begin));
+				Toast.makeText(mContext, edit.getText().toString(), 1).show();
+			}
+		});
+		start2.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View arg0) {
+				setParam();
+				edit.setText("");
+				//				ShowListen();
+				showIatDialog();
+				showTip(getString(R.string.text_begin));
+			}
+		});
+		edit.addTextChangedListener(new TextWatcher() {
+			private CharSequence temp;
+			@Override
+			public void onTextChanged(CharSequence arg0, int arg1, int arg2, int arg3) {
+				// TODO Auto-generated method stub
+				temp = arg0;
+			}
+
+			@Override
+			public void beforeTextChanged(CharSequence arg0, int arg1, int arg2,
+					int arg3) {
+				// TODO Auto-generated method stub
+
+			}
+
+			@Override
+			public void afterTextChanged(Editable arg0) {
+				// TODO Auto-generated method stub
+				if (temp.length() > 0) {  
+					start2.setVisibility(View.GONE);
+					start.setVisibility(View.VISIBLE);
+				}else {
+					start2.setVisibility(View.VISIBLE);
+					start.setVisibility(View.GONE);
+				}
+			}
+		});
+	}
+	/**
+	 * 初始化监听器。
+	 */
+	private InitListener mInitListener = new InitListener() {
+
+		@Override
+		public void onInit(int code) {
+			Log.d(TAG, "SpeechRecognizer init() code = " + code);
+			if (code != ErrorCode.SUCCESS) {
+				showTip("初始化失败,错误码："+code);
+			}
+		}
+	};
+	private void showTip(String str) {
+		Toast.makeText(mContext, str, 1).show();
+	}
+	/**
+	 * 初始化监听器。
+	 */
+	private InitListener mInitListener2 = new InitListener() {
+
+		@Override
+		public void onInit(int code) {
+			Log.d(TAG, "SpeechRecognizer init() code = " + code);
+			if (code != ErrorCode.SUCCESS) {
+				showTip("初始化失败,错误码："+code);
+			}
+		}
+	};
+	/**
+	 * 参数设置
+	 * @param param
+	 * @return 
+	 */
+	public void setParam(){
+		// 清空参数
+		mIat.setParameter(SpeechConstant.PARAMS, null);
+
+		// 设置听写引擎
+		mIat.setParameter(SpeechConstant.ENGINE_TYPE, mEngineType);
+		// 设置返回结果格式
+		mIat.setParameter(SpeechConstant.RESULT_TYPE, "json");
+
+		mIat.setParameter(SpeechConstant.LANGUAGE, "zh_cn");
+		// 设置语言区域
+		mIat.setParameter(SpeechConstant.ACCENT,"zh_cn");
+		// 设置语音前端点
+		mIat.setParameter(SpeechConstant.VAD_BOS, "4000");
+		// 设置语音后端点
+		mIat.setParameter(SpeechConstant.VAD_EOS, "1000");
+		// 设置标点符号
+		mIat.setParameter(SpeechConstant.ASR_PTT, "0");
+		// 设置音频保存路径
+		mIat.setParameter(SpeechConstant.ASR_AUDIO_PATH, Environment.getExternalStorageDirectory()+"/iflytek/wavaudio.pcm");
+	}
+	private RecognizerDialogListener recognizerDialogListener = new RecognizerDialogListener() {
+
+		@Override
+		public void onResult(RecognizerResult results, boolean isLast) {
+			String text = JsonParser.parseIatResult(results.getResultString());
+			edit.append(text);
+			edit.setSelection(edit.length());
+			start2.setVisibility(View.GONE);
+		}
+
+		public void onError(SpeechError error) {
+			//showTip(error.getPlainDescription(true));
+		}
+
+		@Override
+		public void onError(com.iflytek.cloud.SpeechError arg0) {
+			// TODO Auto-generated method stub
+			
+		}
+	};
+	
+
+	/**
+	 * 显示听写对话框.
+	 * @param
+	 */
+	public void showIatDialog()
+	{
+		if(null == iatDialog) {
+			//初始化听写Dialog	
+			iatDialog =new RecognizerDialog(this, mInitListener2);
+		}
+		//显示听写对话框
+		iatDialog.setListener(recognizerDialogListener);
+		iatDialog.show();
+	}  
     
     
 	private void initChat() {
@@ -1252,6 +1446,10 @@ public class CameraActivity extends Activity implements CamOpenOverCallback, Spe
     protected void onDestroy() {
         super.onDestroy();
         Log.v(TAG, "protected void onDestroy()");
+        
+        	// 退出时释放连接
+     		mIat.cancel();
+     		mIat.destroy();
     }
 
     @Override
