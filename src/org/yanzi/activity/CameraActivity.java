@@ -171,7 +171,6 @@ public class CameraActivity extends Activity implements CamOpenOverCallback, Spe
     static String app_path_name = "InkerRobot";
     
     /////////// speech
-	private Button start;
 	private ImageView start2;
 	private Context mContext;
 	
@@ -276,6 +275,25 @@ public class CameraActivity extends Activity implements CamOpenOverCallback, Spe
                     	
                     	if(result0.equals("人脸识别")){
 							logo_page();
+							break;
+						}
+                    	
+                    	Button Start;
+                		Button Stop;
+
+                		Start = (Button)findViewById(R.id.start);
+                		Stop = (Button) findViewById(R.id.stop);
+                    	if(result0.equals("百度语音")){
+                    		
+                    		Start.setVisibility(View.VISIBLE);
+        					Stop.setVisibility(View.VISIBLE);
+							break;
+						}
+                    	if(result0.equals("科大讯飞")){
+                    		//GONE
+                    		
+                    		Start.setVisibility(View.GONE);
+        					Stop.setVisibility(View.GONE);
 							break;
 						}
                 		
@@ -1121,6 +1139,8 @@ JSONArray resultArr = jsonObject_901.getJSONArray("result");
 		 
 		      }
 		    });		
+		Start.setVisibility(View.GONE);
+		Stop.setVisibility(View.GONE);
 	}
 
 
