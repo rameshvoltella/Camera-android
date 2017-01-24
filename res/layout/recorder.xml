@@ -72,21 +72,17 @@
      android:id="@+id/editText"
      android:layout_width="138dp"
      android:layout_height="wrap_content"
-     android:layout_alignParentBottom="true"
      android:layout_alignRight="@+id/stop"
-     android:layout_marginBottom="18dp"
-     android:layout_toRightOf="@+id/TextView01"
-     android:ems="10" >
-
-     <requestFocus />
- </com.inksci.speech.ClearEditText>
+     android:layout_toRightOf="@+id/im2"
+     android:ems="10" />
 
  <ImageView
      android:id="@+id/im2"
      android:layout_width="50dp"
      android:layout_height="40dp"
-     android:layout_alignRight="@+id/editText"
-     android:layout_alignTop="@+id/editText"
+     android:layout_alignParentBottom="true"
+     android:layout_centerHorizontal="true"
+     android:layout_marginBottom="42dp"
      android:src="@drawable/common_icon_searchbox_voice_pressed" />
 
 </RelativeLayout>

@@ -1063,6 +1063,10 @@ public class CameraActivity extends Activity implements CamOpenOverCallback, Spe
 		@Override
 		public void onResult(RecognizerResult results, boolean isLast) {
 			String text = JsonParser.parseIatResult(results.getResultString());
+			
+			Toast.makeText(getApplicationContext(), text, Toast.LENGTH_SHORT).show();
+
+			
 			edit.append(text);
 			edit.setSelection(edit.length());
 			start2.setVisibility(View.GONE);
