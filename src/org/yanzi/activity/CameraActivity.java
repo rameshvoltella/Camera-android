@@ -962,20 +962,7 @@ public void relativeLayout_onClick(View v){
 
     }
 	private void initView() {
-		start2 = (ImageView) findViewById(R.id.im2);
-		
-		start2.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View arg0) {
-				mSpeechSynthesizer.stop();
-				
-				setParam();
-				
-				showIatDialog();
-				//showTip(getString(R.string.text_begin));
-			}
-		});
+		;
 		
 	}
 	/**
