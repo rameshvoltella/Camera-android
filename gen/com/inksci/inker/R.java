@@ -39,47 +39,49 @@ public final class R {
         public static final int delete_selector=0x7f020007;
         public static final int display_inker=0x7f020008;
         public static final int exit=0x7f020009;
-        public static final int ic_launcher=0x7f02000a;
-        public static final int ic_launcher_icon=0x7f02000b;
-        public static final int inker_play=0x7f02000c;
+        public static final int girl01=0x7f02000a;
+        public static final int ic_launcher=0x7f02000b;
+        public static final int ic_launcher_icon=0x7f02000c;
+        public static final int inker_play=0x7f02000d;
         /**  画面背景色 
          */
-        public static final int layout_backgroud=0x7f02001a;
+        public static final int layout_backgroud=0x7f02001b;
         /**  分割线背景色 
          */
-        public static final int line_background=0x7f02001b;
-        public static final int logo01=0x7f02000d;
-        public static final int maikefeng=0x7f02000e;
-        public static final int make_not=0x7f02000f;
-        public static final int make_yes=0x7f020010;
-        public static final int no_make=0x7f020011;
-        public static final int ok=0x7f020012;
-        public static final int ok_button=0x7f020013;
-        public static final int ok_d=0x7f020014;
-        public static final int ok_p=0x7f020015;
-        public static final int search_clear_normal=0x7f020016;
-        public static final int search_clear_pressed=0x7f020017;
-        public static final int superman=0x7f020018;
-        public static final int try_it=0x7f020019;
+        public static final int line_background=0x7f02001c;
+        public static final int logo01=0x7f02000e;
+        public static final int maikefeng=0x7f02000f;
+        public static final int make_not=0x7f020010;
+        public static final int make_yes=0x7f020011;
+        public static final int no_make=0x7f020012;
+        public static final int ok=0x7f020013;
+        public static final int ok_button=0x7f020014;
+        public static final int ok_d=0x7f020015;
+        public static final int ok_p=0x7f020016;
+        public static final int search_clear_normal=0x7f020017;
+        public static final int search_clear_pressed=0x7f020018;
+        public static final int superman=0x7f020019;
+        public static final int try_it=0x7f02001a;
     }
     public static final class id {
-        public static final int RelativeLayout1=0x7f09000b;
+        public static final int RelativeLayout1=0x7f09000c;
         public static final int TextView01=0x7f090005;
-        public static final int action_settings=0x7f090010;
+        public static final int action_settings=0x7f090011;
         public static final int btn_shutter=0x7f090001;
         public static final int camera_surfaceview=0x7f090000;
-        public static final int cancel=0x7f09000e;
-        public static final int content=0x7f09000d;
-        public static final int im2=0x7f090008;
+        public static final int cancel=0x7f09000f;
+        public static final int content=0x7f09000e;
+        public static final int im2=0x7f090009;
         public static final int imageView1=0x7f090007;
         public static final int imageView2=0x7f090006;
-        public static final int ok=0x7f09000f;
+        public static final int ok=0x7f090010;
+        public static final int relativeLayout01=0x7f090008;
         public static final int start=0x7f090002;
         public static final int stop=0x7f090004;
         public static final int textView1=0x7f090003;
-        public static final int textView2=0x7f090009;
-        public static final int textView3=0x7f09000a;
-        public static final int title=0x7f09000c;
+        public static final int textView2=0x7f09000a;
+        public static final int textView3=0x7f09000b;
+        public static final int title=0x7f09000d;
     }
     public static final class layout {
         public static final int activity_camera=0x7f030000;

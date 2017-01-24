@@ -584,7 +584,14 @@ public class CameraActivity extends Activity implements CamOpenOverCallback, Spe
                 super.handleMessage(msg);
             }
         };
-
+public void relativeLayout_onClick(View v){
+	//Toast.makeText(getApplicationContext(), "click me", Toast.LENGTH_SHORT).show();
+	mSpeechSynthesizer.stop();
+	
+	setParam();
+	
+	showIatDialog();
+}
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
