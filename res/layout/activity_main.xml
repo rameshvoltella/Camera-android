@@ -1,0 +1,47 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity" >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:layout_marginTop="200dp"
+        android:orientation="horizontal" >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="姓名：" />
+
+        <com.inksci.speech.ClearEditText
+            android:id="@+id/editText"
+            android:layout_width="138dp"
+            android:layout_height="wrap_content"
+            android:ems="10" >
+        </com.inksci.speech.ClearEditText>
+
+        <ImageView
+            android:id="@+id/im2"
+            android:layout_width="50dp"
+            android:layout_height="40dp"
+            android:src="@drawable/common_icon_searchbox_voice_pressed" />
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" >
+
+            <Button
+                android:id="@+id/button1"
+                android:layout_width="50dp"
+                android:layout_height="40dp"
+                android:background="@drawable/common_listitem_singleline_normal"
+                android:textColor="#03080A"
+                android:visibility="gone"
+                android:text="搜索" />
+        </RelativeLayout>
+    </LinearLayout>
+
+</RelativeLayout>

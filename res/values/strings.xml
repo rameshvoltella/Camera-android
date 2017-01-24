@@ -5,4 +5,12 @@
     <string name="action_settings">ink Settings</string>
     <string name="hello_world">Hello world!</string>
 
+    <string name="app_id">58860fc1</string>
+    <!-- 提示安装语音+对话框 -->
+    <string name="superman_ok">确 定</string>
+    <string name="superman_cancel">取 消</string>
+    <string name="superman_title">来 吧 !</string>
+    <string name="superman_content">让我把你的应用变的能听会说吧！</string>
+    <string name="text_begin">请开始说话&#8230;</string>
+    
 </resources>
