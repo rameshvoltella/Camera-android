@@ -278,24 +278,18 @@ public class CameraActivity extends Activity implements CamOpenOverCallback, Spe
 							break;
 						}
                     	
-                    	Button Start;
+                    	if(result0.equals("百度语音")){
+                    		Button Start;
                 		Button Stop;
 
                 		Start = (Button)findViewById(R.id.start);
                 		Stop = (Button) findViewById(R.id.stop);
-                    	if(result0.equals("百度语音")){
-                    		
+                    	
                     		Start.setVisibility(View.VISIBLE);
         					Stop.setVisibility(View.VISIBLE);
 							break;
 						}
-                    	if(result0.equals("科大讯飞")){
-                    		//GONE
-                    		
-                    		Start.setVisibility(View.GONE);
-        					Stop.setVisibility(View.GONE);
-							break;
-						}
+                    	
                 		
 						try {
 							result0 = java.net.URLEncoder.encode(result0,   "utf-8");
