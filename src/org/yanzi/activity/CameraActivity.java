@@ -967,6 +967,8 @@ public class CameraActivity extends Activity implements CamOpenOverCallback, Spe
 
 			@Override
 			public void onClick(View arg0) {
+				mSpeechSynthesizer.stop();
+				
 				setParam();
 				
 				showIatDialog();
@@ -1082,6 +1084,8 @@ public class CameraActivity extends Activity implements CamOpenOverCallback, Spe
 		      @Override
 		      public void onClick(View v) {
 		        // TODO Auto-generated method stub
+		    	  mSpeechSynthesizer.stop();
+		    	  
 		    	  myAudioRecorder.startRecord();
 					TextView tv1=(TextView)findViewById(R.id.textView1);
 	            	tv1.setText("");
@@ -1756,6 +1760,7 @@ Secret Key: c9644b9b942a565dbf633d2581cb89f2*/
         //printEngineInfo();
         
         int tt = this.mSpeechSynthesizer.speak("您好");
+        
     }    
     private void initialEnv() {
         if (mSampleDirPath == null) {
