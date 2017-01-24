@@ -26,7 +26,6 @@ public class CameraInterface {
 	private Camera mCamera;
 	private Camera.Parameters mParams;
 	private boolean isPreviewing = false;
-	private float mPreviwRate = -1f;
 	private static CameraInterface mCameraInterface;
 
 	public interface CamOpenOverCallback{
@@ -110,8 +109,6 @@ public class CameraInterface {
 			}
 
 			isPreviewing = true;
-			mPreviwRate = previewRate;
-
 			mParams = mCamera.getParameters(); //重新get一次
 			Log.i(TAG, "最终设置:PreviewSize--With = " + mParams.getPreviewSize().width
 					+ "Height = " + mParams.getPreviewSize().height);
@@ -128,7 +125,6 @@ public class CameraInterface {
 			mCamera.setPreviewCallback(null);
 			mCamera.stopPreview(); 
 			isPreviewing = false; 
-			mPreviwRate = -1f;
 			mCamera.release();
 			mCamera = null;     
 		}
