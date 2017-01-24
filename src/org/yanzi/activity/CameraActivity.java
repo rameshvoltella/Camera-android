@@ -261,17 +261,15 @@ public class CameraActivity extends Activity implements CamOpenOverCallback, Spe
 
                 	
                 	
-                	try{
+                	String result0 = (String) msg.obj;
+                		
+                	if(result0.equals("")){
+                		// xf speech will submit "" second time
+                		break;
+                	}	
                 	
-                		JSONObject jsonObject_901 = new JSONObject( (String) msg.obj );
-
-                		JSONArray resultArr = jsonObject_901.getJSONArray("result");
-                		
-                		String result0 = (String) resultArr.opt(0);
-                		
-                		result0 = result0.substring(0,result0.length()-1);
-                		
-                		//Toast.makeText(getApplicationContext(), result0, Toast.LENGTH_SHORT).show();
+                	
+                		//Toast.makeText(getApplicationContext(), "result0: "+result0, Toast.LENGTH_SHORT).show();
                 		
                 		TextView tv01=(TextView)findViewById(R.id.TextView01);
                     	tv01.setText("我： "+result0);
@@ -311,10 +309,7 @@ public class CameraActivity extends Activity implements CamOpenOverCallback, Spe
      			            }
      			        }.start();
                 	
-                } catch (JSONException e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
-                }
+              
                 	
                 	
                 	
@@ -957,7 +952,7 @@ public class CameraActivity extends Activity implements CamOpenOverCallback, Spe
 				setParam();
 				
 				showIatDialog();
-				showTip(getString(R.string.text_begin));
+				//showTip(getString(R.string.text_begin));
 			}
 		});
 		
@@ -1023,8 +1018,11 @@ public class CameraActivity extends Activity implements CamOpenOverCallback, Spe
 		public void onResult(RecognizerResult results, boolean isLast) {
 			String text = JsonParser.parseIatResult(results.getResultString());
 			
-			Toast.makeText(getApplicationContext(), text, Toast.LENGTH_SHORT).show();
-
+			//Toast.makeText(getApplicationContext(), text, Toast.LENGTH_SHORT).show();
+			  Message msg = new Message();
+              msg.what = 901;
+              msg.obj = text;
+              handler.sendMessage(msg);
 			
 		}
 
@@ -1097,6 +1095,26 @@ public class CameraActivity extends Activity implements CamOpenOverCallback, Spe
 									// TODO Auto-generated catch block
 									e.printStackTrace();
 								}
+				                 
+				                 
+				                 JSONObject jsonObject_901;
+								try {
+									jsonObject_901 = new JSONObject( (String) msg.obj );
+JSONArray resultArr = jsonObject_901.getJSONArray("result");
+			                		
+			                		String result0 = (String) resultArr.opt(0);
+			                		
+			                		result0 = result0.substring(0,result0.length()-1);
+			                		msg.obj=result0;
+								} catch (JSONException e) {
+									// TODO Auto-generated catch block
+									e.printStackTrace();
+								}
+
+			                		
+				                 
+				                 
+				                 
 				                 handler.sendMessage(msg);
 				            }
 				        }.start();
