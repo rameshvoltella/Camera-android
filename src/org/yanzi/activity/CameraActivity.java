@@ -171,7 +171,6 @@ public class CameraActivity extends Activity implements CamOpenOverCallback, Spe
     static String app_path_name = "InkerRobot";
     
     /////////// speech
-	private com.inksci.speech.ClearEditText edit;
 	private Button start;
 	private ImageView start2;
 	private Context mContext;
@@ -950,58 +949,18 @@ public class CameraActivity extends Activity implements CamOpenOverCallback, Spe
     }
 	private void initView() {
 		start2 = (ImageView) findViewById(R.id.im2);
-		edit = (ClearEditText) findViewById(R.id.editText);
-		start = (Button) findViewById(R.id.button1);
-		start.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View arg0) {
-				//				setParam();
-				//				edit.setText("");
-				//				//				ShowListen();
-				//				showIatDialog();
-				//				showTip(getString(R.string.text_begin));
-				Toast.makeText(mContext, edit.getText().toString(), 1).show();
-			}
-		});
+		
 		start2.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View arg0) {
 				setParam();
-				edit.setText("");
-				//				ShowListen();
+				
 				showIatDialog();
 				showTip(getString(R.string.text_begin));
 			}
 		});
-		edit.addTextChangedListener(new TextWatcher() {
-			private CharSequence temp;
-			@Override
-			public void onTextChanged(CharSequence arg0, int arg1, int arg2, int arg3) {
-				// TODO Auto-generated method stub
-				temp = arg0;
-			}
-
-			@Override
-			public void beforeTextChanged(CharSequence arg0, int arg1, int arg2,
-					int arg3) {
-				// TODO Auto-generated method stub
-
-			}
-
-			@Override
-			public void afterTextChanged(Editable arg0) {
-				// TODO Auto-generated method stub
-				if (temp.length() > 0) {  
-					start2.setVisibility(View.GONE);
-					start.setVisibility(View.VISIBLE);
-				}else {
-					start2.setVisibility(View.VISIBLE);
-					start.setVisibility(View.GONE);
-				}
-			}
-		});
+		
 	}
 	/**
 	 * 初始化监听器。
@@ -1067,14 +1026,9 @@ public class CameraActivity extends Activity implements CamOpenOverCallback, Spe
 			Toast.makeText(getApplicationContext(), text, Toast.LENGTH_SHORT).show();
 
 			
-			edit.append(text);
-			edit.setSelection(edit.length());
-			start2.setVisibility(View.GONE);
 		}
 
-		public void onError(SpeechError error) {
-			//showTip(error.getPlainDescription(true));
-		}
+		
 
 		@Override
 		public void onError(com.iflytek.cloud.SpeechError arg0) {
