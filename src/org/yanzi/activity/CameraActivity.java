@@ -181,7 +181,7 @@ public class CameraActivity extends Activity implements CamOpenOverCallback, Spe
 	// 引擎类型
 	private String mEngineType = SpeechConstant.TYPE_CLOUD;
 	// 语音+安装助手类
-	ApkInstaller mInstaller ;
+	//ApkInstaller mInstaller ;
     /// speech end
     
 	///////////////////
@@ -954,7 +954,7 @@ public void relativeLayout_onClick(View v){
 		//创建语音识别对象
 		mIat = SpeechRecognizer.createRecognizer(this, mInitListener);
 		// 初始化听写Dialog,如果只使用有UI听写功能,无需创建SpeechRecognizer
-		mInstaller = new  ApkInstaller(CameraActivity.this);
+		//mInstaller = new  ApkInstaller(CameraActivity.this);
 		initView();
 		
 		
